@@ -1,0 +1,1693 @@
+﻿cargo :     Checking 
+either v1.15.0
+At line:1 char:1
++ cargo check > 
+build_err.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (    Checki   
+ ng either v1.15.0    
+:String) [], Remo    
+teException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+    Checking 
+allocator-api2 v0.2.21
+    Checking 
+equivalent v1.0.2
+    Checking foldhash 
+v0.1.5
+    Checking winapi 
+v0.3.9
+    Checking 
+unicode-segmentation 
+v1.12.0
+    Checking castaway 
+v0.2.4
+    Checking 
+unicode-width v0.1.14
+    Checking itoa 
+v1.0.17
+    Checking 
+static_assertions 
+v1.1.0
+    Checking ryu 
+v1.0.23
+    Checking bitflags 
+v2.11.0
+    Checking strum 
+v0.26.3
+    Checking 
+cassowary v0.3.0
+    Checking 
+compact_str v0.7.1
+    Checking 
+itertools v0.13.0
+    Checking 
+itertools v0.12.1
+    Checking 
+hashbrown v0.15.5
+    Checking lru 
+v0.12.5
+    Checking 
+unicode-truncate 
+v1.1.0
+    Checking 
+crossterm_winapi 
+v0.9.1
+    Checking 
+crossterm v0.27.0
+    Checking ratatui 
+v0.26.3
+    Checking ground 
+v0.1.0 (C:\Users\User\
+Documents\APU\RTS\Assi
+gnment\Satellite_Sim\s
+atellite-gcs-rts\groun
+d)
+    Checking 
+satellite v0.1.0 (C:\U
+sers\User\Documents\AP
+U\RTS\Assignment\Satel
+lite_Sim\satellite-gcs
+-rts\satellite)
+warning: unused 
+import: `fmt`
+ --> satellite\src\mai
+n.rs:1:26
+  |
+1 | use tracing_subscr
+iber::{fmt, 
+EnvFilter};
+  |                   
+       ^^^
+  |
+  = note: `#[warn(unus
+ed_imports)]` (part 
+of `#[warn(unused)]`) 
+on by default
+
+warning: unused 
+import: `fmt`
+ --> ground\src\main.r
+s:1:26
+  |
+1 | use tracing_subscr
+iber::{fmt, 
+EnvFilter};
+  |                   
+       ^^^
+  |
+  = note: `#[warn(unus
+ed_imports)]` (part 
+of `#[warn(unused)]`) 
+on by default
+
+warning: unused 
+import: `tokio::net::U
+dpSocket`
+ --> satellite\src\mai
+n.rs:9:5
+  |
+9 | use 
+tokio::net::UdpSocket;
+  |     
+^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused 
+import: `tokio::net::U
+dpSocket`
+ --> 
+ground\src\main.rs:8:5
+  |
+8 | use 
+tokio::net::UdpSocket;
+  |     
+^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: 
+mismatched types
+  --> ground\src\telem
+etry_rx.rs:54:117
+   |
+54 |                 c
+rate::ui::push_log(&ui
+_metrics, 1, 
+format!("DMS: no 
+packet for 200ms 
+(gap: {})", 
+consecutive_gap), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+     ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\se
+nsor.rs:42:101
+   |
+42 |             crate
+::ui::push_log(&metric
+s, 1, format!("JITTER 
+EXCEEDED 1ms limit: 
+{}us", jitter_us), 
+&sim_start);
+   |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+               
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\telem
+etry_rx.rs:59:116
+   |
+59 |                  
+   crate::ui::push_log
+(&ui_metrics, 2, 
+"LOSS OF CONTACT ΓÇö 
+>= 3 consecutive failu
+res".to_string(), 
+&sim_start);
+   |                  
+   
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\se
+nsor.rs:54:112
+   |
+54 |             crate
+::ui::push_log(&metric
+s, 2, format!("SAFETY 
+ALERT: {} consecutive 
+misses", 
+consecutive_miss), 
+&sim_start);
+   |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+    ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\se
+nsor.rs:75:115
+   |
+75 |                 c
+rate::ui::push_log(&me
+trics, 1, 
+format!("Buffer full: 
+dropped pc sq={}", dro
+pped.packet.seq_no), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+   ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\se
+nsor.rs:79:93
+   |
+79 |                 c
+rate::ui::push_log(&me
+trics, 1, "Buffer 
+degraded mode 
+active".to_string(), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+   ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\telem
+etry_rx.rs:96:93
+   |
+96 |                  
+       crate::ui::push
+_log(&ui_metrics, 1, 
+format!("decode 
+error: {}", e), 
+&sim_start);
+   |                  
+       
+------------------- 
+arguments to this 
+function are 
+incorrect        
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\se
+nsor.rs:87:95
+   |
+87 |         crate::ui
+::push_log(&metrics, 
+0, 
+format!("sensor_read 
+seq={} val={:.2}", 
+seq, value), 
+&sim_start);
+   |         
+------------------- 
+arguments to this 
+function are 
+incorrect             
+             
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\tele
+metry_rx.rs:101:105
+    |
+101 |                 
+        crate::ui::pus
+h_log(&ui_metrics, 1, 
+"DECODE EXCEEDED 3ms d
+eadline".to_string(), 
+&sim_start);
+    |                 
+        
+------------------- 
+arguments to this 
+function are 
+incorrect             
+       ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> 
+ground\src\ui.rs:93:8
+    |
+ 93 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 97 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\s
+ensor.rs:113:77
+    |
+113 |     crate::ui::p
+ush_log(&metrics, 0, 
+"thermal_sensor finish
+ed".to_string(), 
+&sim_start);
+    |     
+------------------- 
+arguments to this 
+function are 
+incorrect            
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\tele
+metry_rx.rs:136:141
+    |
+136 | ...   crate::ui:
+:push_log(&ui_metrics,
+ 0, 
+format!("Telemetry 
+{:?} seq={} 
+lat={}us", 
+packet.sensor_id, 
+packet.seq_no, 
+latency_us), 
+&sim_start);
+    |       
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+                      
+       ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> 
+ground\src\ui.rs:93:8
+    |
+ 93 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 97 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\tele
+metry_rx.rs:145:121
+    |
+145 |                 
+        crate::ui::pus
+h_log(&ui_metrics, 1, 
+format!("PACKET LOSS: 
+{:?} gap={}", 
+packet.sensor_id, 
+gap), &sim_start);
+    |                 
+        
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+ ^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> 
+ground\src\ui.rs:93:8
+    |
+ 93 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 97 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\s
+ensor.rs:159:77
+    |
+159 |         crate::u
+i::push_log(&metrics, 
+0, format!("Power 
+read seq={}", seq), 
+&sim_start);
+    |         
+------------------- 
+arguments to this 
+function are 
+incorrect        
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\s
+ensor.rs:216:75
+    |
+216 |         crate::u
+i::push_log(&metrics, 
+0, format!("IMU read 
+seq={}", seq), 
+&sim_start);
+    |         
+------------------- 
+arguments to this 
+function are 
+incorrect      
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\sc
+heduler.rs:73:106
+   |
+73 |             crate
+::ui::push_log(&ui_met
+rics, 0, format!("rms_
+scheduler CPU usage 
+{:.1}%", 
+cpu_util_pct), 
+&sim_start);
+   |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                    
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\uplin
+k_tx.rs:73:120
+   |
+73 |                 c
+rate::ui::push_log(&ui
+_metrics, 1, 
+format!("COMMAND 
+REJECTED {:?} 
+(interlock)", 
+cmd.packet.cmd_type), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+        ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\upli
+nk_tx.rs:101:115
+    |
+101 |                 
+crate::ui::push_log(&u
+i_metrics, 0, 
+format!("uplink_tx: 
+sent {:?} seq={}", 
+pkt.cmd_type, 
+tx_seq), &sim_start);
+    |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+   ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> 
+ground\src\ui.rs:93:8
+    |
+ 93 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 97 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\upli
+nk_tx.rs:107:110
+    |
+107 |                 
+crate::ui::push_log(&u
+i_metrics, 1, 
+format!("DISPATCH 
+DEADLINE MISSED: 
+{:?}", pkt.cmd_type), 
+&sim_start);
+    |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                    
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> 
+ground\src\ui.rs:93:8
+    |
+ 93 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 97 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\s
+cheduler.rs:134:117
+    |
+134 |             crat
+e::ui::push_log(&ui_me
+trics, 0, 
+format!("Task 
+scheduled {} 
+drift={}us", 
+tasks[idx].name, 
+drift_us), 
+&sim_start);
+    |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+         ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\s
+cheduler.rs:140:114
+    |
+140 |                 
+crate::ui::push_log(&u
+i_metrics, 1, 
+format!("DEADLINE 
+VIOLATION {} ({}us)", 
+tasks[idx].name, v), 
+&sim_start);
+    |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+  ^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\fault
+_mgr.rs:32:104
+   |
+32 |                 c
+rate::ui::push_log(&ui
+_metrics, 1, 
+format!("fault 
+received: {:?}", 
+fault.fault_type), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+              
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\do
+wnlink.rs:31:89
+   |
+31 |             crate
+::ui::push_log(&ui_met
+rics, 2, 
+format!("Downlink 
+bind failed: {}", e), 
+&sim_start);
+   |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+   ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\do
+wnlink.rs:36:99
+   |
+36 |             crate
+::ui::push_log(&ui_met
+rics, 2, "MISSED 
+COMM: downlink init 
+timeout".to_string(), 
+&sim_start);
+   |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+             
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\fault
+_mgr.rs:45:110
+   |
+45 |                 c
+rate::ui::push_log(&ui
+_metrics, 0, 
+format!("interlock 
+APPLIED in {}us", 
+interlock_latency), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                    
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\fault
+_mgr.rs:50:107
+   |
+50 |                  
+   crate::ui::push_log
+(&ui_metrics, 2, 
+"CRITICAL: interlock 
+exceeded 
+100ms".to_string(), 
+&sim_start);
+   |                  
+   
+------------------- 
+arguments to this 
+function are 
+incorrect             
+             
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> ground\src\fault
+_mgr.rs:78:96
+   |
+78 |                  
+   crate::ui::push_log
+(&ui_metrics_clone, 
+0, "interlock 
+CLEARED".to_string(), 
+&sim_start_clone);
+   |                  
+   
+------------------- 
+arguments to this 
+function are 
+incorrect             
+  ^^^^^^^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> 
+ground\src\ui.rs:93:8
+   |
+93 | pub fn push_log(
+   |        ^^^^^^^^
+...
+97 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\do
+wnlink.rs:92:102
+   |
+92 |                  
+   crate::ui::push_log
+(&ui_metrics, 0, 
+format!("downlink_tx: 
+sent seq={}", 
+tx_seq), &sim_start);
+   |                  
+   
+------------------- 
+arguments to this 
+function are 
+incorrect             
+        ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\do
+wnlink.rs:96:104
+   |
+96 |                  
+   crate::ui::push_log
+(&ui_metrics, 1, 
+"downlink_tx: send tim
+eout/error".to_string(
+), &sim_start);
+   |                  
+   
+------------------- 
+arguments to this 
+function are 
+incorrect             
+          ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\d
+ownlink.rs:105:109
+    |
+105 |             crat
+e::ui::push_log(&ui_me
+trics, 1, 
+format!("downlink_tx: 
+window exceeded 
+({}ms)", elapsed_ms), 
+&sim_start);
+    |             
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                      
+ ^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\d
+ownlink.rs:125:77
+    |
+125 |     crate::ui::p
+ush_log(&ui_metrics, 
+0, "downlink_tx finish
+ed".to_string(), 
+&sim_start);
+    |     
+------------------- 
+arguments to this 
+function are 
+incorrect            
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+    |
+    = note: expected 
+reference 
+`&std::time::Instant`
+               found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+   --> satellite\src\u
+i.rs:92:8
+    |
+ 92 | pub fn push_log(
+    |        ^^^^^^^^
+...
+ 96 |     sim_start: 
+&Instant,
+    |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\fa
+ult.rs:47:90
+   |
+47 |         crate::ui
+::push_log(&ui_metrics
+, 1, format!("FAULT 
+INJECTED: {:?}", 
+fault_type), 
+&sim_start);
+   |         
+------------------- 
+arguments to this 
+function are 
+incorrect             
+        ^^^^^^^^^^ 
+expected `&Instant`, 
+found `&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\fa
+ult.rs:78:102
+   |
+78 |                 c
+rate::ui::push_log(&ui
+_metrics, 0, 
+format!("FAULT 
+RECOVERED in {}ms", 
+recovery_ms), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+            
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+  --> satellite\src\fa
+ult.rs:83:108
+   |
+83 |                 c
+rate::ui::push_log(&ui
+_metrics, 2, 
+"RECOVERY EXCEEDED 
+200ms ΓÇö MISSION 
+ABORT".to_string(), 
+&sim_start);
+   |                 
+------------------- 
+arguments to this 
+function are 
+incorrect             
+                  
+^^^^^^^^^^ expected 
+`&Instant`, found 
+`&Arc<Instant>`
+   |
+   = note: expected 
+reference 
+`&std::time::Instant`
+              found 
+reference `&Arc<tokio:
+:time::Instant>`
+note: function 
+defined here
+  --> satellite\src\ui
+.rs:92:8
+   |
+92 | pub fn push_log(
+   |        ^^^^^^^^
+...
+96 |     sim_start: 
+&Instant,
+   |     
+-------------------
+
+error[E0308]: 
+mismatched types
+   --> ground\src\main
+.rs:101:20
+    |
+101 |         Arc::clo
+ne(&sim_start),
+    |         
+---------- ^^^^^^^^^^ 
+expected 
+`std::time::Instant`, 
+found 
+`tokio::time::Instant`
+    |         |
+    |         
+arguments to this 
+function are incorrect
+    |
+    = note: `tokio::ti
+me::Instant` and 
+`std::time::Instant` 
+have similar names, 
+but are actually 
+distinct types
+note: `tokio::time::In
+stant` is defined in 
+crate `tokio`
+   --> C:\Users\User\.
+cargo\registry\src\ind
+ex.crates.io-1949cf8c6
+b5b557f\tokio-1.50.0\s
+rc\time\instant.rs:34:
+1
+    |
+ 34 | pub struct 
+Instant {
+    | 
+^^^^^^^^^^^^^^^^^^
+note: 
+`std::time::Instant` 
+is defined in crate 
+`std`
+   --> C:\Users\User\.
+rustup\toolchains\stab
+le-x86_64-pc-windows-m
+svc\lib/rustlib/src/ru
+st\library\std\src\tim
+e.rs:158:1
+    |
+158 | pub struct Insta
+nt(time::Instant);
+    | 
+^^^^^^^^^^^^^^^^^^
+note: method defined 
+here
+   --> C:\Users\User\.
+rustup\toolchains\stab
+le-x86_64-pc-windows-m
+svc\lib/rustlib/src/ru
+st\library\core\src\cl
+one.rs:236:8
+    |
+236 |     fn 
+clone(&self) -> Self;
+    |        ^^^^^
+
+error[E0061]: this 
+function takes 5 
+arguments but 6 
+arguments were 
+supplied
+   --> satellite\src\m
+ain.rs:111:31
+    |
+111 |     handles.push
+(tokio::spawn(uplink_r
+x::run_uplink_rx(
+    |                 
+              ^^^^^^^^
+^^^^^^^^^^^^^^^^
+112 |         
+my_rx_addr, 
+state.clone(), 
+sim_start.clone(), 
+cancel.clone(), 
+hb_uplink.clone(), met
+rics_snapshot.clone()
+    |                 
+                      
+                      
+                      
+       ---------------
+--------- unexpected 
+argument #6 of type `A
+rc<tokio::sync::Mutex<
+SatMetricsSnapshot>>`
+    |
+note: function 
+defined here
+   --> satellite\src\u
+plink_rx.rs:11:14
+    |
+ 11 | pub async fn 
+run_uplink_rx(
+    |              
+^^^^^^^^^^^^^
+help: remove the 
+extra argument
+    |
+112 -         
+my_rx_addr, 
+state.clone(), 
+sim_start.clone(), 
+cancel.clone(), 
+hb_uplink.clone(), met
+rics_snapshot.clone()
+112 +         
+my_rx_addr, 
+state.clone(), 
+sim_start.clone(), 
+cancel.clone(), 
+hb_uplink.clone()
+    |
+
+error[E0308]: 
+mismatched types
+   --> satellite\src\m
+ain.rs:125:20
+    |
+125 |         Arc::clo
+ne(&sim_start),
+    |         
+---------- ^^^^^^^^^^ 
+expected 
+`std::time::Instant`, 
+found 
+`tokio::time::Instant`
+    |         |
+    |         
+arguments to this 
+function are incorrect
+    |
+    = note: `tokio::ti
+me::Instant` and 
+`std::time::Instant` 
+have similar names, 
+but are actually 
+distinct types
+note: `tokio::time::In
+stant` is defined in 
+crate `tokio`
+   --> C:\Users\User\.
+cargo\registry\src\ind
+ex.crates.io-1949cf8c6
+b5b557f\tokio-1.50.0\s
+rc\time\instant.rs:34:
+1
+    |
+ 34 | pub struct 
+Instant {
+    | 
+^^^^^^^^^^^^^^^^^^
+note: 
+`std::time::Instant` 
+is defined in crate 
+`std`
+   --> C:\Users\User\.
+rustup\toolchains\stab
+le-x86_64-pc-windows-m
+svc\lib/rustlib/src/ru
+st\library\std\src\tim
+e.rs:158:1
+    |
+158 | pub struct Insta
+nt(time::Instant);
+    | 
+^^^^^^^^^^^^^^^^^^
+note: method defined 
+here
+   --> C:\Users\User\.
+rustup\toolchains\stab
+le-x86_64-pc-windows-m
+svc\lib/rustlib/src/ru
+st\library\core\src\cl
+one.rs:236:8
+    |
+236 |     fn 
+clone(&self) -> Self;
+    |        ^^^^^
+
+For more information 
+about this error, try 
+`rustc --explain 
+E0308`.
+warning: `ground` 
+(bin "ground") 
+generated 2 warnings
+error: could not 
+compile `ground` (bin 
+"ground") due to 14 
+previous errors; 2 
+warnings emitted
+warning: build 
+failed, waiting for 
+other jobs to 
+finish...
+Some errors have 
+detailed 
+explanations: E0061, 
+E0308.
+For more information 
+about an error, try 
+`rustc --explain 
+E0061`.
+warning: `satellite` 
+(bin "satellite") 
+generated 2 warnings
+error: could not 
+compile `satellite` 
+(bin "satellite") due 
+to 22 previous 
+errors; 2 warnings 
+emitted
