@@ -171,7 +171,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     };
     let title = Paragraph::new(Line::from(vec![
         Span::raw("  GROUND CONTROL STATION DASHBOARD  [elapsed: "),
-        Span::raw(format!("{:02}:{:02}:{02}]  [", elapsed.as_secs()/3600, (elapsed.as_secs()%3600)/60, elapsed.as_secs()%60)),
+        Span::raw(format!("{:02}:{:02}:{:02}]  [", elapsed.as_secs()/3600, (elapsed.as_secs()%3600)/60, elapsed.as_secs()%60)),
         Span::styled(metrics.gcs_state.clone(), Style::default().fg(state_color).add_modifier(Modifier::BOLD)),
         Span::raw("]"),
     ])).block(Block::default().borders(Borders::ALL));

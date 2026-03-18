@@ -1,0 +1,3062 @@
+﻿cargo :    Compiling ground 
+v0.1.0 (C:\Users\User\Documen
+ts\APU\RTS\Assignment\Satelli
+te_Sim\satellite-gcs-rts\grou
+nd)
+At line:1 char:1
++ cargo run --release --bin 
+ground -- --sat-ip 127.0.0.1 
+--duration-s 6 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (   Comp  
+  iling gr...gcs-rts\groun   
+ d):String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+warning: unused import: `fmt`
+ --> ground\src\main.rs:1:26
+  |
+1 | use 
+tracing_subscriber::{fmt, 
+EnvFilter};
+  |                          
+^^^
+  |
+  = note: 
+`#[warn(unused_imports)]` 
+(part of `#[warn(unused)]`) 
+on by default
+
+warning: unused import: 
+`tokio::net::UdpSocket`
+ --> ground\src\main.rs:8:5
+  |
+8 | use 
+tokio::net::UdpSocket;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `ground` (bin 
+"ground") generated 2 
+warnings (run `cargo fix 
+--bin "ground" -p ground` to 
+apply 2 suggestions)
+    Finished `release` 
+profile [optimized] 
+target(s) in 2.93s
+     Running 
+`target\release\ground.exe 
+--sat-ip 127.0.0.1 
+--duration-s 60`
+[2m2026-03-18T01:51:33.54219
+1Z[0m [32m INFO[0m 
+ThreadId(01) Starting Ground 
+Control Station Simulation
+[2m2026-03-18T01:51:33.54436
+2Z[0m [32m INFO[0m 
+ThreadId(06) uplink_tx: sent 
+[3mcmd[0m[2m=[0mHeartbeat
+ [3mdispatch_us[0m[2m=[0m
+285 [3mqueue_latency_us[0m
+[2m=[0m73 
+[3mseq[0m[2m=[0m0 [3mela
+psed_us[0m[2m=[0m2254
+[2m2026-03-18T01:51:33.74856
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m1 [3melapsed_us
+[0m[2m=[0m206444
+[2m2026-03-18T01:51:33.95358
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m2 [3melapsed_us
+[0m[2m=[0m411484
+[2m2026-03-18T01:51:34.16122
+5Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m3 [3melapsed_us
+[0m[2m=[0m619122
+[2m2026-03-18T01:51:34.16128
+7Z[0m [31mERROR[0m 
+ThreadId(06) LOSS OF CONTACT 
+ΓÇö >= 3 consecutive 
+failures [3mconsecutive_gap
+[0m[2m=[0m3 [3melapsed_us
+[0m[2m=[0m619122
+[2m2026-03-18T01:51:34.17686
+1Z[0m [33m WARN[0m 
+ThreadId(02) COMMAND 
+REJECTED [3mcmd[0m[2m=[0m
+RequestTelemetry [3mreason[
+0m[2m=[0m"interlock_active"
+ [3melapsed_us[0m[2m=[0m6
+34754
+[2m2026-03-18T01:51:34.36559
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m4 [3melapsed_us
+[0m[2m=[0m823492
+[2m2026-03-18T01:51:34.56707
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m5 [3melapsed_us
+[0m[2m=[0m1024975
+[2m2026-03-18T01:51:34.78138
+1Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m6 [3melapsed_us
+[0m[2m=[0m1239279
+[2m2026-03-18T01:51:34.99286
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m7 [3melapsed_us
+[0m[2m=[0m1450764
+[2m2026-03-18T01:51:35.19380
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m8 [3melapsed_us
+[0m[2m=[0m1651706
+[2m2026-03-18T01:51:35.39677
+8Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m9 [3melapsed_us
+[0m[2m=[0m1854675
+[2m2026-03-18T01:51:35.60392
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m10 [3melapsed_u
+s[0m[2m=[0m2061817
+[2m2026-03-18T01:51:35.80627
+4Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m11 [3melapsed_u
+s[0m[2m=[0m2264174
+[2m2026-03-18T01:51:36.00792
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m12 [3melapsed_u
+s[0m[2m=[0m2465827
+[2m2026-03-18T01:51:36.21975
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m13 [3melapsed_u
+s[0m[2m=[0m2677656
+[2m2026-03-18T01:51:36.43289
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m14 [3melapsed_u
+s[0m[2m=[0m2890794
+[2m2026-03-18T01:51:36.63999
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m15 [3melapsed_u
+s[0m[2m=[0m3097886
+[2m2026-03-18T01:51:36.85445
+0Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m16 [3melapsed_u
+s[0m[2m=[0m3312348
+[2m2026-03-18T01:51:37.05647
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m17 [3melapsed_u
+s[0m[2m=[0m3514374
+[2m2026-03-18T01:51:37.26931
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m18 [3melapsed_u
+s[0m[2m=[0m3727206
+[2m2026-03-18T01:51:37.47587
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m19 [3melapsed_u
+s[0m[2m=[0m3933768
+[2m2026-03-18T01:51:37.67784
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m20 [3melapsed_u
+s[0m[2m=[0m4135735
+[2m2026-03-18T01:51:37.88317
+8Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m21 [3melapsed_u
+s[0m[2m=[0m4341075
+[2m2026-03-18T01:51:38.08499
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m22 [3melapsed_u
+s[0m[2m=[0m4542888
+[2m2026-03-18T01:51:38.29207
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m23 [3melapsed_u
+s[0m[2m=[0m4749975
+[2m2026-03-18T01:51:38.49724
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m24 [3melapsed_u
+s[0m[2m=[0m4955140
+[2m2026-03-18T01:51:38.69988
+1Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m25 [3melapsed_u
+s[0m[2m=[0m5157780
+[2m2026-03-18T01:51:38.90314
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m26 [3melapsed_u
+s[0m[2m=[0m5361030
+[2m2026-03-18T01:51:39.11246
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m27 [3melapsed_u
+s[0m[2m=[0m5570358
+[2m2026-03-18T01:51:39.31924
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m28 [3melapsed_u
+s[0m[2m=[0m5777145
+[2m2026-03-18T01:51:39.52033
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m29 [3melapsed_u
+s[0m[2m=[0m5978233
+[2m2026-03-18T01:51:39.54421
+3Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 [3mnow_s[0m[2m=[0m6
+[2m2026-03-18T01:51:39.54424
+8Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m6
+[2m2026-03-18T01:51:39.54425
+4Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m6
+[2m2026-03-18T01:51:39.72209
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m30 [3melapsed_u
+s[0m[2m=[0m6179990
+[2m2026-03-18T01:51:39.92368
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m31 [3melapsed_u
+s[0m[2m=[0m6381585
+[2m2026-03-18T01:51:40.12477
+1Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m32 [3melapsed_u
+s[0m[2m=[0m6582668
+[2m2026-03-18T01:51:40.33695
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m33 [3melapsed_u
+s[0m[2m=[0m6794854
+[2m2026-03-18T01:51:40.53874
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m34 [3melapsed_u
+s[0m[2m=[0m6996544
+[2m2026-03-18T01:51:40.55465
+9Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 [3mnow_s[0m[2m=[0m7
+[2m2026-03-18T01:51:40.55482
+2Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m7
+[2m2026-03-18T01:51:40.55490
+1Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m7
+[2m2026-03-18T01:51:40.75029
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m35 [3melapsed_u
+s[0m[2m=[0m7208190
+[2m2026-03-18T01:51:40.95562
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m36 [3melapsed_u
+s[0m[2m=[0m7413526
+[2m2026-03-18T01:51:41.16230
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m37 [3melapsed_u
+s[0m[2m=[0m7620202
+[2m2026-03-18T01:51:41.36736
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m38 [3melapsed_u
+s[0m[2m=[0m7825259
+[2m2026-03-18T01:51:41.55835
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 [3mnow_s[0m[2m=[0m8
+[2m2026-03-18T01:51:41.55839
+7Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m8
+[2m2026-03-18T01:51:41.55840
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m8
+[2m2026-03-18T01:51:41.57772
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m39 [3melapsed_u
+s[0m[2m=[0m8035619
+[2m2026-03-18T01:51:41.78119
+1Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m40 [3melapsed_u
+s[0m[2m=[0m8239088
+[2m2026-03-18T01:51:41.99992
+7Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m41 [3melapsed_u
+s[0m[2m=[0m8457823
+[2m2026-03-18T01:51:42.22004
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m42 [3melapsed_u
+s[0m[2m=[0m8677939
+[2m2026-03-18T01:51:42.42822
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m43 [3melapsed_u
+s[0m[2m=[0m8886119
+[2m2026-03-18T01:51:42.55714
+0Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 [3mnow_s[0m[2m=[0m9
+[2m2026-03-18T01:51:42.55718
+2Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m9
+[2m2026-03-18T01:51:42.55718
+8Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m9
+[2m2026-03-18T01:51:42.63865
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m44 [3melapsed_u
+s[0m[2m=[0m9096546
+[2m2026-03-18T01:51:42.84891
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m45 [3melapsed_u
+s[0m[2m=[0m9306817
+[2m2026-03-18T01:51:43.06027
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m46 [3melapsed_u
+s[0m[2m=[0m9518176
+[2m2026-03-18T01:51:43.26426
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m47 [3melapsed_u
+s[0m[2m=[0m9722159
+[2m2026-03-18T01:51:43.46708
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m48 [3melapsed_u
+s[0m[2m=[0m9924987
+[2m2026-03-18T01:51:43.55046
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m10
+[2m2026-03-18T01:51:43.55053
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m10
+[2m2026-03-18T01:51:43.55054
+1Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m10
+[2m2026-03-18T01:51:43.67146
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m49 [3melapsed_u
+s[0m[2m=[0m10129359
+[2m2026-03-18T01:51:43.87868
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m50 [3melapsed_u
+s[0m[2m=[0m10336585
+[2m2026-03-18T01:51:44.09077
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m51 [3melapsed_u
+s[0m[2m=[0m10548671
+[2m2026-03-18T01:51:44.30328
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m52 [3melapsed_u
+s[0m[2m=[0m10761173
+[2m2026-03-18T01:51:44.50620
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m53 [3melapsed_u
+s[0m[2m=[0m10964103
+[2m2026-03-18T01:51:44.55449
+8Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m11
+[2m2026-03-18T01:51:44.55455
+5Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m11
+[2m2026-03-18T01:51:44.55459
+6Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m11
+[2m2026-03-18T01:51:44.71226
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m54 [3melapsed_u
+s[0m[2m=[0m11170159
+[2m2026-03-18T01:51:44.91653
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m55 [3melapsed_u
+s[0m[2m=[0m11374435
+[2m2026-03-18T01:51:45.12043
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m56 [3melapsed_u
+s[0m[2m=[0m11578335
+[2m2026-03-18T01:51:45.32540
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m57 [3melapsed_u
+s[0m[2m=[0m11783301
+[2m2026-03-18T01:51:45.53655
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m58 [3melapsed_u
+s[0m[2m=[0m11994449
+[2m2026-03-18T01:51:45.55552
+4Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m12
+[2m2026-03-18T01:51:45.55558
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m12
+[2m2026-03-18T01:51:45.55559
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m12
+[2m2026-03-18T01:51:45.74654
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m59 [3melapsed_u
+s[0m[2m=[0m12204447
+[2m2026-03-18T01:51:45.95329
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m60 [3melapsed_u
+s[0m[2m=[0m12411174
+[2m2026-03-18T01:51:46.16400
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m61 [3melapsed_u
+s[0m[2m=[0m12621904
+[2m2026-03-18T01:51:46.37323
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m62 [3melapsed_u
+s[0m[2m=[0m12831129
+[2m2026-03-18T01:51:46.55276
+9Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m13
+[2m2026-03-18T01:51:46.55284
+1Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m13
+[2m2026-03-18T01:51:46.55285
+0Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m13
+[2m2026-03-18T01:51:46.58796
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m63 [3melapsed_u
+s[0m[2m=[0m13045842
+[2m2026-03-18T01:51:46.80347
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m64 [3melapsed_u
+s[0m[2m=[0m13261370
+[2m2026-03-18T01:51:47.01250
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m65 [3melapsed_u
+s[0m[2m=[0m13470399
+[2m2026-03-18T01:51:47.22471
+4Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m66 [3melapsed_u
+s[0m[2m=[0m13682610
+[2m2026-03-18T01:51:47.43271
+5Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m67 [3melapsed_u
+s[0m[2m=[0m13890611
+[2m2026-03-18T01:51:47.54961
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m14
+[2m2026-03-18T01:51:47.54967
+3Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m14
+[2m2026-03-18T01:51:47.54968
+2Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m14
+[2m2026-03-18T01:51:47.64482
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m68 [3melapsed_u
+s[0m[2m=[0m14102724
+[2m2026-03-18T01:51:47.85456
+9Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m69 [3melapsed_u
+s[0m[2m=[0m14312467
+[2m2026-03-18T01:51:48.06504
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m70 [3melapsed_u
+s[0m[2m=[0m14522942
+[2m2026-03-18T01:51:48.26980
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m71 [3melapsed_u
+s[0m[2m=[0m14727706
+[2m2026-03-18T01:51:48.48392
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m72 [3melapsed_u
+s[0m[2m=[0m14941820
+[2m2026-03-18T01:51:48.54359
+4Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m15
+[2m2026-03-18T01:51:48.54366
+0Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m15
+[2m2026-03-18T01:51:48.54367
+0Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m15
+[2m2026-03-18T01:51:48.68435
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m73 [3melapsed_u
+s[0m[2m=[0m15142254
+[2m2026-03-18T01:51:48.90007
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m74 [3melapsed_u
+s[0m[2m=[0m15357975
+[2m2026-03-18T01:51:49.11154
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m75 [3melapsed_u
+s[0m[2m=[0m15569440
+[2m2026-03-18T01:51:49.32084
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m76 [3melapsed_u
+s[0m[2m=[0m15778741
+[2m2026-03-18T01:51:49.53099
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m77 [3melapsed_u
+s[0m[2m=[0m15988898
+[2m2026-03-18T01:51:49.54643
+7Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m16
+[2m2026-03-18T01:51:49.54648
+6Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m16
+[2m2026-03-18T01:51:49.54661
+5Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m16
+[2m2026-03-18T01:51:49.74255
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m78 [3melapsed_u
+s[0m[2m=[0m16200452
+[2m2026-03-18T01:51:49.95317
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m79 [3melapsed_u
+s[0m[2m=[0m16411072
+[2m2026-03-18T01:51:50.15582
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m80 [3melapsed_u
+s[0m[2m=[0m16613725
+[2m2026-03-18T01:51:50.35627
+5Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m81 [3melapsed_u
+s[0m[2m=[0m16814170
+[2m2026-03-18T01:51:50.55458
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m17
+[2m2026-03-18T01:51:50.55461
+4Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m17
+[2m2026-03-18T01:51:50.55461
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m17
+[2m2026-03-18T01:51:50.57056
+9Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m82 [3melapsed_u
+s[0m[2m=[0m17028470
+[2m2026-03-18T01:51:50.77455
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m83 [3melapsed_u
+s[0m[2m=[0m17232455
+[2m2026-03-18T01:51:50.98171
+0Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m84 [3melapsed_u
+s[0m[2m=[0m17439606
+[2m2026-03-18T01:51:51.19045
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m85 [3melapsed_u
+s[0m[2m=[0m17648348
+[2m2026-03-18T01:51:51.40224
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m86 [3melapsed_u
+s[0m[2m=[0m17860145
+[2m2026-03-18T01:51:51.55796
+4Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m18
+[2m2026-03-18T01:51:51.55800
+9Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m18
+[2m2026-03-18T01:51:51.55801
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m18
+[2m2026-03-18T01:51:51.61742
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m87 [3melapsed_u
+s[0m[2m=[0m18075321
+[2m2026-03-18T01:51:51.82198
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m88 [3melapsed_u
+s[0m[2m=[0m18279882
+[2m2026-03-18T01:51:52.02323
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m89 [3melapsed_u
+s[0m[2m=[0m18481129
+[2m2026-03-18T01:51:52.22547
+7Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m90 [3melapsed_u
+s[0m[2m=[0m18683375
+[2m2026-03-18T01:51:52.42718
+4Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m91 [3melapsed_u
+s[0m[2m=[0m18885083
+[2m2026-03-18T01:51:52.55608
+1Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m19
+[2m2026-03-18T01:51:52.55612
+2Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m19
+[2m2026-03-18T01:51:52.55612
+9Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m19
+[2m2026-03-18T01:51:52.64163
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m92 [3melapsed_u
+s[0m[2m=[0m19099534
+[2m2026-03-18T01:51:52.84793
+1Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m93 [3melapsed_u
+s[0m[2m=[0m19305830
+[2m2026-03-18T01:51:53.05456
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m94 [3melapsed_u
+s[0m[2m=[0m19512467
+[2m2026-03-18T01:51:53.26441
+6Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m95 [3melapsed_u
+s[0m[2m=[0m19722294
+[2m2026-03-18T01:51:53.47221
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m96 [3melapsed_u
+s[0m[2m=[0m19930112
+[2m2026-03-18T01:51:53.55227
+1Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m20
+[2m2026-03-18T01:51:53.55231
+4Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m20
+[2m2026-03-18T01:51:53.55232
+2Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m20
+[2m2026-03-18T01:51:53.67566
+4Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m97 [3melapsed_u
+s[0m[2m=[0m20133560
+[2m2026-03-18T01:51:53.88009
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m98 [3melapsed_u
+s[0m[2m=[0m20337994
+[2m2026-03-18T01:51:54.08475
+4Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m99 [3melapsed_u
+s[0m[2m=[0m20542650
+[2m2026-03-18T01:51:54.30023
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m100 [3melapsed_
+us[0m[2m=[0m20758133
+[2m2026-03-18T01:51:54.51062
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m101 [3melapsed_
+us[0m[2m=[0m20968520
+[2m2026-03-18T01:51:54.55675
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m21
+[2m2026-03-18T01:51:54.55680
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m21
+[2m2026-03-18T01:51:54.55681
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m21
+[2m2026-03-18T01:51:54.71134
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m102 [3melapsed_
+us[0m[2m=[0m21169242
+[2m2026-03-18T01:51:54.91804
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m103 [3melapsed_
+us[0m[2m=[0m21375923
+[2m2026-03-18T01:51:55.13444
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m104 [3melapsed_
+us[0m[2m=[0m21592341
+[2m2026-03-18T01:51:55.34619
+7Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m105 [3melapsed_
+us[0m[2m=[0m21804096
+[2m2026-03-18T01:51:55.54501
+5Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m22
+[2m2026-03-18T01:51:55.54505
+5Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m22
+[2m2026-03-18T01:51:55.54506
+3Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m22
+[2m2026-03-18T01:51:55.56010
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m106 [3melapsed_
+us[0m[2m=[0m22018010
+[2m2026-03-18T01:51:55.76643
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m107 [3melapsed_
+us[0m[2m=[0m22224333
+[2m2026-03-18T01:51:55.97458
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m108 [3melapsed_
+us[0m[2m=[0m22432477
+[2m2026-03-18T01:51:56.18391
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m109 [3melapsed_
+us[0m[2m=[0m22641814
+[2m2026-03-18T01:51:56.40042
+8Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m110 [3melapsed_
+us[0m[2m=[0m22858320
+[2m2026-03-18T01:51:56.54941
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m23
+[2m2026-03-18T01:51:56.54946
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m23
+[2m2026-03-18T01:51:56.54946
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m23
+[2m2026-03-18T01:51:56.60160
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m111 [3melapsed_
+us[0m[2m=[0m23059498
+[2m2026-03-18T01:51:56.80956
+5Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m112 [3melapsed_
+us[0m[2m=[0m23267461
+[2m2026-03-18T01:51:57.02182
+1Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m113 [3melapsed_
+us[0m[2m=[0m23479716
+[2m2026-03-18T01:51:57.23575
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m114 [3melapsed_
+us[0m[2m=[0m23693646
+[2m2026-03-18T01:51:57.44352
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m115 [3melapsed_
+us[0m[2m=[0m23901422
+[2m2026-03-18T01:51:57.54378
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m24
+[2m2026-03-18T01:51:57.54383
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m24
+[2m2026-03-18T01:51:57.54384
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m24
+[2m2026-03-18T01:51:57.65025
+9Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m116 [3melapsed_
+us[0m[2m=[0m24108157
+[2m2026-03-18T01:51:57.85620
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m117 [3melapsed_
+us[0m[2m=[0m24314097
+[2m2026-03-18T01:51:58.05918
+5Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m118 [3melapsed_
+us[0m[2m=[0m24517084
+[2m2026-03-18T01:51:58.26334
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m119 [3melapsed_
+us[0m[2m=[0m24721247
+[2m2026-03-18T01:51:58.47221
+8Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m120 [3melapsed_
+us[0m[2m=[0m24930115
+[2m2026-03-18T01:51:58.54825
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m25
+[2m2026-03-18T01:51:58.54831
+5Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m25
+[2m2026-03-18T01:51:58.54832
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m25
+[2m2026-03-18T01:51:58.68367
+8Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m121 [3melapsed_
+us[0m[2m=[0m25141576
+[2m2026-03-18T01:51:58.88528
+5Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m122 [3melapsed_
+us[0m[2m=[0m25343183
+[2m2026-03-18T01:51:59.09712
+8Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m123 [3melapsed_
+us[0m[2m=[0m25555025
+[2m2026-03-18T01:51:59.30624
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m124 [3melapsed_
+us[0m[2m=[0m25764137
+[2m2026-03-18T01:51:59.51878
+0Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m125 [3melapsed_
+us[0m[2m=[0m25976678
+[2m2026-03-18T01:51:59.55115
+1Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m26
+[2m2026-03-18T01:51:59.55119
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m26
+[2m2026-03-18T01:51:59.55120
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m26
+[2m2026-03-18T01:51:59.73122
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m126 [3melapsed_
+us[0m[2m=[0m26189123
+[2m2026-03-18T01:51:59.93961
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m127 [3melapsed_
+us[0m[2m=[0m26397506
+[2m2026-03-18T01:52:00.14901
+5Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m128 [3melapsed_
+us[0m[2m=[0m26606913
+[2m2026-03-18T01:52:00.35039
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m129 [3melapsed_
+us[0m[2m=[0m26808292
+[2m2026-03-18T01:52:00.54823
+7Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m27
+[2m2026-03-18T01:52:00.54828
+3Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m27
+[2m2026-03-18T01:52:00.54829
+4Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m27
+[2m2026-03-18T01:52:00.56427
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m130 [3melapsed_
+us[0m[2m=[0m27022170
+[2m2026-03-18T01:52:00.76574
+7Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m131 [3melapsed_
+us[0m[2m=[0m27223644
+[2m2026-03-18T01:52:00.97088
+9Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m132 [3melapsed_
+us[0m[2m=[0m27428786
+[2m2026-03-18T01:52:01.17734
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m133 [3melapsed_
+us[0m[2m=[0m27635244
+[2m2026-03-18T01:52:01.38604
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m134 [3melapsed_
+us[0m[2m=[0m27843940
+[2m2026-03-18T01:52:01.55966
+8Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m28
+[2m2026-03-18T01:52:01.55970
+3Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m28
+[2m2026-03-18T01:52:01.55970
+8Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m28
+[2m2026-03-18T01:52:01.59037
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m135 [3melapsed_
+us[0m[2m=[0m28048252
+[2m2026-03-18T01:52:01.80033
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m136 [3melapsed_
+us[0m[2m=[0m28258234
+[2m2026-03-18T01:52:02.00939
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m137 [3melapsed_
+us[0m[2m=[0m28467295
+[2m2026-03-18T01:52:02.21334
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m138 [3melapsed_
+us[0m[2m=[0m28671240
+[2m2026-03-18T01:52:02.41673
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m139 [3melapsed_
+us[0m[2m=[0m28874627
+[2m2026-03-18T01:52:02.55489
+0Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m29
+[2m2026-03-18T01:52:02.55494
+8Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m29
+[2m2026-03-18T01:52:02.55495
+7Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m29
+[2m2026-03-18T01:52:02.62388
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m140 [3melapsed_
+us[0m[2m=[0m29081780
+[2m2026-03-18T01:52:02.83345
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m141 [3melapsed_
+us[0m[2m=[0m29291350
+[2m2026-03-18T01:52:03.03780
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m142 [3melapsed_
+us[0m[2m=[0m29495704
+[2m2026-03-18T01:52:03.24704
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m143 [3melapsed_
+us[0m[2m=[0m29704940
+[2m2026-03-18T01:52:03.45960
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m144 [3melapsed_
+us[0m[2m=[0m29917506
+[2m2026-03-18T01:52:03.55727
+9Z[0m [32m INFO[0m 
+ThreadId(15) === PERFORMANCE 
+REPORT === 
+[3mreport[0m[2m=[0m1 
+[3melapsed_s[0m[2m=[0m30 
+[3melapsed_us[0m[2m=[0m30
+015169 [3mpkts_received[0m
+[2m=[0m0 
+[3mpkts_lost[0m[2m=[0m0 
+[3mavg_latency_us[0m[2m=[0
+m0 [3mdeadline_misses[0m[2
+m=[0m0 [3minterlock_count[
+0m[2m=[0m0 
+[3mfault_count[0m[2m=[0m0
+[2m2026-03-18T01:52:03.55731
+8Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m30
+[2m2026-03-18T01:52:03.55740
+1Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m30
+[2m2026-03-18T01:52:03.55740
+6Z[0m [31mERROR[0m 
+ThreadId(02) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m30
+[2m2026-03-18T01:52:03.66948
+0Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m145 [3melapsed_
+us[0m[2m=[0m30127376
+[2m2026-03-18T01:52:03.87781
+1Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m146 [3melapsed_
+us[0m[2m=[0m30335703
+[2m2026-03-18T01:52:04.08403
+6Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m147 [3melapsed_
+us[0m[2m=[0m30541934
+[2m2026-03-18T01:52:04.29075
+2Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m148 [3melapsed_
+us[0m[2m=[0m30748651
+[2m2026-03-18T01:52:04.50133
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m149 [3melapsed_
+us[0m[2m=[0m30959236
+[2m2026-03-18T01:52:04.54733
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m31
+[2m2026-03-18T01:52:04.54736
+4Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m31
+[2m2026-03-18T01:52:04.54737
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m31
+[2m2026-03-18T01:52:04.70753
+3Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m150 [3melapsed_
+us[0m[2m=[0m31165429
+[2m2026-03-18T01:52:04.91402
+9Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m151 [3melapsed_
+us[0m[2m=[0m31371926
+[2m2026-03-18T01:52:05.11692
+7Z[0m [33m WARN[0m 
+ThreadId(02) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m152 [3melapsed_
+us[0m[2m=[0m31574824
+[2m2026-03-18T01:52:05.32604
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m153 [3melapsed_
+us[0m[2m=[0m31783940
+[2m2026-03-18T01:52:05.52886
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m154 [3melapsed_
+us[0m[2m=[0m31986757
+[2m2026-03-18T01:52:05.54486
+1Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m32
+[2m2026-03-18T01:52:05.54491
+6Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m32
+[2m2026-03-18T01:52:05.54492
+4Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m32
+[2m2026-03-18T01:52:05.73008
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m155 [3melapsed_
+us[0m[2m=[0m32187984
+[2m2026-03-18T01:52:05.93370
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m156 [3melapsed_
+us[0m[2m=[0m32391603
+[2m2026-03-18T01:52:06.13632
+9Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m157 [3melapsed_
+us[0m[2m=[0m32594212
+[2m2026-03-18T01:52:06.34109
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m158 [3melapsed_
+us[0m[2m=[0m32798990
+[2m2026-03-18T01:52:06.55277
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m159 [3melapsed_
+us[0m[2m=[0m33010673
+[2m2026-03-18T01:52:06.55278
+8Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m33
+[2m2026-03-18T01:52:06.55289
+3Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m33
+[2m2026-03-18T01:52:06.55293
+0Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m33
+[2m2026-03-18T01:52:06.75482
+8Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m160 [3melapsed_
+us[0m[2m=[0m33212727
+[2m2026-03-18T01:52:06.95940
+4Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m161 [3melapsed_
+us[0m[2m=[0m33417302
+[2m2026-03-18T01:52:07.16609
+8Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m162 [3melapsed_
+us[0m[2m=[0m33623994
+[2m2026-03-18T01:52:07.36817
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m163 [3melapsed_
+us[0m[2m=[0m33826069
+[2m2026-03-18T01:52:07.55840
+4Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m34
+[2m2026-03-18T01:52:07.55843
+6Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m34
+[2m2026-03-18T01:52:07.55844
+2Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m34
+[2m2026-03-18T01:52:07.57296
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m164 [3melapsed_
+us[0m[2m=[0m34030864
+[2m2026-03-18T01:52:07.77760
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m165 [3melapsed_
+us[0m[2m=[0m34235506
+[2m2026-03-18T01:52:07.98263
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m166 [3melapsed_
+us[0m[2m=[0m34440533
+[2m2026-03-18T01:52:08.18500
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m167 [3melapsed_
+us[0m[2m=[0m34642898
+[2m2026-03-18T01:52:08.38870
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m168 [3melapsed_
+us[0m[2m=[0m34846605
+[2m2026-03-18T01:52:08.54480
+5Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m35
+[2m2026-03-18T01:52:08.54485
+7Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m35
+[2m2026-03-18T01:52:08.54488
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m35
+[2m2026-03-18T01:52:08.59129
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m169 [3melapsed_
+us[0m[2m=[0m35049196
+[2m2026-03-18T01:52:08.80288
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m170 [3melapsed_
+us[0m[2m=[0m35260778
+[2m2026-03-18T01:52:09.01007
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m171 [3melapsed_
+us[0m[2m=[0m35467967
+[2m2026-03-18T01:52:09.22517
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m172 [3melapsed_
+us[0m[2m=[0m35683067
+[2m2026-03-18T01:52:09.43248
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m173 [3melapsed_
+us[0m[2m=[0m35890380
+[2m2026-03-18T01:52:09.54474
+1Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m36
+[2m2026-03-18T01:52:09.54479
+4Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m36
+[2m2026-03-18T01:52:09.54480
+2Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m36
+[2m2026-03-18T01:52:09.63411
+2Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m174 [3melapsed_
+us[0m[2m=[0m36092007
+[2m2026-03-18T01:52:09.83807
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m175 [3melapsed_
+us[0m[2m=[0m36295971
+[2m2026-03-18T01:52:10.04430
+5Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m176 [3melapsed_
+us[0m[2m=[0m36502203
+[2m2026-03-18T01:52:10.25456
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m177 [3melapsed_
+us[0m[2m=[0m36712458
+[2m2026-03-18T01:52:10.45981
+2Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m178 [3melapsed_
+us[0m[2m=[0m36917710
+[2m2026-03-18T01:52:10.55614
+5Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m37
+[2m2026-03-18T01:52:10.55618
+1Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m37
+[2m2026-03-18T01:52:10.55618
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m37
+[2m2026-03-18T01:52:10.66421
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m179 [3melapsed_
+us[0m[2m=[0m37122104
+[2m2026-03-18T01:52:10.87066
+6Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m180 [3melapsed_
+us[0m[2m=[0m37328558
+[2m2026-03-18T01:52:11.08345
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m181 [3melapsed_
+us[0m[2m=[0m37541347
+[2m2026-03-18T01:52:11.28428
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m182 [3melapsed_
+us[0m[2m=[0m37742179
+[2m2026-03-18T01:52:11.48866
+9Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m183 [3melapsed_
+us[0m[2m=[0m37946566
+[2m2026-03-18T01:52:11.54473
+7Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m38
+[2m2026-03-18T01:52:11.54477
+1Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m38
+[2m2026-03-18T01:52:11.54477
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m38
+[2m2026-03-18T01:52:11.69977
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m184 [3melapsed_
+us[0m[2m=[0m38157673
+[2m2026-03-18T01:52:11.90457
+5Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m185 [3melapsed_
+us[0m[2m=[0m38362470
+[2m2026-03-18T01:52:12.10529
+5Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m186 [3melapsed_
+us[0m[2m=[0m38563189
+[2m2026-03-18T01:52:12.30933
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m187 [3melapsed_
+us[0m[2m=[0m38767237
+[2m2026-03-18T01:52:12.52201
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m188 [3melapsed_
+us[0m[2m=[0m38979912
+[2m2026-03-18T01:52:12.55400
+9Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m39
+[2m2026-03-18T01:52:12.55404
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m39
+[2m2026-03-18T01:52:12.55406
+9Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m39
+[2m2026-03-18T01:52:12.73831
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m189 [3melapsed_
+us[0m[2m=[0m39196214
+[2m2026-03-18T01:52:12.94621
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m190 [3melapsed_
+us[0m[2m=[0m39404113
+[2m2026-03-18T01:52:13.15936
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m191 [3melapsed_
+us[0m[2m=[0m39617262
+[2m2026-03-18T01:52:13.37132
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m192 [3melapsed_
+us[0m[2m=[0m39829226
+[2m2026-03-18T01:52:13.54943
+2Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m40
+[2m2026-03-18T01:52:13.54947
+4Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m40
+[2m2026-03-18T01:52:13.54948
+1Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m40
+[2m2026-03-18T01:52:13.57569
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m193 [3melapsed_
+us[0m[2m=[0m40033589
+[2m2026-03-18T01:52:13.77611
+5Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m194 [3melapsed_
+us[0m[2m=[0m40234012
+[2m2026-03-18T01:52:13.98065
+7Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m195 [3melapsed_
+us[0m[2m=[0m40438555
+[2m2026-03-18T01:52:14.19245
+0Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m196 [3melapsed_
+us[0m[2m=[0m40650349
+[2m2026-03-18T01:52:14.40005
+2Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m197 [3melapsed_
+us[0m[2m=[0m40857950
+[2m2026-03-18T01:52:14.55206
+7Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m41
+[2m2026-03-18T01:52:14.55211
+8Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m41
+[2m2026-03-18T01:52:14.55212
+6Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m41
+[2m2026-03-18T01:52:14.60858
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m198 [3melapsed_
+us[0m[2m=[0m41066479
+[2m2026-03-18T01:52:14.80944
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m199 [3melapsed_
+us[0m[2m=[0m41267337
+[2m2026-03-18T01:52:15.01548
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m200 [3melapsed_
+us[0m[2m=[0m41473382
+[2m2026-03-18T01:52:15.22271
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m201 [3melapsed_
+us[0m[2m=[0m41680602
+[2m2026-03-18T01:52:15.43061
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m202 [3melapsed_
+us[0m[2m=[0m41888509
+[2m2026-03-18T01:52:15.55826
+4Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m42
+[2m2026-03-18T01:52:15.55830
+6Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m42
+[2m2026-03-18T01:52:15.55831
+3Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m42
+[2m2026-03-18T01:52:15.64628
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m203 [3melapsed_
+us[0m[2m=[0m42104187
+[2m2026-03-18T01:52:15.86022
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m204 [3melapsed_
+us[0m[2m=[0m42318125
+[2m2026-03-18T01:52:16.06896
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m205 [3melapsed_
+us[0m[2m=[0m42526861
+[2m2026-03-18T01:52:16.27030
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m206 [3melapsed_
+us[0m[2m=[0m42728198
+[2m2026-03-18T01:52:16.48092
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m207 [3melapsed_
+us[0m[2m=[0m42938809
+[2m2026-03-18T01:52:16.55774
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m43
+[2m2026-03-18T01:52:16.55778
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m43
+[2m2026-03-18T01:52:16.55778
+6Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m43
+[2m2026-03-18T01:52:16.68164
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m208 [3melapsed_
+us[0m[2m=[0m43139542
+[2m2026-03-18T01:52:16.89032
+8Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m209 [3melapsed_
+us[0m[2m=[0m43348204
+[2m2026-03-18T01:52:17.09970
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m210 [3melapsed_
+us[0m[2m=[0m43557590
+[2m2026-03-18T01:52:17.31352
+6Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m211 [3melapsed_
+us[0m[2m=[0m43771424
+[2m2026-03-18T01:52:17.52662
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m212 [3melapsed_
+us[0m[2m=[0m43984519
+[2m2026-03-18T01:52:17.55833
+0Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m44
+[2m2026-03-18T01:52:17.55837
+5Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m44
+[2m2026-03-18T01:52:17.55838
+3Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m44
+[2m2026-03-18T01:52:17.73648
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m213 [3melapsed_
+us[0m[2m=[0m44194385
+[2m2026-03-18T01:52:17.93714
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m214 [3melapsed_
+us[0m[2m=[0m44395041
+[2m2026-03-18T01:52:18.14632
+6Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m215 [3melapsed_
+us[0m[2m=[0m44604224
+[2m2026-03-18T01:52:18.34883
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m216 [3melapsed_
+us[0m[2m=[0m44806728
+[2m2026-03-18T01:52:18.55198
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m217 [3melapsed_
+us[0m[2m=[0m45009884
+[2m2026-03-18T01:52:18.55201
+1Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m45
+[2m2026-03-18T01:52:18.55203
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m45
+[2m2026-03-18T01:52:18.55204
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m45
+[2m2026-03-18T01:52:18.76147
+1Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m218 [3melapsed_
+us[0m[2m=[0m45219370
+[2m2026-03-18T01:52:18.97709
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m219 [3melapsed_
+us[0m[2m=[0m45434993
+[2m2026-03-18T01:52:19.19224
+3Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m220 [3melapsed_
+us[0m[2m=[0m45650141
+[2m2026-03-18T01:52:19.40296
+9Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m221 [3melapsed_
+us[0m[2m=[0m45860866
+[2m2026-03-18T01:52:19.55217
+7Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m46
+[2m2026-03-18T01:52:19.55221
+8Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m46
+[2m2026-03-18T01:52:19.55222
+5Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m46
+[2m2026-03-18T01:52:19.61568
+0Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m222 [3melapsed_
+us[0m[2m=[0m46073578
+[2m2026-03-18T01:52:19.81987
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m223 [3melapsed_
+us[0m[2m=[0m46277763
+[2m2026-03-18T01:52:20.02048
+8Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m224 [3melapsed_
+us[0m[2m=[0m46478386
+[2m2026-03-18T01:52:20.23380
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m225 [3melapsed_
+us[0m[2m=[0m46691701
+[2m2026-03-18T01:52:20.44844
+7Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m226 [3melapsed_
+us[0m[2m=[0m46906346
+[2m2026-03-18T01:52:20.54615
+4Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m47
+[2m2026-03-18T01:52:20.54620
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m47
+[2m2026-03-18T01:52:20.54621
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m47
+[2m2026-03-18T01:52:20.65942
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m227 [3melapsed_
+us[0m[2m=[0m47117324
+[2m2026-03-18T01:52:20.87053
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m228 [3melapsed_
+us[0m[2m=[0m47328432
+[2m2026-03-18T01:52:21.08123
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m229 [3melapsed_
+us[0m[2m=[0m47539119
+[2m2026-03-18T01:52:21.30006
+5Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m230 [3melapsed_
+us[0m[2m=[0m47757961
+[2m2026-03-18T01:52:21.50405
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m231 [3melapsed_
+us[0m[2m=[0m47961945
+[2m2026-03-18T01:52:21.55718
+1Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m48
+[2m2026-03-18T01:52:21.55721
+5Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m48
+[2m2026-03-18T01:52:21.55722
+5Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m48
+[2m2026-03-18T01:52:21.71887
+9Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m232 [3melapsed_
+us[0m[2m=[0m48176775
+[2m2026-03-18T01:52:21.91974
+1Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m233 [3melapsed_
+us[0m[2m=[0m48377637
+[2m2026-03-18T01:52:22.12060
+9Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m234 [3melapsed_
+us[0m[2m=[0m48578505
+[2m2026-03-18T01:52:22.33041
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m235 [3melapsed_
+us[0m[2m=[0m48788313
+[2m2026-03-18T01:52:22.53787
+8Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m236 [3melapsed_
+us[0m[2m=[0m48995776
+[2m2026-03-18T01:52:22.55370
+5Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m49
+[2m2026-03-18T01:52:22.55373
+9Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m49
+[2m2026-03-18T01:52:22.55374
+5Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m49
+[2m2026-03-18T01:52:22.73911
+1Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m237 [3melapsed_
+us[0m[2m=[0m49197007
+[2m2026-03-18T01:52:22.94017
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m238 [3melapsed_
+us[0m[2m=[0m49398070
+[2m2026-03-18T01:52:23.14242
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m239 [3melapsed_
+us[0m[2m=[0m49600320
+[2m2026-03-18T01:52:23.35512
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m240 [3melapsed_
+us[0m[2m=[0m49813020
+[2m2026-03-18T01:52:23.55430
+3Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m50
+[2m2026-03-18T01:52:23.55435
+1Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m50
+[2m2026-03-18T01:52:23.55436
+0Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m50
+[2m2026-03-18T01:52:23.56988
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m241 [3melapsed_
+us[0m[2m=[0m50027779
+[2m2026-03-18T01:52:23.77008
+6Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m242 [3melapsed_
+us[0m[2m=[0m50227984
+[2m2026-03-18T01:52:23.98318
+5Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m243 [3melapsed_
+us[0m[2m=[0m50441084
+[2m2026-03-18T01:52:24.18968
+5Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m244 [3melapsed_
+us[0m[2m=[0m50647583
+[2m2026-03-18T01:52:24.39139
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m245 [3melapsed_
+us[0m[2m=[0m50849291
+[2m2026-03-18T01:52:24.55583
+1Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m51
+[2m2026-03-18T01:52:24.55587
+0Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m51
+[2m2026-03-18T01:52:24.55587
+7Z[0m [31mERROR[0m 
+ThreadId(17) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m51
+[2m2026-03-18T01:52:24.59238
+0Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m246 [3melapsed_
+us[0m[2m=[0m51050280
+[2m2026-03-18T01:52:24.79597
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m247 [3melapsed_
+us[0m[2m=[0m51253856
+[2m2026-03-18T01:52:24.99730
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m248 [3melapsed_
+us[0m[2m=[0m51455204
+[2m2026-03-18T01:52:25.20071
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m249 [3melapsed_
+us[0m[2m=[0m51658616
+[2m2026-03-18T01:52:25.40962
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m250 [3melapsed_
+us[0m[2m=[0m51867523
+[2m2026-03-18T01:52:25.54767
+2Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m52
+[2m2026-03-18T01:52:25.54773
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m52
+[2m2026-03-18T01:52:25.54775
+4Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m52
+[2m2026-03-18T01:52:25.61031
+0Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m251 [3melapsed_
+us[0m[2m=[0m52068207
+[2m2026-03-18T01:52:25.82530
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m252 [3melapsed_
+us[0m[2m=[0m52283205
+[2m2026-03-18T01:52:26.03664
+3Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m253 [3melapsed_
+us[0m[2m=[0m52494542
+[2m2026-03-18T01:52:26.24119
+0Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m254 [3melapsed_
+us[0m[2m=[0m52699085
+[2m2026-03-18T01:52:26.45130
+7Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m255 [3melapsed_
+us[0m[2m=[0m52909207
+[2m2026-03-18T01:52:26.54623
+7Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m53
+[2m2026-03-18T01:52:26.54627
+8Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m53
+[2m2026-03-18T01:52:26.54628
+4Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m53
+[2m2026-03-18T01:52:26.65607
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m256 [3melapsed_
+us[0m[2m=[0m53113975
+[2m2026-03-18T01:52:26.86747
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m257 [3melapsed_
+us[0m[2m=[0m53325375
+[2m2026-03-18T01:52:27.07929
+3Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m258 [3melapsed_
+us[0m[2m=[0m53537189
+[2m2026-03-18T01:52:27.28077
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m259 [3melapsed_
+us[0m[2m=[0m53738677
+[2m2026-03-18T01:52:27.49253
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m260 [3melapsed_
+us[0m[2m=[0m53950434
+[2m2026-03-18T01:52:27.55696
+3Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m54
+[2m2026-03-18T01:52:27.55700
+9Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m54
+[2m2026-03-18T01:52:27.55701
+7Z[0m [31mERROR[0m 
+ThreadId(06) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m54
+[2m2026-03-18T01:52:27.70029
+9Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m261 [3melapsed_
+us[0m[2m=[0m54158195
+[2m2026-03-18T01:52:27.90599
+4Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m262 [3melapsed_
+us[0m[2m=[0m54363893
+[2m2026-03-18T01:52:28.12222
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m263 [3melapsed_
+us[0m[2m=[0m54580122
+[2m2026-03-18T01:52:28.32637
+7Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m264 [3melapsed_
+us[0m[2m=[0m54784272
+[2m2026-03-18T01:52:28.52797
+5Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m265 [3melapsed_
+us[0m[2m=[0m54985870
+[2m2026-03-18T01:52:28.54391
+7Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m55
+[2m2026-03-18T01:52:28.54396
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m55
+[2m2026-03-18T01:52:28.54396
+9Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m55
+[2m2026-03-18T01:52:28.73651
+1Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m266 [3melapsed_
+us[0m[2m=[0m55194409
+[2m2026-03-18T01:52:28.94458
+6Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m267 [3melapsed_
+us[0m[2m=[0m55402484
+[2m2026-03-18T01:52:29.15310
+5Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m268 [3melapsed_
+us[0m[2m=[0m55611000
+[2m2026-03-18T01:52:29.36868
+4Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m269 [3melapsed_
+us[0m[2m=[0m55826581
+[2m2026-03-18T01:52:29.54395
+1Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m56
+[2m2026-03-18T01:52:29.54402
+9Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m56
+[2m2026-03-18T01:52:29.54404
+3Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m56
+[2m2026-03-18T01:52:29.57364
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m270 [3melapsed_
+us[0m[2m=[0m56031546
+[2m2026-03-18T01:52:29.78156
+9Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m271 [3melapsed_
+us[0m[2m=[0m56239463
+[2m2026-03-18T01:52:29.98605
+8Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m272 [3melapsed_
+us[0m[2m=[0m56443955
+[2m2026-03-18T01:52:30.19179
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m273 [3melapsed_
+us[0m[2m=[0m56649692
+[2m2026-03-18T01:52:30.39345
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m274 [3melapsed_
+us[0m[2m=[0m56851351
+[2m2026-03-18T01:52:30.55191
+3Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m57
+[2m2026-03-18T01:52:30.55197
+4Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m57
+[2m2026-03-18T01:52:30.55198
+8Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m57
+[2m2026-03-18T01:52:30.60288
+0Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m275 [3melapsed_
+us[0m[2m=[0m57060779
+[2m2026-03-18T01:52:30.80729
+7Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m276 [3melapsed_
+us[0m[2m=[0m57265192
+[2m2026-03-18T01:52:31.00805
+8Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m277 [3melapsed_
+us[0m[2m=[0m57465956
+[2m2026-03-18T01:52:31.21752
+0Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m278 [3melapsed_
+us[0m[2m=[0m57675420
+[2m2026-03-18T01:52:31.42147
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m279 [3melapsed_
+us[0m[2m=[0m57879368
+[2m2026-03-18T01:52:31.55151
+0Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m58
+[2m2026-03-18T01:52:31.55154
+8Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m58
+[2m2026-03-18T01:52:31.55155
+3Z[0m [31mERROR[0m 
+ThreadId(03) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m58
+[2m2026-03-18T01:52:31.63284
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m280 [3melapsed_
+us[0m[2m=[0m58090740
+[2m2026-03-18T01:52:31.84676
+7Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m281 [3melapsed_
+us[0m[2m=[0m58304665
+[2m2026-03-18T01:52:32.05467
+2Z[0m [33m WARN[0m 
+ThreadId(17) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m282 [3melapsed_
+us[0m[2m=[0m58512570
+[2m2026-03-18T01:52:32.26759
+8Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m283 [3melapsed_
+us[0m[2m=[0m58725494
+[2m2026-03-18T01:52:32.47406
+3Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m284 [3melapsed_
+us[0m[2m=[0m58931961
+[2m2026-03-18T01:52:32.55830
+9Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"telemetry
+_rx" [3mlast_seen_s[0m[2m=
+[0m0 
+[3mnow_s[0m[2m=[0m59
+[2m2026-03-18T01:52:32.55841
+0Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"uplink_tx
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m59
+[2m2026-03-18T01:52:32.55842
+2Z[0m [31mERROR[0m 
+ThreadId(15) WATCHDOG: task 
+is STALE ΓÇö would restart [
+3mtask[0m[2m=[0m"fault_mgr
+" [3mlast_seen_s[0m[2m=[0
+m0 [3mnow_s[0m[2m=[0m59
+[2m2026-03-18T01:52:32.69010
+4Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m285 [3melapsed_
+us[0m[2m=[0m59148000
+[2m2026-03-18T01:52:32.89890
+7Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m286 [3melapsed_
+us[0m[2m=[0m59356803
+[2m2026-03-18T01:52:33.10596
+2Z[0m [33m WARN[0m 
+ThreadId(06) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m287 [3melapsed_
+us[0m[2m=[0m59563859
+[2m2026-03-18T01:52:33.30793
+4Z[0m [33m WARN[0m 
+ThreadId(15) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m288 [3melapsed_
+us[0m[2m=[0m59765830
+[2m2026-03-18T01:52:33.51630
+3Z[0m [33m WARN[0m 
+ThreadId(03) DMS: no packet 
+for 200ms [3mconsecutive_gap
+[0m[2m=[0m289 [3melapsed_
+us[0m[2m=[0m59974201
+[2m2026-03-18T01:52:33.54863
+7Z[0m [32m INFO[0m 
+ThreadId(01) Simulation 
+timer expired. Shutting down.
+[2m2026-03-18T01:52:33.54874
+5Z[0m [32m INFO[0m 
+ThreadId(06) fault_mgr final 
+stats [3mtotal_faults[0m[2
+m=[0m0 [3mavg_interlock_us
+[0m[2m=[0m0
+[2m2026-03-18T01:52:33.54873
+4Z[0m [32m INFO[0m 
+ThreadId(15) === PERFORMANCE 
+REPORT === 
+[3mreport[0m[2m=[0m2 
+[3melapsed_s[0m[2m=[0m60 
+[3melapsed_us[0m[2m=[0m60
+006629 [3mpkts_received[0m
+[2m=[0m0 
+[3mpkts_lost[0m[2m=[0m0 
+[3mavg_latency_us[0m[2m=[0
+m0 [3mdeadline_misses[0m[2
+m=[0m0 [3minterlock_count[
+0m[2m=[0m0 
+[3mfault_count[0m[2m=[0m0
+[2m2026-03-18T01:52:33.54888
+0Z[0m [32m INFO[0m 
+ThreadId(22) uplink_tx final 
+stats [3mdeadline_misses[0m
+[2m=[0m0
+[2m2026-03-18T01:52:33.55009
+8Z[0m [32m INFO[0m 
+ThreadId(01) === GCS 
+SIMULATION COMPLETE === [3mt
+otal_pkts_received[0m[2m=[
+0m0 [3mtotal_pkts_lost[0m[
+2m=[0m0 [3mpkt_loss_rate_pc
+t[0m[2m=[0m0.0 [3mavg_one
+_way_latency_us[0m[2m=[0m0
+ [3mp99_latency_us[0m[2m=
+[0m0 [3mtotal_cmds_sent[0m
+[2m=[0m0 [3mcmds_dispatch_m
+issed[0m[2m=[0m0 [3mtotal
+_faults_received[0m[2m=[0m
+0 [3mavg_interlock_latency_u
+s[0m[2m=[0m0 [3mloss_of_c
+ontact_events[0m[2m=[0m0

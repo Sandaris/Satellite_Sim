@@ -45,6 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_target(false)
         .with_thread_ids(true)
         .with_level(true)
+        .with_writer(std::io::stderr)
         .init();
 
     let sim_start = Arc::new(Instant::now());

@@ -178,7 +178,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     };
     let title = Paragraph::new(Line::from(vec![
         Span::raw("  SATELLITE OCS DASHBOARD  [sim elapsed: "),
-        Span::raw(format!("{:02}:{:02}:{02}]  [state: ", elapsed.as_secs()/3600, (elapsed.as_secs()%3600)/60, elapsed.as_secs()%60)),
+        Span::raw(format!("{:02}:{:02}:{:02}]  [state: ", elapsed.as_secs()/3600, (elapsed.as_secs()%3600)/60, elapsed.as_secs()%60)),
         Span::styled(metrics.system_state.clone(), state_style),
         Span::raw("]"),
     ]))

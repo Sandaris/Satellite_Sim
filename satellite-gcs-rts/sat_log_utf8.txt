@@ -1,0 +1,181 @@
+﻿cargo :    Compiling proc-macro2 v1.0.106
+At line:1 char:1
++ cargo run --release --bin satellite -- --gcs-ip 127.0.0.1 2> sat_log. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.106:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling windows-link v0.2.1
+   Compiling cfg-if v1.0.4
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.15.1
+   Compiling rustversion v1.0.22
+   Compiling scopeguard v1.2.0
+   Compiling heck v0.5.0
+   Compiling serde_core v1.0.228
+   Compiling serde v1.0.228
+   Compiling zerocopy v0.8.42
+   Compiling anstyle v1.0.14
+   Compiling winapi v0.3.9
+   Compiling utf8parse v0.2.2
+   Compiling pin-project-lite v0.2.17
+   Compiling once_cell_polyfill v1.70.2
+   Compiling crossbeam-utils v0.8.21
+   Compiling crc32fast v1.5.0
+   Compiling colorchoice v1.0.5
+   Compiling once_cell v1.21.4
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling either v1.15.0
+   Compiling windows-sys v0.61.2
+   Compiling lock_api v0.4.14
+   Compiling anstyle-parse v1.0.0
+   Compiling autocfg v1.5.0
+   Compiling getrandom v0.2.17
+   Compiling paste v1.0.15
+   Compiling equivalent v1.0.2
+   Compiling clap_lex v1.1.0
+   Compiling strsim v0.11.1
+   Compiling allocator-api2 v0.2.21
+   Compiling tracing-core v0.1.36
+   Compiling simd-adler32 v0.3.8
+   Compiling regex-syntax v0.8.10
+   Compiling adler2 v2.0.1
+   Compiling foldhash v0.1.5
+   Compiling itertools v0.13.0
+   Compiling rand_core v0.6.4
+   Compiling bitflags v2.11.0
+   Compiling num-traits v0.2.19
+   Compiling memchr v2.8.0
+   Compiling slab v0.4.12
+   Compiling futures-core v0.3.32
+   Compiling log v0.4.29
+   Compiling lazy_static v1.5.0
+   Compiling unicode-segmentation v1.12.0
+   Compiling anstyle-wincon v3.0.11
+   Compiling anstyle-query v1.1.5
+   Compiling miniz_oxide v0.8.9
+   Compiling hashbrown v0.15.5
+   Compiling regex-automata v0.4.14
+   Compiling mio v1.1.1
+   Compiling socket2 v0.6.3
+   Compiling ryu v1.0.23
+   Compiling unicode-width v0.1.14
+   Compiling static_assertions v1.1.0
+   Compiling minimal-lexical v0.2.1
+   Compiling parking_lot v0.12.5
+   Compiling anstream v1.0.0
+   Compiling itoa v1.0.17
+   Compiling bytes v1.11.1
+   Compiling futures-task v0.3.32
+   Compiling tracing-log v0.2.0
+   Compiling flate2 v1.1.9
+   Compiling nom v7.1.3
+   Compiling unicode-truncate v1.1.0
+   Compiling castaway v0.2.4
+   Compiling crossbeam-channel v0.5.15
+   Compiling sharded-slab v0.1.7
+   Compiling nu-ansi-term v0.50.3
+   Compiling syn v2.0.117
+   Compiling clap_builder v4.6.0
+   Compiling lru v0.12.5
+   Compiling itertools v0.12.1
+   Compiling thread_local v1.1.9
+   Compiling cassowary v0.3.0
+   Compiling compact_str v0.7.1
+   Compiling base64 v0.21.7
+   Compiling futures-sink v0.3.32
+   Compiling byteorder v1.5.0
+   Compiling crossterm_winapi v0.9.1
+   Compiling crossterm v0.27.0
+   Compiling hdrhistogram v7.5.4
+   Compiling matchers v0.2.0
+   Compiling serde_derive v1.0.228
+   Compiling tokio-macros v2.6.1
+   Compiling strum_macros v0.26.4
+   Compiling tracing-attributes v0.1.31
+   Compiling clap_derive v4.6.0
+   Compiling futures-macro v0.3.32
+   Compiling stability v0.2.1
+   Compiling ppv-lite86 v0.2.21
+   Compiling tokio v1.50.0
+   Compiling rand_chacha v0.3.1
+   Compiling futures-util v0.3.32
+   Compiling rand v0.8.5
+   Compiling tracing v0.1.44
+   Compiling strum v0.26.3
+   Compiling clap v4.6.0
+   Compiling tracing-subscriber v0.3.23
+   Compiling ratatui v0.26.3
+   Compiling bincode v1.3.3
+   Compiling serde_arrays v0.2.0
+   Compiling shared v0.1.0 (C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts\shared)
+   Compiling tokio-util v0.7.18
+   Compiling satellite v0.1.0 (C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts\satellite)
+warning: unused import: `fmt`
+ --> satellite\src\main.rs:1:26
+  |
+1 | use tracing_subscriber::{fmt, EnvFilter};
+  |                          ^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `tokio::net::UdpSocket`
+ --> satellite\src\main.rs:9:5
+  |
+9 | use tokio::net::UdpSocket;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: variant `Degraded` is never constructed
+ --> satellite\src\state.rs:4:5
+  |
+2 | pub enum SystemState {
+  |          ----------- variant in this enum
+3 |     Nominal,          // all systems go
+4 |     Degraded,         // buffer > 80%, downgraded transmission
+  |     ^^^^^^^^
+  |
+  = note: `SystemState` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during 
+dead code analysis
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `0` is never read
+  --> satellite\src\fault.rs:10:38
+   |
+10 | pub enum CircuitState { Closed, Open(Instant), HalfOpen }
+   |                                 ---- ^^^^^^^
+   |                                 |
+   |                                 field in this variant
+   |
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+   |
+10 - pub enum CircuitState { Closed, Open(Instant), HalfOpen }
+10 + pub enum CircuitState { Closed, Open(()), HalfOpen }
+   |
+
+warning: variant `HalfOpen` is never constructed
+  --> satellite\src\fault.rs:10:48
+   |
+10 | pub enum CircuitState { Closed, Open(Instant), HalfOpen }
+   |          ------------ variant in this enum     ^^^^^^^^
+
+warning: fields `consecutive_faults`, `last_fault_at`, and `total_recoveries` are never read
+  --> satellite\src\fault.rs:14:9
+   |
+12 | pub struct FaultEngine {
+   |            ----------- fields in this struct
+13 |     pub circuit: CircuitState,
+14 |     pub consecutive_faults: u32,
+   |         ^^^^^^^^^^^^^^^^^^
+15 |     pub last_fault_at: Option<Instant>,
+   |         ^^^^^^^^^^^^^
+16 |     pub total_faults: u64,
+17 |     pub total_recoveries: u64,
+   |         ^^^^^^^^^^^^^^^^
+
+warning: `satellite` (bin "satellite") generated 6 warnings (run `cargo fix --bin "satellite" -p satellite` to apply 2 
+suggestions)
+    Finished `release` profile [optimized] target(s) in 25.06s
+     Running `target\release\satellite.exe --gcs-ip 127.0.0.1`
