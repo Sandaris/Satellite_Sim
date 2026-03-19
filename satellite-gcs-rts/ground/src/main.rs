@@ -1,11 +1,8 @@
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing_subscriber::EnvFilter;
 use clap::Parser;
-use std::net::{SocketAddr, Ipv4Addr};
 use std::sync::{Arc, atomic::AtomicU64};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
-use tokio::net::UdpSocket;
 use std::collections::BinaryHeap;
 
 mod state;
@@ -19,17 +16,16 @@ mod ui;
 use state::GcsSystemState;
 use uplink_tx::PrioritizedCommand;
 
+use tracing_subscriber::prelude::*;
+
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    #[arg(long, default_value = "192.168.1.10")]
+    #[arg(long, default_value = "127.0.0.1")]
     sat_ip: String,
 
-    #[arg(long, default_value_t = shared::config::UPLINK_PORT)]
-    sat_port: u16,
-
-    #[arg(long, default_value_t = shared::config::DOWNLINK_PORT)]
-    my_port: u16,
+    #[arg(long, default_value_t = shared::config::SIM_TCP_PORT)]
+    port: u16,
 
     #[arg(long, default_value_t = shared::config::SIM_DURATION_S)]
     duration_s: u64,
@@ -39,28 +35,32 @@ struct Args {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
 
-    tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env()
-            .add_directive("ground=info".parse().unwrap()))
+    let sim_start = Arc::new(Instant::now());
+    let metrics_snapshot = Arc::new(Mutex::new(ui::GcsMetricsSnapshot::default()));
+
+    // Setup logging: TUI layer + File layer (no stderr to avoid jumping)
+    let tui_layer = ui::TuiLogger::new(metrics_snapshot.clone(), sim_start.clone());
+    
+    let file_appender = tracing_appender::rolling::never(".", "ground.log");
+    let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
+    let file_layer = tracing_subscriber::fmt::layer()
+        .with_writer(non_blocking)
+        .with_ansi(false)
         .with_target(false)
         .with_thread_ids(true)
-        .with_level(true)
-        .with_writer(std::io::stderr)
+        .with_level(true);
+
+    tracing_subscriber::registry()
+        .with(EnvFilter::from_default_env()
+            .add_directive("ground=info".parse().unwrap()))
+        .with(tui_layer)
+        .with(file_layer)
         .init();
 
-    let sim_start = Arc::new(Instant::now());
-    let cancel = CancellationToken::new();
-
-    let sat_addr: SocketAddr = format!("{}:{}", args.sat_ip, args.sat_port).parse()?;
-    
-    // DOWNLINK RX: bind to specified port to receive from Satellite
-    let my_rx_addr = SocketAddr::new(Ipv4Addr::UNSPECIFIED.into(), args.my_port);
+    let (cancel_tx, cancel_rx) = tokio::sync::watch::channel(false);
 
     let state = Arc::new(Mutex::new(GcsSystemState::Nominal));
     let cmd_queue = Arc::new(Mutex::new(BinaryHeap::<PrioritizedCommand>::new()));
-    let metrics_snapshot = Arc::new(Mutex::new(ui::GcsMetricsSnapshot::default()));
-
-    let (fault_tx, fault_rx) = tokio::sync::mpsc::channel(100);
 
     // Watchdog metrics
     let hb_telemetry = Arc::new(AtomicU64::new(0));
@@ -73,67 +73,166 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("fault_mgr", hb_fault_mgr.clone()),
     ];
 
-    tracing::info!("Starting Ground Control Station Simulation");
+    tracing::info!("Starting Satellite Ground Control Simulation (TCP MODE)");
 
-    let mut handles = vec![];
+    // TCP Server Setup
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", args.port)).await?;
+    tracing::info!("GCS listening for satellite connection on port {}...", args.port);
 
-    handles.push(tokio::spawn(telemetry_rx::run_telemetry_rx(
-        my_rx_addr, state.clone(), fault_tx, cmd_queue.clone(), sim_start.clone(), cancel.clone(), hb_telemetry.clone(), metrics_snapshot.clone()
+    // Global tasks (stay alive across reconnections)
+    let mut global_handles = vec![];
+    global_handles.push(tokio::spawn(perf_monitor::run_perf_monitor(
+        sim_start.clone(), cancel_rx.clone()
     )));
 
-    handles.push(tokio::spawn(uplink_tx::run_uplink_tx(
-        sat_addr, cmd_queue.clone(), state.clone(), sim_start.clone(), cancel.clone(), hb_uplink.clone(), metrics_snapshot.clone()
+    global_handles.push(tokio::spawn(watchdog::run_watchdog(
+        heartbeats, sim_start.clone(), cancel_rx.clone()
     )));
 
-    handles.push(tokio::spawn(fault_mgr::run_fault_mgr(
-        fault_rx, state.clone(), cmd_queue.clone(), sim_start.clone(), cancel.clone(), hb_fault_mgr.clone(), metrics_snapshot.clone()
-    )));
-
-    handles.push(tokio::spawn(perf_monitor::run_perf_monitor(
-        sim_start.clone(), cancel.clone()
-    )));
-
-    handles.push(tokio::spawn(watchdog::run_watchdog(
-        heartbeats, sim_start.clone(), cancel.clone()
-    )));
-
-    handles.push(tokio::spawn(ui::run_ui(
+    global_handles.push(tokio::spawn(ui::run_ui(
         Arc::clone(&metrics_snapshot),
         Arc::clone(&sim_start),
-        cancel.clone(),
+        cancel_tx.clone(),
     )));
 
-    // Heartbeat Task - sends CommandType::Heartbeat every 5s
-    let state_clone = state.clone();
-    let sim_start_clone = sim_start.clone();
-    let cmd_queue_clone = cmd_queue.clone();
-    let cancel_clone = cancel.clone();
-    handles.push(tokio::spawn(async move {
-        let mut interval = tokio::time::interval(Duration::from_secs(5));
+    let mut session_cancel_rx = cancel_rx.clone();
+    
+    // Connection handling loop
+    let session_metrics = metrics_snapshot.clone();
+    let session_start = sim_start.clone();
+    let session_state = state.clone();
+    let session_cmd_queue = cmd_queue.clone();
+
+    let session_task = tokio::spawn(async move {
         loop {
             tokio::select! {
-                _ = cancel_clone.cancelled() => break,
-                _ = interval.tick() => {
-                    let s = state_clone.lock().await.clone();
-                    if s == GcsSystemState::LossOfContact {
-                        continue;
+                _ = session_cancel_rx.changed() => break,
+                acc = listener.accept() => {
+                    let (stream, addr) = match acc {
+                        Ok(res) => res,
+                        Err(e) => {
+                            tracing::error!("TCP Accept error: {}", e);
+                            continue;
+                        }
+                    };
+                    tracing::info!("Satellite connected from: {}", addr);
+                    let (reader, writer) = stream.into_split();
+
+                    if let Ok(mut m) = session_metrics.try_lock() {
+                        m.contact_status = "ESTABLISHED".to_string();
+                        crate::ui::push_log(&session_metrics, 0, format!("Satellite connected from {}", addr), &session_start);
                     }
 
-                    let ts = sim_start_clone.elapsed().as_micros() as u64;
-                    let pkt = shared::packets::CommandPacket {
-                        seq_no: 0, 
-                        timestamp_us: ts,
-                        cmd_type: shared::packets::CommandType::Heartbeat,
-                        priority: 3,
-                        payload: [0u8; 32],
-                    };
+                    // Per-session cancellation token
+                    let session_token = tokio_util::sync::CancellationToken::new();
+                    let mut session_handles = vec![];
+                    let (s_fault_tx, s_fault_rx) = tokio::sync::mpsc::channel(100);
 
-                    let cmd = PrioritizedCommand { packet: pkt, enqueue_us: ts };
-                    cmd_queue_clone.lock().await.push(cmd);
+                    // Telemetry RX (triggers session cancellation on disconnect)
+                    let token_tel = session_token.clone();
+                    let metrics_tel = session_metrics.clone();
+                    let start_tel = session_start.clone();
+                    let state_tel = session_state.clone();
+                    let cmd_tel = session_cmd_queue.clone();
+                    let hb_tel_metric = hb_telemetry.clone();
+                    let cancel_tel = session_cancel_rx.clone();
+
+                    session_handles.push(tokio::spawn(async move {
+                        telemetry_rx::run_telemetry_rx(
+                            reader, state_tel, s_fault_tx, cmd_tel, start_tel.clone(), cancel_tel, hb_tel_metric, metrics_tel.clone()
+                        ).await;
+                        tracing::warn!("telemetry_rx stopped, signaling session end.");
+                        token_tel.cancel();
+                        if let Ok(mut m) = metrics_tel.try_lock() {
+                            m.contact_status = "LOST".to_string();
+                            crate::ui::push_log(&metrics_tel, 1, "Satellite connection lost".to_string(), &start_tel);
+                        }
+                    }));
+
+                    // Uplink TX (wrapped with session cancellation)
+                    let token_up = session_token.clone();
+                    let state_up = session_state.clone();
+                    let cmd_up = session_cmd_queue.clone();
+                    let start_up = session_start.clone();
+                    let hb_up_metric = hb_uplink.clone();
+                    let metrics_up = session_metrics.clone();
+                    let cancel_up = session_cancel_rx.clone();
+                    session_handles.push(tokio::spawn(async move {
+                        tokio::select! {
+                            _ = token_up.cancelled() => {}
+                            _ = uplink_tx::run_uplink_tx(
+                                writer, cmd_up, state_up, start_up, cancel_up, hb_up_metric, metrics_up
+                            ) => {}
+                        }
+                    }));
+
+                    // Fault Mgr (wrapped with session cancellation)
+                    let token_fm = session_token.clone();
+                    let state_fm = session_state.clone();
+                    let cmd_fm = session_cmd_queue.clone();
+                    let start_fm = session_start.clone();
+                    let metrics_fm = session_metrics.clone();
+                    let cancel_fm = session_cancel_rx.clone();
+                    let hb_fm_metric = hb_fault_mgr.clone();
+                    session_handles.push(tokio::spawn(async move {
+                        tokio::select! {
+                            _ = token_fm.cancelled() => {}
+                            _ = fault_mgr::run_fault_mgr(
+                                s_fault_rx, state_fm, cmd_fm, start_fm, cancel_fm, hb_fm_metric, metrics_fm
+                            ) => {}
+                        }
+                    }));
+
+                    // Heartbeat Task (per session, wrapped with session cancellation)
+                    let token_hb = session_token.clone();
+                    let h_state = session_state.clone();
+                    let h_start = session_start.clone();
+                    let h_cmd = session_cmd_queue.clone();
+                    let mut h_cancel_global = session_cancel_rx.clone();
+                    session_handles.push(tokio::spawn(async move {
+                        let mut interval = tokio::time::interval(Duration::from_secs(5));
+                        loop {
+                            tokio::select! {
+                                _ = h_cancel_global.changed() => break,
+                                _ = token_hb.cancelled() => break,
+                                _ = interval.tick() => {
+                                    let s = h_state.lock().await.clone();
+                                    if s == GcsSystemState::LossOfContact { continue; }
+                                    let ts = h_start.elapsed().as_micros() as u64;
+                                    let pkt = shared::packets::CommandPacket {
+                                        seq_no: 0, 
+                                        timestamp_us: ts,
+                                        cmd_type: shared::packets::CommandType::Heartbeat,
+                                        priority: 3,
+                                        payload: [0u8; 32],
+                                    };
+                                    let cmd = PrioritizedCommand { packet: pkt, enqueue_us: ts };
+                                    h_cmd.lock().await.push(cmd);
+                                }
+                            }
+                        }
+                    }));
+
+                    // Wait for the session to be canceled (e.g. by telemetry_rx)
+                    session_token.cancelled().await;
+                    tracing::warn!("Satellite session signaling end. Cleaning up handles...");
+                    
+                    // Small delay to let other tasks see the cancellation
+                    tokio::time::sleep(Duration::from_millis(50)).await;
+
+                    // Clean out command queue for next session so old heartbeats don't persist
+                    session_cmd_queue.lock().await.clear();
+
+                    // Wait for all session tasks to complete
+                    for h in session_handles {
+                        let _ = h.await;
+                    }
+                    tracing::warn!("Satellite session tasks cleaned up. Ready for new connection.");
                 }
             }
         }
-    }));
+    });
+    global_handles.push(session_task);
 
 
     tokio::select! {
@@ -145,9 +244,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    cancel.cancel();
+    let _ = cancel_tx.send(true);
 
-    for h in handles {
+    for h in global_handles {
         let _ = h.await;
     }
 

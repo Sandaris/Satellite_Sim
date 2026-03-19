@@ -1,7 +1,6 @@
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
 use shared::packets::{TelemetryPacket, SensorId};
 use shared::config::{THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS, THERMAL_JITTER_LIMIT_US, THERMAL_MISS_ALERT};
 use crate::buffer::{SensorBuffer, SensorReading};
@@ -12,24 +11,30 @@ pub async fn run_thermal_sensor(
     buffer:     Arc<Mutex<SensorBuffer>>,
     sim_start:  Arc<Instant>,
     state:      Arc<Mutex<SystemState>>,
-    cancel:     CancellationToken,
+    mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
     let period = Duration::from_millis(THERMAL_PERIOD_MS);
-    let mut next_deadline = *sim_start + period;
+    let task_start = Instant::now();
+    let startup_offset_us = task_start.duration_since(*sim_start).as_micros() as u64;
+    let mut next_deadline = task_start + period;
     let mut seq: u32 = 0;
     let mut consecutive_miss: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => { tracing::info!("thermal_sensor: cancelled"); break; }
-            _ = tokio::time::sleep_until(next_deadline) => {}
+            _ = cancel.changed() => { tracing::info!("thermal_sensor: cancelled"); break; }
+            _ = tokio::time::sleep_until(next_deadline.checked_sub(Duration::from_millis(5)).unwrap_or(next_deadline)) => {
+                while Instant::now() < next_deadline {
+                    std::hint::spin_loop();
+                }
+            }
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = seq as u64 * THERMAL_PERIOD_MS * 1000;
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * THERMAL_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
         let jitter_us         = drift_us;
         
@@ -38,20 +43,15 @@ pub async fn run_thermal_sensor(
         let value: f64 = rand::thread_rng().gen_range(20.0..80.0);
 
         if jitter_us > THERMAL_JITTER_LIMIT_US {
-            tracing::warn!(sensor="thermal", jitter_us, limit_us=THERMAL_JITTER_LIMIT_US, elapsed_us=actual_start_us, "JITTER EXCEEDED 1ms limit");
-            crate::ui::push_log(&metrics, 1, format!("JITTER EXCEEDED 1ms limit: {}us", jitter_us), &sim_start);
-            if jitter_us > THERMAL_JITTER_LIMIT_US * 5 {
-                consecutive_miss += 1;
-            } else {
-                consecutive_miss = 0;
-            }
+            consecutive_miss += 1;
+            tracing::error!(sensor="thermal", jitter_us, limit_us=THERMAL_JITTER_LIMIT_US, elapsed_us=actual_start_us, "JITTER LIMIT VIOLATED");
+            crate::ui::push_log(&metrics, 2, format!("JITTER ALERT: {}us", jitter_us), &sim_start);
         } else {
             consecutive_miss = 0;
         }
 
         if consecutive_miss >= THERMAL_MISS_ALERT {
-            tracing::error!(sensor="thermal", consecutive_miss, elapsed_us=actual_start_us, "SAFETY ALERT: 3 consecutive misses");
-            crate::ui::push_log(&metrics, 2, format!("SAFETY ALERT: {} consecutive misses", consecutive_miss), &sim_start);
+            tracing::error!(sensor="thermal", consecutive_miss, elapsed_us=actual_start_us, "SAFETY ALERT: TIMING FAILURE");
             let mut s = state.lock().await;
             if *s != SystemState::MissionAbort {
                 *s = SystemState::Fault;
@@ -70,8 +70,8 @@ pub async fn run_thermal_sensor(
             let fill_pct = buf.fill_pct();
             if let Some(dropped) = buf.push(reading, &sim_start) {
                 tracing::warn!(dropped_sensor=?dropped.packet.sensor_id,
-                               dropped_seq=dropped.packet.seq_no, buffer_fill_pct=fill_pct, elapsed_us=insert_us,
-                               "Buffer full: dropped packet");
+                                dropped_seq=dropped.packet.seq_no, buffer_fill_pct=fill_pct, elapsed_us=insert_us,
+                                "Buffer full: dropped packet");
                 crate::ui::push_log(&metrics, 1, format!("Buffer full: dropped pc sq={}", dropped.packet.seq_no), &sim_start);
             }
             if buf.is_degraded() {
@@ -116,24 +116,30 @@ pub async fn run_thermal_sensor(
 pub async fn run_power_sensor(
     buffer:     Arc<Mutex<SensorBuffer>>,
     sim_start:  Arc<Instant>,
-    _state:      Arc<Mutex<SystemState>>,
-    cancel:     CancellationToken,
+    state:      Arc<Mutex<SystemState>>,
+    mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
     let period = Duration::from_millis(POWER_PERIOD_MS);
-    let mut next_deadline = *sim_start + period;
+    let task_start = Instant::now();
+    let startup_offset_us = task_start.duration_since(*sim_start).as_micros() as u64;
+    let mut next_deadline = task_start + period;
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => { break; }
-            _ = tokio::time::sleep_until(next_deadline) => {}
+            _ = cancel.changed() => { break; }
+            _ = tokio::time::sleep_until(next_deadline.checked_sub(Duration::from_millis(5)).unwrap_or(next_deadline)) => {
+                while Instant::now() < next_deadline {
+                    std::hint::spin_loop();
+                }
+            }
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = seq as u64 * POWER_PERIOD_MS * 1000;
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * POWER_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
         let jitter_us         = drift_us;
         hist.record(jitter_us).ok();
@@ -151,11 +157,15 @@ pub async fn run_power_sensor(
             buf.push(reading, &sim_start);
         }
 
+        if jitter_us > 1000 {
+            tracing::error!(sensor="power", jitter_us, "JITTER LIMIT VIOLATED (>1ms)");
+            crate::ui::push_log(&metrics, 2, format!("POWER JITTER: {}us", jitter_us), &sim_start);
+        }
+
         tracing::info!(
             sensor="power", seq, value, drift_us, jitter_us, latency_us, elapsed_us=actual_start_us,
             "sensor_read"
         );
-        // Omitted push_log for power read to prevent log spam, but wait, prompt said "every task that currently calls tracing::info!". 
         crate::ui::push_log(&metrics, 0, format!("Power read seq={}", seq), &sim_start);
 
         if let Ok(mut m) = metrics.try_lock() {
@@ -163,6 +173,7 @@ pub async fn run_power_sensor(
             m.power_jitter_p50_us = hist.value_at_percentile(50.0);
             m.power_jitter_p99_us = hist.value_at_percentile(99.0);
             m.power_jitter_max_us = hist.max();
+            if let Ok(s) = state.try_lock() { m.system_state = format!("{:?}", *s).to_uppercase(); }
         }
 
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
@@ -174,24 +185,30 @@ pub async fn run_power_sensor(
 pub async fn run_imu_sensor(
     buffer:     Arc<Mutex<SensorBuffer>>,
     sim_start:  Arc<Instant>,
-    _state:      Arc<Mutex<SystemState>>,
-    cancel:     CancellationToken,
+    state:      Arc<Mutex<SystemState>>,
+    mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
     let period = Duration::from_millis(IMU_PERIOD_MS);
-    let mut next_deadline = *sim_start + period;
+    let task_start = Instant::now();
+    let startup_offset_us = task_start.duration_since(*sim_start).as_micros() as u64;
+    let mut next_deadline = task_start + period;
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => { break; }
-            _ = tokio::time::sleep_until(next_deadline) => {}
+            _ = cancel.changed() => { break; }
+            _ = tokio::time::sleep_until(next_deadline.checked_sub(Duration::from_millis(5)).unwrap_or(next_deadline)) => {
+                while Instant::now() < next_deadline {
+                    std::hint::spin_loop();
+                }
+            }
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = seq as u64 * IMU_PERIOD_MS * 1000;
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * IMU_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
         let jitter_us         = drift_us;
         hist.record(jitter_us).ok();
@@ -209,6 +226,11 @@ pub async fn run_imu_sensor(
             buf.push(reading, &sim_start);
         }
 
+        if jitter_us > 1000 {
+            tracing::error!(sensor="imu", jitter_us, "JITTER LIMIT VIOLATED (>1ms)");
+            crate::ui::push_log(&metrics, 2, format!("IMU JITTER: {}us", jitter_us), &sim_start);
+        }
+
         tracing::info!(
             sensor="imu", seq, value, drift_us, jitter_us, latency_us, elapsed_us=actual_start_us,
             "sensor_read"
@@ -220,6 +242,7 @@ pub async fn run_imu_sensor(
             m.imu_jitter_p50_us = hist.value_at_percentile(50.0);
             m.imu_jitter_p99_us = hist.value_at_percentile(99.0);
             m.imu_jitter_max_us = hist.max();
+            if let Ok(s) = state.try_lock() { m.system_state = format!("{:?}", *s).to_uppercase(); }
         }
 
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);

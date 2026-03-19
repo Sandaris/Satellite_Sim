@@ -1,11 +1,8 @@
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
-use std::net::SocketAddr;
 use std::sync::{Arc, atomic::{AtomicU64, Ordering as AtomicOrdering}};
 use tokio::sync::Mutex;
-use tokio::net::UdpSocket;
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
 use shared::packets::CommandPacket;
 use shared::config::CMD_DISPATCH_MS;
 use crate::state::GcsSystemState;
@@ -38,19 +35,23 @@ impl PartialEq for PrioritizedCommand {
 
 impl Eq for PrioritizedCommand {}
 
+use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
+use futures::SinkExt;
+use tokio::net::tcp::OwnedWriteHalf;
+use bytes::Bytes;
+
 pub async fn run_uplink_tx(
-    sat_addr:  SocketAddr,
+    writer:    OwnedWriteHalf,
     cmd_queue: Arc<Mutex<BinaryHeap<PrioritizedCommand>>>,
     state:     Arc<Mutex<GcsSystemState>>,
     sim_start: Arc<Instant>,
-    cancel:    CancellationToken,
+    mut cancel:    tokio::sync::watch::Receiver<bool>,
     heartbeat: Arc<AtomicU64>,
     ui_metrics: Arc<Mutex<crate::ui::GcsMetricsSnapshot>>,
 ) {
-    let socket = match UdpSocket::bind("0.0.0.0:0").await {
-        Ok(s) => s,
-        Err(e) => { tracing::error!("uplink_tx bind failed: {}", e); return; }
-    };
+    let mut codec = LengthDelimitedCodec::builder();
+    codec.max_frame_length(1024);
+    let mut framed_writer = FramedWrite::new(writer, codec.new_codec());
 
     let mut interval = tokio::time::interval(Duration::from_millis(5));
     let mut tx_seq: u32 = 0;
@@ -58,11 +59,12 @@ pub async fn run_uplink_tx(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel.changed() => break,
             _ = interval.tick() => {}
         }
 
         let cmd = { cmd_queue.lock().await.pop() };
+        heartbeat.store(sim_start.elapsed().as_secs(), AtomicOrdering::Relaxed);
         let cmd = match cmd { Some(c) => c, None => continue };
 
         let gcs_state = { state.lock().await.clone() };
@@ -87,7 +89,7 @@ pub async fn run_uplink_tx(
 
         let send_result = tokio::time::timeout(
             Duration::from_millis(deadline_ms),
-            socket.send_to(&bytes, sat_addr)
+            framed_writer.send(Bytes::from(bytes))
         ).await;
 
         let dispatch_us = dispatch_start.elapsed().as_micros() as u64;
@@ -114,7 +116,7 @@ pub async fn run_uplink_tx(
             let elapsed = sim_start.elapsed();
             m.recent_commands.push_back((
                 format!("{:02}:{:02}:{:02}.{:03}", elapsed.as_secs() / 3600, (elapsed.as_secs() % 3600) / 60, elapsed.as_secs() % 60, elapsed.subsec_millis()),
-                format!("{:?}", pkt.cmd_type), dispatch_us, res_str.to_string()
+                format!("{:?}", pkt.cmd_type), pkt.priority, dispatch_us, res_str.to_string()
             ));
             m.cmd_total_sent += 1;
             if let Ok(cq) = cmd_queue.try_lock() {
@@ -125,7 +127,6 @@ pub async fn run_uplink_tx(
             }
         }
         tx_seq += 1;
-        heartbeat.store(sim_start.elapsed().as_secs(), AtomicOrdering::Relaxed);
     }
     tracing::info!(deadline_misses, "uplink_tx final stats");
 }

@@ -1,10 +1,9 @@
 use std::sync::Arc;
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
 
 pub async fn run_perf_monitor(
     sim_start: Arc<Instant>,
-    cancel:    CancellationToken,
+    mut cancel:    tokio::sync::watch::Receiver<bool>,
 ) {
     let mut interval = tokio::time::interval(Duration::from_secs(30));
     interval.tick().await; // skip first
@@ -12,7 +11,7 @@ pub async fn run_perf_monitor(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel.changed() => break,
             _ = interval.tick() => {
                 let elapsed_s = sim_start.elapsed().as_secs();
                 let elapsed_us = sim_start.elapsed().as_micros() as u64;

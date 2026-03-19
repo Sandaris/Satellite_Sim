@@ -1,7 +1,6 @@
 use std::sync::Arc;
 use tokio::time::{Duration, Instant};
 use tokio::sync::Mutex;
-use tokio_util::sync::CancellationToken;
 use crossterm::{
     terminal::{enable_raw_mode, disable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
@@ -11,6 +10,59 @@ use ratatui::{
     widgets::*,
     backend::CrosstermBackend,
 };
+use tracing_subscriber::Layer;
+
+pub struct TuiLogger {
+    metrics: Arc<Mutex<SatMetricsSnapshot>>,
+    sim_start: Arc<Instant>,
+}
+
+impl TuiLogger {
+    pub fn new(metrics: Arc<Mutex<SatMetricsSnapshot>>, sim_start: Arc<Instant>) -> Self {
+        Self { metrics, sim_start }
+    }
+}
+
+impl<S> Layer<S> for TuiLogger
+where
+    S: tracing::Subscriber,
+{
+    fn on_event(
+        &self,
+        event: &tracing::Event<'_>,
+        _ctx: tracing_subscriber::layer::Context<'_, S>,
+    ) {
+        let level = match *event.metadata().level() {
+            tracing::Level::ERROR => 2,
+            tracing::Level::WARN => 1,
+            _ => 0,
+        };
+
+        let mut visitor = LogVisitor::default();
+        event.record(&mut visitor);
+        
+        push_log(&self.metrics, level, visitor.message, &self.sim_start);
+    }
+}
+
+#[derive(Default)]
+struct LogVisitor {
+    message: String,
+}
+
+impl tracing::field::Visit for LogVisitor {
+    fn record_debug(&mut self, field: &tracing::field::Field, value: &dyn std::fmt::Debug) {
+        if field.name() == "message" {
+            self.message = format!("{:?}", value);
+        }
+    }
+
+    fn record_str(&mut self, field: &tracing::field::Field, value: &str) {
+        if field.name() == "message" {
+            self.message = value.to_string();
+        }
+    }
+}
 
 #[derive(Clone)]
 pub struct SatMetricsSnapshot {
@@ -66,6 +118,7 @@ pub struct SatMetricsSnapshot {
     pub fault_max_recovery_ms:  u64,
     pub fault_circuit_state:    String,  // "CLOSED", "OPEN", "HALF-OPEN"
     pub mission_aborts:         u64,
+    pub fault_next_fire_at_s:   u64,     // sim elapsed secs when next fault fires
 
     // Live log
     pub log_lines: std::collections::VecDeque<(String, u8)>, // (text, severity: 0=info,1=warn,2=error)
@@ -83,7 +136,7 @@ impl Default for SatMetricsSnapshot {
             thermal_ctrl_violations: 0, data_compress_violations: 0, health_monitor_violations: 0, cpu_util_pct: 0.0,
             downlink_queue_latency_sparkline: std::collections::VecDeque::with_capacity(60),
             downlink_queue_p50_us: 0, downlink_queue_p99_us: 0, downlink_queue_max_us: 0, downlink_total_sent: 0, downlink_window_violations: 0,
-            fault_total_injected: 0, fault_next_in_s: 0, fault_last_type: "None".to_string(), fault_last_recovery_ms: 0, fault_max_recovery_ms: 0, fault_circuit_state: "CLOSED".to_string(), mission_aborts: 0,
+            fault_total_injected: 0, fault_next_in_s: 0, fault_last_type: "None".to_string(), fault_last_recovery_ms: 0, fault_max_recovery_ms: 0, fault_circuit_state: "CLOSED".to_string(), mission_aborts: 0, fault_next_fire_at_s: 30,
             log_lines: std::collections::VecDeque::with_capacity(200),
         }
     }
@@ -114,8 +167,9 @@ pub fn push_log(
 pub async fn run_ui(
     metrics: Arc<Mutex<SatMetricsSnapshot>>,
     sim_start: Arc<Instant>,
-    cancel: CancellationToken,
+    cancel_tx: tokio::sync::watch::Sender<bool>,
 ) {
+    let mut cancel_rx = cancel_tx.subscribe();
     enable_raw_mode().unwrap();
     std::io::stdout().execute(EnterAlternateScreen).unwrap();
 
@@ -126,7 +180,7 @@ pub async fn run_ui(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel_rx.changed() => break,
             _ = interval.tick() => {
                 let snapshot = { metrics.lock().await.clone() };
 
@@ -138,7 +192,7 @@ pub async fn run_ui(
                 if crossterm::event::poll(Duration::from_millis(0)).unwrap() {
                     if let crossterm::event::Event::Key(k) = crossterm::event::read().unwrap() {
                         if k.code == crossterm::event::KeyCode::Char('q') {
-                            cancel.cancel();
+                            let _ = cancel_tx.send(true);
                             break;
                         }
                     }
@@ -220,9 +274,9 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     };
 
     let sensor_rows = vec![
-        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, 1000),
-        make_jitter_row("Power", "500ms", metrics.power_jitter_last_us, metrics.power_jitter_p50_us, metrics.power_jitter_p99_us, metrics.power_jitter_max_us, 5000),
-        make_jitter_row("IMU", "20ms", metrics.imu_jitter_last_us, metrics.imu_jitter_p50_us, metrics.imu_jitter_p99_us, metrics.imu_jitter_max_us, 500),
+        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, 10000),
+        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   20000),
+        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     50000),
     ];
     let panel_a = Table::new(sensor_rows, [Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(9), Constraint::Min(7)])
         .header(sensor_header)
@@ -268,9 +322,9 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
         ]).style(style)
     };
     let sched_rows = vec![
-        make_sched_row("Thermal Ctrl", "High", 100, 2, metrics.thermal_ctrl_drift_us, metrics.thermal_ctrl_violations, metrics.cpu_util_pct), // CPU is overall for now or individual if we track it. The prompt says "CPU % is calculated as active_ticks / total_ticks". We show it across tasks or generic. We will show generic.
-        make_sched_row("Data Compress", "Medium", 200, 10, metrics.data_compress_drift_us, metrics.data_compress_violations, 0.0),
-        make_sched_row("Health Monitor", "Low", 1000, 5, metrics.health_monitor_drift_us, metrics.health_monitor_violations, 0.0),
+        make_sched_row("Thermal Ctrl",  "High",   100, 5,  metrics.thermal_ctrl_drift_us,    metrics.thermal_ctrl_violations,    metrics.cpu_util_pct),
+        make_sched_row("Data Compress", "Medium", 500, 20, metrics.data_compress_drift_us,   metrics.data_compress_violations,   metrics.cpu_util_pct),
+        make_sched_row("Health Monitor","Low",   1000, 50, metrics.health_monitor_drift_us,  metrics.health_monitor_violations,  metrics.cpu_util_pct),
     ];
     let panel_d = Table::new(sched_rows, [Constraint::Percentage(20), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(13), Constraint::Percentage(12), Constraint::Percentage(10)])
         .header(sched_header)
@@ -305,7 +359,10 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
         "OPEN" | _ => Color::Red,
     };
     let fault_para = Paragraph::new(vec![
-        Line::from(format!("Faults injected:  {}      Next fault in: {}s", metrics.fault_total_injected, metrics.fault_next_in_s)),
+        Line::from(format!("Faults injected:  {}      Next fault in: {}s",
+            metrics.fault_total_injected,
+            metrics.fault_next_fire_at_s.saturating_sub(elapsed.as_secs()),
+        )),
         Line::from(format!("Last fault type:  {}", metrics.fault_last_type)),
         Line::from(vec![Span::raw("Last recovery:    "), Span::styled(rec_str, Style::default().fg(rec_color)), Span::raw("  [OK < 200ms]")] ),
         Line::from(format!("Max recovery:     {}ms", metrics.fault_max_recovery_ms)),

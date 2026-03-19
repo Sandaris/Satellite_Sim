@@ -1,6 +1,5 @@
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
 use shared::config::{THERMAL_CTRL_PERIOD_MS, DATA_COMPRESS_PERIOD_MS, HEALTH_MONITOR_PERIOD_MS};
 use shared::metrics::TaskMetrics;
 
@@ -17,11 +16,12 @@ pub struct ScheduledTask {
 }
 
 pub async fn run_rms_scheduler(
-    cancel: CancellationToken,
+    mut cancel: tokio::sync::watch::Receiver<bool>,
     heartbeat: Arc<AtomicU64>,
     sim_start: Arc<Instant>,
     ui_metrics: Arc<tokio::sync::Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
+    let task_start = Instant::now();
     let mut tasks = vec![
         ScheduledTask {
             name: "ThermalControl",
@@ -29,7 +29,7 @@ pub async fn run_rms_scheduler(
             period_ms: THERMAL_CTRL_PERIOD_MS,
             wcet_ms: 5,
             deadline_ms: THERMAL_CTRL_PERIOD_MS,
-            next_release: *sim_start + Duration::from_millis(THERMAL_CTRL_PERIOD_MS),
+            next_release: task_start + Duration::from_millis(THERMAL_CTRL_PERIOD_MS),
             exec_count: 0, miss_count: 0,
         },
         ScheduledTask {
@@ -38,7 +38,7 @@ pub async fn run_rms_scheduler(
             period_ms: DATA_COMPRESS_PERIOD_MS,
             wcet_ms: 20,
             deadline_ms: DATA_COMPRESS_PERIOD_MS,
-            next_release: *sim_start + Duration::from_millis(DATA_COMPRESS_PERIOD_MS),
+            next_release: task_start + Duration::from_millis(DATA_COMPRESS_PERIOD_MS),
             exec_count: 0, miss_count: 0,
         },
         ScheduledTask {
@@ -47,7 +47,7 @@ pub async fn run_rms_scheduler(
             period_ms: HEALTH_MONITOR_PERIOD_MS,
             wcet_ms: 50,
             deadline_ms: HEALTH_MONITOR_PERIOD_MS,
-            next_release: *sim_start + Duration::from_millis(HEALTH_MONITOR_PERIOD_MS),
+            next_release: task_start + Duration::from_millis(HEALTH_MONITOR_PERIOD_MS),
             exec_count: 0, miss_count: 0,
         },
     ];
@@ -60,7 +60,7 @@ pub async fn run_rms_scheduler(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel.changed() => break,
             _ = tick.tick() => {}
         }
 
@@ -104,7 +104,7 @@ pub async fn run_rms_scheduler(
             if idx > 0 && now + wcet > thermal_release {
                 let time_until_thermal = thermal_release.saturating_duration_since(now);
                 tokio::select! {
-                    _ = cancel.cancelled() => break,
+                    _ = cancel.changed() => break,
                     _ = tokio::time::sleep(time_until_thermal) => {
                         // Preempted by ThermalControl
                     }
@@ -112,7 +112,7 @@ pub async fn run_rms_scheduler(
                 continue; // Skip advancing next_release for preempted task
             } else {
                 tokio::select! {
-                    _ = cancel.cancelled() => break,
+                    _ = cancel.changed() => break,
                     _ = tokio::time::sleep(wcet) => {}
                 }
             }

@@ -1,7 +1,6 @@
 use std::sync::Arc;
 use tokio::time::{Duration, Instant};
 use tokio::sync::Mutex;
-use tokio_util::sync::CancellationToken;
 use crossterm::{
     terminal::{enable_raw_mode, disable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
@@ -11,6 +10,59 @@ use ratatui::{
     widgets::*,
     backend::CrosstermBackend,
 };
+use tracing_subscriber::Layer;
+
+pub struct TuiLogger {
+    metrics: Arc<Mutex<GcsMetricsSnapshot>>,
+    sim_start: Arc<Instant>,
+}
+
+impl TuiLogger {
+    pub fn new(metrics: Arc<Mutex<GcsMetricsSnapshot>>, sim_start: Arc<Instant>) -> Self {
+        Self { metrics, sim_start }
+    }
+}
+
+impl<S> Layer<S> for TuiLogger
+where
+    S: tracing::Subscriber,
+{
+    fn on_event(
+        &self,
+        event: &tracing::Event<'_>,
+        _ctx: tracing_subscriber::layer::Context<'_, S>,
+    ) {
+        let level = match *event.metadata().level() {
+            tracing::Level::ERROR => 2,
+            tracing::Level::WARN => 1,
+            _ => 0,
+        };
+
+        let mut visitor = LogVisitor::default();
+        event.record(&mut visitor);
+        
+        push_log(&self.metrics, level, visitor.message, &self.sim_start);
+    }
+}
+
+#[derive(Default)]
+struct LogVisitor {
+    message: String,
+}
+
+impl tracing::field::Visit for LogVisitor {
+    fn record_debug(&mut self, field: &tracing::field::Field, value: &dyn std::fmt::Debug) {
+        if field.name() == "message" {
+            self.message = format!("{:?}", value);
+        }
+    }
+
+    fn record_str(&mut self, field: &tracing::field::Field, value: &str) {
+        if field.name() == "message" {
+            self.message = value.to_string();
+        }
+    }
+}
 
 #[derive(Clone)]
 pub struct GcsMetricsSnapshot {
@@ -30,6 +82,11 @@ pub struct GcsMetricsSnapshot {
     pub decode_latency_last_us: u64,
     pub decode_deadline_misses: u64,
 
+    // Last packet arrival (sim elapsed ms) per sensor
+    pub thermal_last_recv_elapsed_ms: u64,
+    pub power_last_recv_elapsed_ms:   u64,
+    pub imu_last_recv_elapsed_ms:     u64,
+
     // UDP latency histogram buckets (counts per bucket)
     pub latency_buckets:        [u64; 8],  // <1ms,1-2,2-5,5-10,10-20,20-50,50-100,>100
     pub latency_p50_us:         u64,
@@ -42,7 +99,7 @@ pub struct GcsMetricsSnapshot {
     pub cmd_emergency_count:    usize,
     pub cmd_urgent_count:       usize,
     pub cmd_routine_count:      usize,
-    pub recent_commands:        std::collections::VecDeque<(String, String, u64, String)>, // (time, type, dispatch_us, result)
+    pub recent_commands:        std::collections::VecDeque<(String, String, u8, u64, String)>, // (time, type, priority, dispatch_us, result)
     pub cmd_total_sent:         u64,
     pub cmd_deadline_misses:    u64,
     pub cmd_rejected_count:     u64,
@@ -75,6 +132,7 @@ impl Default for GcsMetricsSnapshot {
             power_recv_count: 0, power_lost_count: 0, power_drift_last_us: 0,
             imu_recv_count: 0, imu_lost_count: 0, imu_drift_last_us: 0,
             decode_latency_last_us: 0, decode_deadline_misses: 0,
+            thermal_last_recv_elapsed_ms: 0, power_last_recv_elapsed_ms: 0, imu_last_recv_elapsed_ms: 0,
             latency_buckets: [0; 8],
             latency_p50_us: 0, latency_p99_us: 0, latency_max_us: 0, latency_avg_us: 0,
             cmd_queue_depth: 0, cmd_emergency_count: 0, cmd_urgent_count: 0, cmd_routine_count: 0,
@@ -115,8 +173,9 @@ pub fn push_log(
 pub async fn run_ui(
     metrics: Arc<Mutex<GcsMetricsSnapshot>>,
     sim_start: Arc<Instant>,
-    cancel: CancellationToken,
+    cancel_tx: tokio::sync::watch::Sender<bool>,
 ) {
+    let mut cancel_rx = cancel_tx.subscribe();
     enable_raw_mode().unwrap();
     std::io::stdout().execute(EnterAlternateScreen).unwrap();
 
@@ -127,7 +186,7 @@ pub async fn run_ui(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel_rx.changed() => break,
             _ = interval.tick() => {
                 let snapshot = { metrics.lock().await.clone() };
 
@@ -138,7 +197,7 @@ pub async fn run_ui(
                 if crossterm::event::poll(Duration::from_millis(0)).unwrap() {
                     if let crossterm::event::Event::Key(k) = crossterm::event::read().unwrap() {
                         if k.code == crossterm::event::KeyCode::Char('q') {
-                            cancel.cancel();
+                            let _ = cancel_tx.send(true);
                             break;
                         }
                     }
@@ -182,7 +241,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     
     // Panel A: Telemetry
     let tel_header = Row::new(vec!["Sensor", "Expected", "Last Arr", "Drift(us)", "Recv", "Lost", "Loss%"]);
-    let make_tel_row = |name: &str, exp: u64, last: u64, drift: i64, recv: u64, lost: u64| {
+    let make_tel_row = |name: &str, exp: u64, last_elapsed_ms: u64, drift: i64, recv: u64, lost: u64| {
         let loss_pct = if recv + lost == 0 { 0.0 } else { lost as f64 / (recv + lost) as f64 * 100.0 };
         let mut d_style = Style::default();
         if drift.abs() > (exp * 1000) as i64 { d_style = d_style.fg(Color::Red); }
@@ -193,17 +252,24 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         else if loss_pct > 0.0 { l_style = l_style.fg(Color::Yellow); }
         else { l_style = l_style.fg(Color::Green); }
 
+        let last_str = if last_elapsed_ms == 0 {
+            "--".to_string()
+        } else {
+            let s   = last_elapsed_ms / 1000;
+            let ms  = last_elapsed_ms % 1000;
+            format!("{:02}:{:02}.{:03}", s / 60, s % 60, ms)
+        };
+
         Row::new(vec![
-            Cell::from(name.to_string()), Cell::from(format!("{}ms", exp)), Cell::from(last.to_string()),
+            Cell::from(name.to_string()), Cell::from(format!("{}ms", exp)), Cell::from(last_str),
             Cell::from(drift.to_string()).style(d_style), Cell::from(recv.to_string()), Cell::from(lost.to_string()),
             Cell::from(format!("{:.1}%", loss_pct)).style(l_style)
         ])
     };
-    // Note: 'last' is not in metrics, drift is. We will omit 'Last Arr' accurate value and just show drift. Wait, prompt says "Last Arrival" is a column. I can use drift or a derived value or just omit if no value in struct.
     let tel_rows = vec![
-        make_tel_row("Thermal", 100, 0, metrics.thermal_drift_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
-        make_tel_row("Power", 500, 0, metrics.power_drift_last_us, metrics.power_recv_count, metrics.power_lost_count),
-        make_tel_row("IMU", 20, 0, metrics.imu_drift_last_us, metrics.imu_recv_count, metrics.imu_lost_count),
+        make_tel_row("Thermal", 100, metrics.thermal_last_recv_elapsed_ms, metrics.thermal_drift_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
+        make_tel_row("Power",   200, metrics.power_last_recv_elapsed_ms,   metrics.power_drift_last_us,   metrics.power_recv_count,   metrics.power_lost_count),
+        make_tel_row("IMU",     500, metrics.imu_last_recv_elapsed_ms,     metrics.imu_drift_last_us,     metrics.imu_recv_count,     metrics.imu_lost_count),
     ];
     let panel_a = Table::new(tel_rows, [Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(10)])
         .header(tel_header)
@@ -215,9 +281,18 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     // Panel B: Uplink
     let b_full = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(4), Constraint::Length(3)]).split(ab_layout[1]);
     let cmd_header = Row::new(vec!["Time", "Cmd Type", "Priority", "Dispatch(us)", "Result"]);
-    let cmd_rows = metrics.recent_commands.iter().map(|(time, ctype, disp, res)| {
+    let cmd_rows = metrics.recent_commands.iter().map(|(time, ctype, prio, disp, res)| {
         let r_style = if res == "SENT" { Style::default().fg(Color::Green) } else { Style::default().fg(Color::Red) };
-        Row::new(vec![Cell::from(time.clone()), Cell::from(ctype.clone()), Cell::from(""), Cell::from(disp.to_string()), Cell::from(res.clone()).style(r_style)]) // priority not saved in tuple, empty string if needed
+        let prio_str = match *prio {
+            1 => "Emergency",
+            2 => "Urgent",
+            3 => "Routine",
+            _ => "--",
+        };
+        Row::new(vec![
+            Cell::from(time.clone()), Cell::from(ctype.clone()),
+            Cell::from(prio_str), Cell::from(disp.to_string()), Cell::from(res.clone()).style(r_style),
+        ])
     }).collect::<Vec<_>>();
     frame.render_widget(Table::new(cmd_rows, [Constraint::Percentage(20), Constraint::Percentage(30), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(20)]).header(cmd_header).block(Block::default().title(" UPLINK COMMAND QUEUE ").borders(Borders::ALL)), b_full[0]);
     

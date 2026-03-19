@@ -1,0 +1,216 @@
+﻿cargo :     Checking 
+shared v0.1.0 (C:\Users
+\User\Documents\APU\RTS
+\Assignment\Satellite_S
+im\satellite-gcs-rts\sh
+ared)
+At line:1 char:1
++ cargo check 2>&1 | 
+Out-File -Encoding 
+utf8 build_check4.txt; 
+Get-Cont ...
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (    Checking    
+ sh...gcs-rts\share    
+d):String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+    Checking ground 
+v0.1.0 (C:\Users\User\D
+ocuments\APU\RTS\Assign
+ment\Satellite_Sim\sate
+llite-gcs-rts\ground)
+    Checking satellite 
+v0.1.0 (C:\Users\User\D
+ocuments\APU\RTS\Assign
+ment\Satellite_Sim\sate
+llite-gcs-rts\satellite
+)
+warning: unused 
+import: `fmt`
+ --> 
+ground\src\main.rs:1:26
+  |
+1 | use tracing_subscri
+ber::{fmt, EnvFilter};
+  |                    
+      ^^^
+  |
+  = note: `#[warn(unuse
+d_imports)]` (part of 
+`#[warn(unused)]`) on 
+by default
+
+warning: unused 
+import: 
+`tokio::net::UdpSocket`
+ --> 
+ground\src\main.rs:8:5
+  |
+8 | use 
+tokio::net::UdpSocket;
+  |     
+^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused 
+import: `fmt`
+ --> satellite\src\main
+.rs:1:26
+  |
+1 | use tracing_subscri
+ber::{fmt, EnvFilter};
+  |                    
+      ^^^
+  |
+  = note: `#[warn(unuse
+d_imports)]` (part of 
+`#[warn(unused)]`) on 
+by default
+
+warning: unused 
+import: 
+`tokio::net::UdpSocket`
+ --> satellite\src\main
+.rs:9:5
+  |
+9 | use 
+tokio::net::UdpSocket;
+  |     
+^^^^^^^^^^^^^^^^^^^^^
+
+warning: variant 
+`Degraded` is never 
+constructed
+ --> satellite\src\stat
+e.rs:4:5
+  |
+2 | pub enum 
+SystemState {
+  |          
+----------- variant in 
+this enum
+3 |     Nominal,       
+   // all systems go
+4 |     Degraded,      
+   // buffer > 80%, 
+downgraded transmission
+  |     ^^^^^^^^
+  |
+  = note: 
+`SystemState` has 
+derived impls for the 
+traits `Clone` and 
+`Debug`, but these are 
+intentionally ignored 
+during dead code 
+analysis
+  = note: 
+`#[warn(dead_code)]` 
+(part of 
+`#[warn(unused)]`) on 
+by default
+
+warning: field `0` is 
+never read
+  --> satellite\src\fau
+lt.rs:10:38
+   |
+10 | pub enum 
+CircuitState { Closed, 
+Open(Instant), 
+HalfOpen }
+   |                   
+              ---- 
+^^^^^^^
+   |                   
+              |
+   |                   
+              field in 
+this variant
+   |
+help: consider 
+changing the field to 
+be of unit type to 
+suppress this warning 
+while preserving the 
+field numbering, or 
+remove the field
+   |
+10 - pub enum 
+CircuitState { Closed, 
+Open(Instant), 
+HalfOpen }
+10 + pub enum 
+CircuitState { Closed, 
+Open(()), HalfOpen }
+   |
+
+warning: variant 
+`HalfOpen` is never 
+constructed
+  --> satellite\src\fau
+lt.rs:10:48
+   |
+10 | pub enum 
+CircuitState { Closed, 
+Open(Instant), 
+HalfOpen }
+   |          
+------------ variant 
+in this enum     
+^^^^^^^^
+
+warning: fields 
+`consecutive_faults`, 
+`last_fault_at`, and 
+`total_recoveries` are 
+never read
+  --> satellite\src\fau
+lt.rs:14:9
+   |
+12 | pub struct 
+FaultEngine {
+   |            
+----------- fields in 
+this struct
+13 |     pub circuit: 
+CircuitState,
+14 |     pub 
+consecutive_faults: 
+u32,
+   |         
+^^^^^^^^^^^^^^^^^^
+15 |     pub 
+last_fault_at: 
+Option<Instant>,
+   |         
+^^^^^^^^^^^^^
+16 |     pub 
+total_faults: u64,
+17 |     pub 
+total_recoveries: u64,
+   |         
+^^^^^^^^^^^^^^^^
+
+warning: `satellite` 
+(bin "satellite") 
+generated 6 warnings 
+(run `cargo fix --bin 
+"satellite" -p 
+satellite` to apply 2 
+suggestions)
+warning: `ground` (bin 
+"ground") generated 2 
+warnings (run `cargo 
+fix --bin "ground" -p 
+ground` to apply 2 
+suggestions)
+    Finished `dev` 
+profile [unoptimized + 
+debuginfo] target(s) 
+in 0.49s

@@ -1,13 +1,12 @@
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use tokio_util::sync::CancellationToken;
 use shared::packets::{FaultPacket, FaultType, SensorId};
 use shared::config::{FAULT_INJECT_INTERVAL_S, FAULT_RECOVERY_LIMIT_MS};
 use crate::buffer::SensorBuffer;
 use crate::state::SystemState;
 
-pub enum CircuitState { Closed, Open(Instant), HalfOpen }
+pub enum CircuitState { Closed, Open(Instant), #[allow(dead_code)] HalfOpen }
 
 pub struct FaultEngine {
     pub circuit: CircuitState,
@@ -23,7 +22,7 @@ pub async fn run_fault_injector(
     state:     Arc<Mutex<SystemState>>,
     fault_tx:  tokio::sync::mpsc::Sender<FaultPacket>,
     sim_start: Arc<Instant>,
-    cancel:    CancellationToken,
+    mut cancel:    tokio::sync::watch::Receiver<bool>,
     heartbeat: Arc<AtomicU64>,
     ui_metrics: Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
@@ -34,7 +33,7 @@ pub async fn run_fault_injector(
 
     loop {
         tokio::select! {
-            _ = cancel.cancelled() => break,
+            _ = cancel.changed() => break,
             _ = interval.tick() => {}
         }
 
@@ -77,6 +76,8 @@ pub async fn run_fault_injector(
                 tracing::info!(recovery_ms, elapsed_us=sim_start.elapsed().as_micros() as u64, "FAULT RECOVERED");
                 crate::ui::push_log(&ui_metrics, 0, format!("FAULT RECOVERED in {}ms", recovery_ms), &sim_start);
                 engine.circuit = CircuitState::Closed;
+                engine.total_recoveries += 1;
+                engine.consecutive_faults = 0;
             }
             Err(_) => {
                 tracing::error!(recovery_ms, elapsed_us=sim_start.elapsed().as_micros() as u64, limit_ms=FAULT_RECOVERY_LIMIT_MS, "RECOVERY EXCEEDED 200ms — MISSION ABORT");
@@ -84,6 +85,8 @@ pub async fn run_fault_injector(
                 let mut s = state.lock().await;
                 if *s != SystemState::MissionAbort { *s = SystemState::MissionAbort; }
                 engine.circuit = CircuitState::Open(Instant::now());
+                engine.consecutive_faults += 1;
+                engine.last_fault_at = Some(Instant::now());
             }
         }
         
@@ -92,13 +95,17 @@ pub async fn run_fault_injector(
         if let Ok(mut m) = ui_metrics.try_lock() {
             m.fault_total_injected = engine.total_faults as u64;
             m.fault_next_in_s = FAULT_INJECT_INTERVAL_S;
+            m.fault_next_fire_at_s = sim_start.elapsed().as_secs() + FAULT_INJECT_INTERVAL_S;
             m.fault_last_type = format!("{:?}", fault_type);
             m.fault_last_recovery_ms = recovery_ms;
             m.fault_max_recovery_ms = engine.max_recovery_ms;
             m.fault_circuit_state = match engine.circuit {
                 CircuitState::Closed => "CLOSED".to_string(),
                 CircuitState::HalfOpen => "HALF-OPEN".to_string(),
-                CircuitState::Open(_) => "OPEN".to_string(),
+                CircuitState::Open(t) => {
+                    let open_duration = t.elapsed().as_secs();
+                    format!("OPEN ({}s)", open_duration)
+                }
             };
             if let CircuitState::Open(_) = engine.circuit { m.mission_aborts += 1; }
         }
