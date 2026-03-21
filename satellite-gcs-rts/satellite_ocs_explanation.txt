@@ -1,0 +1,31 @@
+# SATELLITE ONBOARD CONTROL SYSTEM (OCS) - ARCHITECTURAL EXPLAINER
+
+This document explains how the current Rust implementation achieves the real-time requirements for the Satellite OCS.
+
+## 1. SENSOR DATA ACQUISITION AND PRIORITIZATION
+*   **Three Sensors:** Implemented in `sensor.rs` as three independent tasks: `run_thermal_sensor` (100ms), `run_power_sensor` (200ms), and `run_imu_sensor` (500ms).
+*   **Sub-ms Jitter:** To ensure jitter is <1ms for critical sensors, we use a hybrid wait strategy in `sensor.rs`: we sleep until 5ms before the deadline, then use a `std::hint::spin_loop()` for the final few microseconds to avoid OS scheduling desync.
+*   **Bounded Buffer & Priority:** `buffer.rs` uses a thread-safe `BinaryHeap` (a min-max heap). Each `SensorReading` has a priority field. If the buffer (capacity 64) is full, the heap automatically ejects the lowest-priority, oldest sample to make room for new high-priority data.
+*   **Metrics:** `sensor.rs` calculates `drift_us` (actual vs. expected start) and `latency_us` (read time vs. buffer insertion time). This is logged to the TUI and `satellite.log`.
+*   **Safety Alert:** In `run_thermal_sensor`, we track `consecutive_miss`. If the jitter exceeds the limit for >3 cycles, the `SystemState` is updated to `Fault`, which is then transmitted to the GCS.
+
+## 2. REAL-TIME TASK SCHEDULING (RMS)
+*   **Tasks:** Located in `scheduler.rs`, managing Thermal Control (Priority 1), Data Compression (Priority 2), and Health Monitoring (Priority 3).
+*   **Strategy (Rate Monotonic):** We use **Rate Monotonic Scheduling (RMS)**, where shorter periods (Thermal Control) get higher static priority.
+*   **Preemption:** The `run_rms_scheduler` loop simulates preemption by checking for higher-priority tasks becoming "ready" while a lower-priority task is still in its simulated execution (WCET). If `ThermalControl` becomes ready, it interrupts the lower tasks.
+*   **Deadline Monitoring:** For every task execution, we compare the `actual_finish` time against the `deadline_ms`. Any overrun is logged as a "DEADLINE VIOLATION."
+*   **CPU Utilization:** We track "active ticks" (time spent executing tasks) vs "total ticks" (the 10ms scheduler interval). This provides a live `% CPU util` metric in the UI.
+
+## 3. DOWNLINK DATA MANAGEMENT
+*   **Packetization:** Data is serialized using `bincode` (high-speed binary serialization) in `downlink.rs`.
+*   **Visibility Window:** The `run_downlink_tx` task operates on a 30ms "Visibility Window" timer. If data cannot be serialized and sent within the window (using `tokio::time::timeout`), a window violation is logged.
+*   **Degraded Mode:** We monitor `buffer.fill_pct()`. If it exceeds 80% (configured in `shared::config`), the system enters **DEGRADED MODE**. In this mode, `downlink.rs` begins filtering the buffer, dropping non-essential priority 2/3 samples (like IMU/Power) to ensure high-priority Thermal data is never lost.
+*   **Latency Monitoring:** `downlink_tx` records the "Queue Latency" (time spent sitting in the buffer) and sends this metric to the GCS.
+
+## 4. BENCHMARKING AND FAULT SIMULATION
+*   **Fault Injection:** Handled by `fault.rs`. Every 60 seconds, it injects manual delays (`DelayedSensor`) or simulates `CorruptedData`.
+*   **Fault Response:** When a fault is injected, the `fault_injector` task waits using0 `wait_for_nominal` to see how long the control tasks take to return the system to a `Nominal` state.
+*   **Recovery Benchmark:** We measure `recovery_ms`. 
+    *   If `recovery_ms < 200ms`: The fault is logged as recovered.
+    *   If `recovery_ms > 200ms`: The system enters **MISSION ABORT**. This triggers a permanent critical state, halting non-essential operations to save the satellite.
+*   **Evaluation:** The system logs high-fidelity stats (max recovery time, total violations, max jitter) into `satellite.log` and the final summary block in `main.rs`.

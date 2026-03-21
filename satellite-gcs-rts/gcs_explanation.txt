@@ -1,0 +1,26 @@
+# GROUND CONTROL STATION (GCS) - ARCHITECTURAL EXPLAINER
+
+This document explains how the current Rust implementation achieves the real-time requirements for the Satellite Ground Control Station.
+
+## 1. TELEMETRY RECEPTION AND DECODING
+*   **Socket-Based Decoding:** Implemented in `telemetry_rx.rs`. It uses a TCP `TcpStream` with a `LengthDelimitedCodec` and `bincode` for sub-3ms deserialization.
+*   **Reception Latency & Drift:** For every packet, we calculate `latency_us` (Arrival Time - Onboard Timestamp) and `drift_us` (Actual interval between packets - Expected sensor period). These are recorded in an `hdrhistogram` for p99 analysis.
+*   **Re-requests:** If the `seq_no` received is greater than `last_seq + 1`, the `enqueue_re_request` function pushes an urgent `RequestTelemetry` command to the uplink queue.
+*   **Loss of Contact:** `telemetry_rx` tracks `last_any_recv_us`. If no packet (telemetry or fault) is received for >3 seconds (exceeding 3 consecutive 1s heartbeats), the system state transitions to `LossOfContact`.
+
+## 2. COMMAND UPLINK SCHEDULER
+*   **Prioritized Schedule:** Commands are managed in `uplink_tx.rs` using a `BinaryHeap<PrioritizedCommand>`. This ensures that "Emergency" (Priority 1) commands are always dispatched before routine data requests.
+*   **2ms Dispatch Deadline:** The `uplink_tx` loop uses a `tokio::time::timeout` set to 2ms (`CMD_DISPATCH_MS`) for the socket write operation. If a write hangs or takes longer, a "DISPATCH DEADLINE MISSED" violation is logged.
+*   **Safety Interlocks:** Before dispatching, the scheduler checks the `GcsSystemState`. If the state is `InterlockActive` or `LossOfContact`, it rejects any command with priority > 1 (Non-Essential commands).
+*   **Adherence Logs:** Every command result (Sent, Timeout, Rejected) is logged with its priority and the exact `dispatch_us` duration.
+
+## 3. FAULT MANAGEMENT AND INTERLOCKS
+*   **Fault Detection:** All `FaultPacket` objects sent from the satellite are intercepted by `telemetry_rx` and forwarded to a dedicated `fault_mgr.rs` task via a high-priority channel.
+*   **Command Blocking:** When a fault is detected, the `fault_mgr` immediately updates the shared `SystemState` to `InterlockActive`. This acts as an "Air-Gap" for non-essential uplink commands.
+*   **Interlock Latency:** The system measures the delta between the time a fault was detected and the time the safety state was applied.
+*   **Critical Ground Alert:** If the `fault_mgr` cannot process the fault or if the interlock latency exceeds 100ms, the UI triggers a critical ground alert in the Event Log.
+
+## 4. SYSTEM PERFORMANCE MONITORING
+*   **Benchmarks:** The `perf_monitor.rs` task periodically calculates system load and telemetry backlog (the depth of the incoming packet buffer).
+*   **Metrics Tracking:** All metrics (Uplink jitter, telemetry seq gaps, and scheduling drift) are collected in `GcsMetricsSnapshot` and displayed in the TUI dashboard.
+*   **Real-Time Logging:** Every action across all tasks is wrapped with a `tracing::info!` or `ui::push_log` call, ensuring that all events have microsecond-accurate timestamps prefixed to their logs.
