@@ -154,11 +154,24 @@ pub async fn run_telemetry_rx(
                     }
                 }
             }
-            if let Some(h) = lat_hist.get(&packet.sensor_id) {
                 m.latency_p50_us = h.value_at_percentile(50.0);
                 m.latency_p99_us = h.value_at_percentile(99.0);
                 m.latency_max_us = h.max();
                 m.latency_avg_us = if h.len() > 0 { h.mean() as u64 } else { 0 };
+
+                // Update buckets for visual histogram
+                let lat_ms = latency_us / 1000;
+                let bucket_idx = match lat_ms {
+                    0 => 0,           // <1ms
+                    1 => 1,           // 1-2ms
+                    2..=4 => 2,       // 2-5ms
+                    5..=9 => 3,       // 5-10ms
+                    10..=19 => 4,     // 10-20ms
+                    20..=49 => 5,     // 20-50ms
+                    50..=99 => 6,     // 50-100ms
+                    _ => 7,           // >100ms
+                };
+                m.latency_buckets[bucket_idx] += 1;
             }
             
             m.consecutive_gaps = consecutive_gap;

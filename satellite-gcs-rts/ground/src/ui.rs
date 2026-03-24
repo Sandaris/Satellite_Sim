@@ -312,7 +312,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         ("<1ms", metrics.latency_buckets[0]), ("1-2ms", metrics.latency_buckets[1]),
         ("2-5ms", metrics.latency_buckets[2]), ("5-10ms", metrics.latency_buckets[3]),
         ("10-20", metrics.latency_buckets[4]), ("20-50", metrics.latency_buckets[5]),
-        ("50-10", metrics.latency_buckets[6]), (">100m", metrics.latency_buckets[7]),
+        ("50-100", metrics.latency_buckets[6]), (">100ms", metrics.latency_buckets[7]),
     ];
     let chart_data: Vec<(&str, u64)> = buckets.to_vec();
     let chart = BarChart::default()

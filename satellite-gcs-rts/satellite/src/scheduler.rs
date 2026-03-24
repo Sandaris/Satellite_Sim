@@ -1,19 +1,16 @@
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::time::{Duration, Instant};
 use shared::config::{THERMAL_CTRL_PERIOD_MS, DATA_COMPRESS_PERIOD_MS, HEALTH_MONITOR_PERIOD_MS};
-use shared::metrics::TaskMetrics;
 
 #[derive(Debug, Clone)]
 pub struct ScheduledTask {
     pub name:        &'static str,
-    pub priority:    u8,
     pub period_ms:   u64,
     pub wcet_ms:     u64,
     pub deadline_ms: u64,
     pub next_release: Instant,
     pub exec_count:  u64,
     pub miss_count:  u64,
-    pub preemption_count: u64,
 }
 
 pub async fn run_rms_scheduler(
@@ -26,30 +23,27 @@ pub async fn run_rms_scheduler(
     let tasks = Arc::new(tokio::sync::Mutex::new(vec![
         ScheduledTask {
             name: "ThermalControl",
-            priority: 1,
             period_ms: THERMAL_CTRL_PERIOD_MS,
             wcet_ms: 5,
             deadline_ms: THERMAL_CTRL_PERIOD_MS,
             next_release: task_start + Duration::from_millis(THERMAL_CTRL_PERIOD_MS),
-            exec_count: 0, miss_count: 0, preemption_count: 0,
+            exec_count: 0, miss_count: 0,
         },
         ScheduledTask {
             name: "DataCompress",
-            priority: 2,
             period_ms: DATA_COMPRESS_PERIOD_MS,
             wcet_ms: 20,
             deadline_ms: DATA_COMPRESS_PERIOD_MS,
             next_release: task_start + Duration::from_millis(DATA_COMPRESS_PERIOD_MS),
-            exec_count: 0, miss_count: 0, preemption_count: 0,
+            exec_count: 0, miss_count: 0,
         },
         ScheduledTask {
             name: "HealthMonitor",
-            priority: 3,
             period_ms: HEALTH_MONITOR_PERIOD_MS,
             wcet_ms: 50,
             deadline_ms: HEALTH_MONITOR_PERIOD_MS,
             next_release: task_start + Duration::from_millis(HEALTH_MONITOR_PERIOD_MS),
-            exec_count: 0, miss_count: 0, preemption_count: 0,
+            exec_count: 0, miss_count: 0,
         },
     ]));
 
@@ -114,7 +108,7 @@ pub async fn run_rms_scheduler(
                     tokio::time::sleep(wcet).await;
 
                     let actual_finish = Instant::now();
-                    let execution_time_us = actual_finish.duration_since(start_exec).as_micros() as u64;
+                    let _execution_time_us = actual_finish.duration_since(start_exec).as_micros() as u64;
                     let is_miss = actual_finish > (release_time + deadline);
 
                     let mut final_tasks = tasks_shared.lock().await;
