@@ -78,7 +78,7 @@ impl SensorBuffer {
         // Peak min_heap for lowest priority item (Reverse heap -> peek is min of original)
         if let Some(lowest_item_rev) = self.min_heap.peek() {
             let lowest_item = &lowest_item_rev.0;
-            if reading.cmp(lowest_item) > Ordering::Equal {
+            if reading.packet.priority < lowest_item.packet.priority {
                 // Incoming reading has HIGHER priority than the current lowest.
                 // Replace the lowest-priority item.
                 let target_to_remove = lowest_item.clone();

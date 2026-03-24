@@ -38,6 +38,11 @@ pub async fn run_fault_injector(
             _ = interval.tick() => {}
         }
 
+        if let CircuitState::Open(_) = engine.circuit {
+            tracing::info!("Circuit is OPEN (MissionAbort) - stopping fault injector");
+            break;
+        }
+
         let fault_start = Instant::now();
         engine.last_fault_at = Some(fault_start);
         let fault_type = if toggle { FaultType::CorruptedData } else { FaultType::DelayedSensor };
@@ -69,7 +74,7 @@ pub async fn run_fault_injector(
 
         let recovery_result = tokio::time::timeout(
             Duration::from_millis(FAULT_RECOVERY_LIMIT_MS),
-            wait_for_nominal(&state)
+            wait_for_nominal(&state, &mut cancel)
         ).await;
 
         let recovery_ms = fault_start.elapsed().as_millis() as u64;
@@ -120,12 +125,16 @@ pub async fn run_fault_injector(
                    max_recovery_ms=engine.max_recovery_ms, "fault_injector final stats");
 }
 
-async fn wait_for_nominal(state: &Arc<Mutex<SystemState>>) {
+async fn wait_for_nominal(state: &Arc<Mutex<SystemState>>, cancel: &mut tokio::sync::watch::Receiver<bool>) {
     let mut check_interval = tokio::time::interval(Duration::from_millis(10));
     loop {
-        check_interval.tick().await;
-        if *state.lock().await == SystemState::Nominal {
-            break;
+        tokio::select! {
+            _ = cancel.changed() => break,
+            _ = check_interval.tick() => {
+                if *state.lock().await == SystemState::Nominal {
+                    break;
+                }
+            }
         }
     }
 }
