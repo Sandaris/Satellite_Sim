@@ -25,6 +25,7 @@ pub async fn run_downlink_tx(
     let mut framed_writer = FramedWrite::new(writer, codec.new_codec());
 
     let mut interval = tokio::time::interval(Duration::from_millis(shared::config::DOWNLINK_WINDOW_MS));
+    let mut last_abort_warn = Instant::now() - Duration::from_secs(60);
     let mut tx_log_seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
 
@@ -37,7 +38,7 @@ pub async fn run_downlink_tx(
         let elapsed_us = sim_start.elapsed().as_micros() as u64;
         let window_start = Instant::now();
 
-        // Forward fault packets preferentially
+        // Forward fault packets preferentially (Always allowed)
         while let Ok(fault) = fault_rx.try_recv() {
             if let Ok(bytes) = bincode::serialize(&fault) {
                 let mut prefixed = Vec::with_capacity(bytes.len() + 1);
@@ -47,20 +48,31 @@ pub async fn run_downlink_tx(
             }
         }
 
-        let degraded = { buffer.lock().await.is_degraded() };
-        if degraded {
-            let mut s = _state.lock().await;
-            if *s == SystemState::Nominal {
-                *s = SystemState::Degraded;
+        let (degraded, abort) = {
+            let s = _state.lock().await;
+            let d = buffer.lock().await.is_degraded();
+            (d, *s == SystemState::MissionAbort)
+        };
+
+        if abort {
+            if last_abort_warn.elapsed() > Duration::from_secs(5) {
+                tracing::warn!("Satellite in MISSION ABORT - halting non-fault telemetry");
+                crate::ui::push_log(&ui_metrics, 1, "MISSION ABORT - telemetry halted".to_string(), &sim_start);
+                last_abort_warn = Instant::now();
             }
         } else {
-            let mut s = _state.lock().await;
-            if *s == SystemState::Degraded {
-                *s = SystemState::Nominal;
+            if degraded {
+                let mut s = _state.lock().await;
+                if *s == SystemState::Nominal { *s = SystemState::Degraded; }
+            } else {
+                let mut s = _state.lock().await;
+                if *s == SystemState::Degraded { *s = SystemState::Nominal; }
             }
         }
         
         for _ in 0..10 {
+            if abort { break; } // Respect MissionAbort
+
             let reading = { buffer.lock().await.pop() };
             let reading = match reading { Some(r) => r, None => break };
 
