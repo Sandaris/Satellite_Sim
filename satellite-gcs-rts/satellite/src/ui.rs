@@ -314,24 +314,24 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     frame.render_widget(sys_state_p, top_panels[2]);
 
     // Panel D: RMS Scheduler
-    let sched_header = Row::new(vec!["Task", "Priority", "Period(ms)", "WCET(ms)", "Last Drift(us)", "Violations", "CPU %"])
+    let sched_header = Row::new(vec!["Task", "Priority", "Period(ms)", "WCET(ms)", "Last Drift(us)", "Violations", "Preempted", "CPU %"])
         .style(Style::default().add_modifier(Modifier::BOLD));
-    let make_sched_row = |name: &str, prio: &str, period: u64, wcet: u64, drift: i64, viol: u64, cpu: f64| {
+    let make_sched_row = |name: &str, prio: &str, period: u64, wcet: u64, drift: i64, viol: u64, pre: u64, cpu: f64| {
         let mut style = Style::default();
         if drift > (wcet * 1000) as i64 {
             style = style.fg(Color::Red);
         }
         Row::new(vec![
             name.to_string(), prio.to_string(), period.to_string(), wcet.to_string(),
-            drift.to_string(), viol.to_string(), format!("{:.1}%", cpu)
+            drift.to_string(), viol.to_string(), pre.to_string(), format!("{:.1}%", cpu)
         ]).style(style)
     };
     let sched_rows = vec![
-        make_sched_row("Thermal Ctrl",  "High",   100, 5,  metrics.thermal_ctrl_drift_us,    metrics.thermal_ctrl_violations,    metrics.cpu_util_pct),
-        make_sched_row("Data Compress", "Medium", 500, 20, metrics.data_compress_drift_us,   metrics.data_compress_violations,   metrics.cpu_util_pct),
-        make_sched_row("Health Monitor","Low",   1000, 50, metrics.health_monitor_drift_us,  metrics.health_monitor_violations,  metrics.cpu_util_pct),
+        make_sched_row("Thermal Ctrl",  "High",   100, 5,  metrics.thermal_ctrl_drift_us,    metrics.thermal_ctrl_violations,    metrics.thermal_ctrl_preemptions,    metrics.cpu_util_pct),
+        make_sched_row("Data Compress", "Medium", 500, 20, metrics.data_compress_drift_us,   metrics.data_compress_violations,   metrics.data_compress_preemptions,   metrics.cpu_util_pct),
+        make_sched_row("Health Monitor","Low",   1000, 50, metrics.health_monitor_drift_us,  metrics.health_monitor_violations,  metrics.health_monitor_preemptions,  metrics.cpu_util_pct),
     ];
-    let panel_d = Table::new(sched_rows, [Constraint::Percentage(20), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(13), Constraint::Percentage(12), Constraint::Percentage(10)])
+    let panel_d = Table::new(sched_rows, [Constraint::Percentage(18), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(10)])
         .header(sched_header)
         .block(Block::default().title(" RMS SCHEDULER ").borders(Borders::ALL));
     frame.render_widget(panel_d, main_layout[2]);
