@@ -24,3 +24,11 @@ ratatui       = "0.26"
 bytes         = "1"
 crossterm     = "0.27"
 futures       = "0.3"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "ground_benches"
+harness = false
+
