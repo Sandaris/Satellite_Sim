@@ -250,18 +250,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _ = h.await;
     }
 
+    let final_metrics = metrics_snapshot.lock().await.clone();
+
     // Print final summary log
     tracing::info!(
-        total_pkts_received = 0,
-        total_pkts_lost = 0,
-        pkt_loss_rate_pct = 0.0,
-        avg_one_way_latency_us = 0,
-        p99_latency_us = 0,
-        total_cmds_sent = 0,
-        cmds_dispatch_missed = 0,
-        total_faults_received = 0,
-        avg_interlock_latency_us = 0,
-        loss_of_contact_events = 0,
+        total_pkts_received = final_metrics.total_pkts_received,
+        total_pkts_lost = final_metrics.total_pkts_lost,
+        reception_rate_pct = final_metrics.reception_rate_pct,
+        latency_p50_us = final_metrics.latency_p50_us,
+        latency_p99_us = final_metrics.latency_p99_us,
+        latency_max_us = final_metrics.latency_max_us,
+        total_cmds_sent = final_metrics.cmd_total_sent,
+        cmds_dispatch_missed = final_metrics.cmd_deadline_misses,
+        total_faults_received = final_metrics.fault_received_count,
+        interlock_max_us = final_metrics.interlock_max_us,
+        critical_alerts_count = final_metrics.critical_alerts,
         "=== GCS SIMULATION COMPLETE ==="
     );
 

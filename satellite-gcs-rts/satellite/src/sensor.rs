@@ -14,6 +14,7 @@ pub async fn run_thermal_sensor(
     mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
+    corrupt_flag: Arc<std::sync::atomic::AtomicBool>,
 ) {
     let period = Duration::from_millis(THERMAL_PERIOD_MS);
     let task_start = Instant::now();
@@ -72,7 +73,12 @@ pub async fn run_thermal_sensor(
         }
 
         let ts_us = sim_start.elapsed().as_micros() as u64;
-        let packet = TelemetryPacket::new(seq, ts_us, SensorId::Thermal, value);
+        let mut packet = TelemetryPacket::new(seq, ts_us, SensorId::Thermal, value);
+        if corrupt_flag.load(std::sync::atomic::Ordering::Relaxed) {
+            packet.is_corrupted = true;
+            packet.value = f64::NAN;
+            packet.payload[0] = 0xFF; // corrupt payload marker
+        }
 
         let insert_us = sim_start.elapsed().as_micros() as u64;
         let reading = SensorReading { packet, buffer_insert_us: insert_us };
@@ -134,6 +140,7 @@ pub async fn run_power_sensor(
     mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
+    corrupt_flag: Arc<std::sync::atomic::AtomicBool>,
 ) {
     let period = Duration::from_millis(POWER_PERIOD_MS);
     let task_start = Instant::now();
@@ -170,7 +177,10 @@ pub async fn run_power_sensor(
 
         let value: f64 = rand::thread_rng().gen_range(0.5..5.0);
         let ts_us = sim_start.elapsed().as_micros() as u64;
-        let packet = TelemetryPacket::new(seq, ts_us, SensorId::Power, value);
+        let mut packet = TelemetryPacket::new(seq, ts_us, SensorId::Power, value);
+        if corrupt_flag.load(std::sync::atomic::Ordering::Relaxed) {
+            packet.is_corrupted = true;
+        }
 
         let insert_us = sim_start.elapsed().as_micros() as u64;
         let reading = SensorReading { packet, buffer_insert_us: insert_us };
@@ -214,6 +224,7 @@ pub async fn run_imu_sensor(
     mut cancel:      tokio::sync::watch::Receiver<bool>,
     heartbeat:  Arc<AtomicU64>,
     metrics:    Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
+    corrupt_flag: Arc<std::sync::atomic::AtomicBool>,
 ) {
     let period = Duration::from_millis(IMU_PERIOD_MS);
     let task_start = Instant::now();
@@ -250,7 +261,10 @@ pub async fn run_imu_sensor(
 
         let value: f64 = rand::thread_rng().gen_range(-0.1..0.1);
         let ts_us = sim_start.elapsed().as_micros() as u64;
-        let packet = TelemetryPacket::new(seq, ts_us, SensorId::Imu, value);
+        let mut packet = TelemetryPacket::new(seq, ts_us, SensorId::Imu, value);
+        if corrupt_flag.load(std::sync::atomic::Ordering::Relaxed) {
+            packet.is_corrupted = true;
+        }
 
         let insert_us = sim_start.elapsed().as_micros() as u64;
         let reading = SensorReading { packet, buffer_insert_us: insert_us };

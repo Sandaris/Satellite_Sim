@@ -25,6 +25,7 @@ pub async fn run_fault_injector(
     mut cancel:    tokio::sync::watch::Receiver<bool>,
     heartbeat: Arc<AtomicU64>,
     ui_metrics: Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
+    corrupt_flag: Arc<std::sync::atomic::AtomicBool>,
 ) {
     let mut interval = tokio::time::interval(Duration::from_secs(FAULT_INJECT_INTERVAL_S));
     interval.tick().await; // skip first 
@@ -50,7 +51,9 @@ pub async fn run_fault_injector(
                 tokio::time::sleep(Duration::from_millis(50)).await;
             }
             FaultType::CorruptedData => {
-                // Simplified payload corruption via buffer (if we manipulated buffer directly)
+                corrupt_flag.store(true, std::sync::atomic::Ordering::Relaxed);
+                tokio::time::sleep(Duration::from_millis(500)).await;
+                corrupt_flag.store(false, std::sync::atomic::Ordering::Relaxed);
             }
             _ => {}
         }

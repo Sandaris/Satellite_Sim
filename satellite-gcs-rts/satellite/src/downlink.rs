@@ -66,7 +66,7 @@ pub async fn run_downlink_tx(
 
             if degraded && reading.packet.priority > 1 { continue; }
 
-            let mut pkt = reading.packet;
+            let pkt = reading.packet;
 
             let bytes = match bincode::serialize(&pkt) {
                 Ok(b)  => b,

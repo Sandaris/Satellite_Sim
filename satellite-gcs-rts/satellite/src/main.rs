@@ -65,6 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let state = Arc::new(Mutex::new(SystemState::Nominal));
     let buffer = Arc::new(Mutex::new(buffer::SensorBuffer::new(shared::config::SENSOR_BUFFER_CAPACITY)));
+    let corrupt_flag = Arc::new(std::sync::atomic::AtomicBool::new(false));
 
     let (fault_tx, fault_rx) = tokio::sync::mpsc::channel(100);
 
@@ -109,15 +110,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Background Tasks
     handles.push(tokio::spawn(sensor::run_thermal_sensor(
-        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_thermal.clone(), metrics_snapshot.clone()
+        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_thermal.clone(), metrics_snapshot.clone(), corrupt_flag.clone()
     )));
 
     handles.push(tokio::spawn(sensor::run_power_sensor(
-        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_power.clone(), metrics_snapshot.clone()
+        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_power.clone(), metrics_snapshot.clone(), corrupt_flag.clone()
     )));
 
     handles.push(tokio::spawn(sensor::run_imu_sensor(
-        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_imu.clone(), metrics_snapshot.clone()
+        buffer.clone(), sim_start.clone(), state.clone(), cancel_rx.clone(), hb_imu.clone(), metrics_snapshot.clone(), corrupt_flag.clone()
     )));
 
     handles.push(tokio::spawn(scheduler::run_rms_scheduler(
@@ -134,7 +135,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )));
 
     handles.push(tokio::spawn(fault::run_fault_injector(
-        buffer.clone(), state.clone(), fault_tx, sim_start.clone(), cancel_rx.clone(), hb_fault.clone(), metrics_snapshot.clone()
+        buffer.clone(), state.clone(), fault_tx, sim_start.clone(), cancel_rx.clone(), hb_fault.clone(), metrics_snapshot.clone(), corrupt_flag.clone()
     )));
 
     handles.push(tokio::spawn(watchdog::run_watchdog(
@@ -164,23 +165,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _ = h.await;
     }
 
-    // Print final summary log (hardcoded mock values for now, will implement real metrics later if requested)
+    let final_metrics = metrics_snapshot.lock().await.clone();
+    let buf_final = buffer.lock().await;
+
+    // Print final summary log
     tracing::info!(
-        total_thermal_packets = 0,
-        total_power_packets = 0,
-        total_imu_packets = 0,
-        total_dropped_packets = 0,
-        thermal_jitter_p50_us = 0,
-        thermal_jitter_p99_us = 0,
-        thermal_jitter_max_us = 0,
-        thermal_drift_avg_us = 0,
-        downlink_queue_latency_p50_us = 0,
-        downlink_queue_latency_p99_us = 0,
-        rms_deadline_violations = 0,
-        rms_cpu_util_pct = 0,
-        total_faults_injected = 0,
-        max_recovery_ms = 0,
-        mission_aborts = 0,
+        total_thermal_packets = final_metrics.downlink_total_sent,
+        total_dropped_packets = buf_final.stats.total_dropped,
+        peak_buffer_fill = buf_final.stats.peak_fill,
+        thermal_jitter_p50_us = final_metrics.thermal_jitter_p50_us,
+        thermal_jitter_p99_us = final_metrics.thermal_jitter_p99_us,
+        thermal_jitter_max_us = final_metrics.thermal_jitter_max_us,
+        downlink_queue_latency_p50_us = final_metrics.downlink_queue_p50_us,
+        downlink_queue_latency_p99_us = final_metrics.downlink_queue_p99_us,
+        rms_thermal_violations = final_metrics.thermal_ctrl_violations,
+        rms_compress_violations = final_metrics.data_compress_violations,
+        rms_health_violations = final_metrics.health_monitor_violations,
+        cpu_util_pct = final_metrics.cpu_util_pct,
+        total_faults_injected = final_metrics.fault_total_injected,
+        max_recovery_ms = final_metrics.fault_max_recovery_ms,
+        mission_aborts = final_metrics.mission_aborts,
         "=== SATELLITE SIMULATION COMPLETE ==="
     );
 

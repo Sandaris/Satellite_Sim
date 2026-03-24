@@ -97,6 +97,16 @@ pub async fn run_telemetry_rx(
             }
         };
 
+        if packet.is_corrupted {
+            tracing::warn!(sensor=?packet.sensor_id, seq=packet.seq_no,
+                           "CORRUPTED PACKET received — discarding");
+            crate::ui::push_log(&ui_metrics, 1,
+                                format!("CORRUPTED PACKET {:?} seq={}", packet.sensor_id, packet.seq_no),
+                                &sim_start);
+            if let Ok(mut m) = ui_metrics.try_lock() { m.total_pkts_lost += 1; }
+            continue;
+        }
+
         let latency_us = recv_us.saturating_sub(packet.timestamp_us);
         if let Some(hist) = lat_hist.get_mut(&packet.sensor_id) {
             hist.record(latency_us).ok();
