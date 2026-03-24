@@ -82,7 +82,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Global tasks (stay alive across reconnections)
     let mut global_handles = vec![];
     global_handles.push(tokio::spawn(perf_monitor::run_perf_monitor(
-        sim_start.clone(), cancel_rx.clone()
+        metrics_snapshot.clone(), sim_start.clone(), cancel_rx.clone()
     )));
 
     global_handles.push(tokio::spawn(watchdog::run_watchdog(

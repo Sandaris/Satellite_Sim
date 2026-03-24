@@ -267,9 +267,9 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         ])
     };
     let tel_rows = vec![
-        make_tel_row("Thermal", 100, metrics.thermal_last_recv_elapsed_ms, metrics.thermal_drift_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
-        make_tel_row("Power",   200, metrics.power_last_recv_elapsed_ms,   metrics.power_drift_last_us,   metrics.power_recv_count,   metrics.power_lost_count),
-        make_tel_row("IMU",     500, metrics.imu_last_recv_elapsed_ms,     metrics.imu_drift_last_us,     metrics.imu_recv_count,     metrics.imu_lost_count),
+        make_tel_row("Thermal", shared::config::THERMAL_PERIOD_MS, metrics.thermal_last_recv_elapsed_ms, metrics.thermal_drift_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
+        make_tel_row("Power",   shared::config::POWER_PERIOD_MS,   metrics.power_last_recv_elapsed_ms,   metrics.power_drift_last_us,   metrics.power_recv_count,   metrics.power_lost_count),
+        make_tel_row("IMU",     shared::config::IMU_PERIOD_MS,     metrics.imu_last_recv_elapsed_ms,     metrics.imu_drift_last_us,     metrics.imu_recv_count,     metrics.imu_lost_count),
     ];
     let panel_a = Table::new(tel_rows, [Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(10)])
         .header(tel_header)
