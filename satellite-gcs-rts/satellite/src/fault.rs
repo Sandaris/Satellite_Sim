@@ -103,6 +103,7 @@ pub async fn run_fault_injector(
 
         if let Ok(mut m) = ui_metrics.try_lock() {
             m.fault_total_injected = engine.total_faults as u64;
+            m.fault_total_recovered = engine.total_recoveries;
             m.fault_next_in_s = FAULT_INJECT_INTERVAL_S;
             m.fault_next_fire_at_s = sim_start.elapsed().as_secs() + FAULT_INJECT_INTERVAL_S;
             m.fault_last_type = format!("{:?}", fault_type);

@@ -115,6 +115,7 @@ pub struct SatMetricsSnapshot {
 
     // Fault engine
     pub fault_total_injected:   u64,
+    pub fault_total_recovered:  u64,
     pub fault_next_in_s:        u64,
     pub fault_last_type:        String,
     pub fault_last_recovery_ms: u64,
@@ -141,7 +142,7 @@ impl Default for SatMetricsSnapshot {
             cpu_util_pct: 0.0,
             downlink_queue_latency_sparkline: std::collections::VecDeque::with_capacity(60),
             downlink_queue_p50_us: 0, downlink_queue_p99_us: 0, downlink_queue_max_us: 0, downlink_total_sent: 0, downlink_window_violations: 0,
-            fault_total_injected: 0, fault_next_in_s: 0, fault_last_type: "None".to_string(), fault_last_recovery_ms: 0, fault_max_recovery_ms: 0, fault_circuit_state: "CLOSED".to_string(), mission_aborts: 0, fault_next_fire_at_s: 30,
+            fault_total_injected: 0, fault_total_recovered: 0, fault_next_in_s: 0, fault_last_type: "None".to_string(), fault_last_recovery_ms: 0, fault_max_recovery_ms: 0, fault_circuit_state: "CLOSED".to_string(), mission_aborts: 0, fault_next_fire_at_s: 30,
             log_lines: std::collections::VecDeque::with_capacity(200),
         }
     }
