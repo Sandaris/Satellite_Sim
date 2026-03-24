@@ -53,19 +53,20 @@ pub async fn run_uplink_rx(
 }
 
 async fn handle_command(cmd: CommandPacket, state: &Arc<Mutex<SystemState>>) {
-    let current = { state.lock().await.clone() };
-    match (cmd.cmd_type, current) {
+    let mut s = state.lock().await;  // single lock, held throughout
+    match (cmd.cmd_type, s.clone()) {
         (CommandType::EmergencyStop, _) => {
-            *state.lock().await = SystemState::MissionAbort;
+            *s = SystemState::MissionAbort;
         }
         (CommandType::SafeMode, _) => {
-            *state.lock().await = SystemState::Fault;
+            *s = SystemState::Fault;
         }
-        (CommandType::ResetSensor, SystemState::Fault) | (CommandType::ResetSensor, SystemState::MissionAbort) => {
-            *state.lock().await = SystemState::Nominal;
+        (CommandType::ResetSensor, SystemState::Fault) => {
+            *s = SystemState::Nominal;
         }
         (_, SystemState::Fault) | (_, SystemState::MissionAbort) => {
-            tracing::warn!(cmd=?cmd.cmd_type, reason="interlock_active", "INTERLOCK: command blocked — system in Fault state");
+            tracing::warn!(cmd=?cmd.cmd_type, reason="interlock_active", 
+                           "INTERLOCK: command blocked — system in Fault state");
             return;
         }
         _ => {}

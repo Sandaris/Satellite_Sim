@@ -258,30 +258,39 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     let sensor_header = Row::new(vec!["Sensor", "Period", "Last(us)", "p50(us)", "p99(us)", "Max(us)", "Limit(us)", "Status"])
         .style(Style::default().add_modifier(Modifier::BOLD));
     
-    let make_jitter_row = |name: &str, period: &str, last: u64, p50: u64, p99: u64, max: u64, limit: u64| {
+    let make_jitter_row = |name: &str, period: &str, last: u64, p50: u64, p99: u64, max: u64, limit: Option<u64>| {
         let mut row_style = Style::default();
-        if name == "Thermal" && last > limit {
-            row_style = row_style.fg(Color::Red);
+        if let Some(l) = limit {
+            if name == "Thermal" && last > l {
+                row_style = row_style.fg(Color::Red);
+            }
         }
-        let status = if last > limit {
-            Span::styled("🔴 CRIT", Style::default().fg(Color::Red))
-        } else if p99 > limit / 2 {
-            Span::styled("⚠ WARN", Style::default().fg(Color::Yellow))
+        
+        let limit_str = limit.map(|l| l.to_string()).unwrap_or_else(|| "N/A".to_string());
+        let status = if let Some(l) = limit {
+            if last > l {
+                Span::styled("🔴 CRIT", Style::default().fg(Color::Red))
+            } else if p99 > l / 2 {
+                Span::styled("⚠ WARN", Style::default().fg(Color::Yellow))
+            } else {
+                Span::styled("OK", Style::default().fg(Color::Green))
+            }
         } else {
             Span::styled("OK", Style::default().fg(Color::Green))
         };
+
         Row::new(vec![
             Cell::from(name.to_string()), Cell::from(period.to_string()),
             Cell::from(last.to_string()), Cell::from(p50.to_string()), Cell::from(p99.to_string()),
-            Cell::from(max.to_string()), Cell::from(limit.to_string()),
+            Cell::from(max.to_string()), Cell::from(limit_str),
             Cell::from(status)
         ]).style(row_style)
     };
 
     let sensor_rows = vec![
-        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, 10000),
-        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   20000),
-        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     50000),
+        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, Some(10000)),
+        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   Some(20000)),
+        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     None),
     ];
     let panel_a = Table::new(sensor_rows, [Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(9), Constraint::Min(7)])
         .header(sensor_header)

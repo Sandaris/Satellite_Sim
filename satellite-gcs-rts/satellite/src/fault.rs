@@ -39,6 +39,7 @@ pub async fn run_fault_injector(
         }
 
         let fault_start = Instant::now();
+        engine.last_fault_at = Some(fault_start);
         let fault_type = if toggle { FaultType::CorruptedData } else { FaultType::DelayedSensor };
         toggle = !toggle;
         
@@ -89,7 +90,7 @@ pub async fn run_fault_injector(
                 if *s != SystemState::MissionAbort { *s = SystemState::MissionAbort; }
                 engine.circuit = CircuitState::Open(Instant::now());
                 engine.consecutive_faults += 1;
-                engine.last_fault_at = Some(Instant::now());
+                // last_fault_at is already set at the start
             }
         }
         
@@ -115,8 +116,8 @@ pub async fn run_fault_injector(
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
     }
     
-    tracing::info!(total_faults=engine.total_faults, max_recovery_ms=engine.max_recovery_ms,
-                   "fault_injector final stats");
+    tracing::info!(total_faults=engine.total_faults, total_recoveries=engine.total_recoveries,
+                   max_recovery_ms=engine.max_recovery_ms, "fault_injector final stats");
 }
 
 async fn wait_for_nominal(state: &Arc<Mutex<SystemState>>) {
