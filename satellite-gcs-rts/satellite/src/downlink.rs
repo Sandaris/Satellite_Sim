@@ -1,7 +1,7 @@
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use shared::packets::FaultPacket;
+use shared::packets::{FaultPacket, PacketType};
 use crate::buffer::SensorBuffer;
 use crate::state::SystemState;
 
@@ -40,7 +40,10 @@ pub async fn run_downlink_tx(
         // Forward fault packets preferentially
         while let Ok(fault) = fault_rx.try_recv() {
             if let Ok(bytes) = bincode::serialize(&fault) {
-                let _ = framed_writer.send(Bytes::from(bytes)).await;
+                let mut prefixed = Vec::with_capacity(bytes.len() + 1);
+                prefixed.push(PacketType::FaultNotify as u8);
+                prefixed.extend_from_slice(&bytes);
+                let _ = framed_writer.send(Bytes::from(prefixed)).await;
             }
         }
 
@@ -71,9 +74,13 @@ pub async fn run_downlink_tx(
                 Err(e) => { tracing::error!("Serialize failed: {}", e); continue; }
             };
             
+            let mut prefixed = Vec::with_capacity(bytes.len() + 1);
+            prefixed.push(PacketType::SensorData as u8);
+            prefixed.extend_from_slice(&bytes);
+
             let send_result = tokio::time::timeout(
                 Duration::from_millis(shared::config::DOWNLINK_WINDOW_MS),
-                framed_writer.send(Bytes::from(bytes))
+                framed_writer.send(Bytes::from(prefixed))
             ).await;
 
             let queue_latency_us = sim_start.elapsed().as_micros() as u64 - reading.buffer_insert_us;

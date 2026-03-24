@@ -2,7 +2,7 @@ use std::collections::{HashMap, BinaryHeap};
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::Instant;
-use shared::packets::{TelemetryPacket, FaultPacket, SensorId, CommandPacket, CommandType};
+use shared::packets::{TelemetryPacket, FaultPacket, SensorId, CommandPacket, CommandType, PacketType};
 use shared::config::{GCS_PACKET_LOSS_ALERT, THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS};
 use hdrhistogram::Histogram;
 use crate::state::GcsSystemState;
@@ -72,13 +72,27 @@ pub async fn run_telemetry_rx(
 
         let recv_us = sim_start.elapsed().as_micros() as u64; 
 
-        let packet: TelemetryPacket = match bincode::deserialize(&bytes) {
+        if bytes.is_empty() { continue; }
+        let packet_type = bytes[0];
+        let payload = &bytes[1..];
+
+        if packet_type == PacketType::FaultNotify as u8 {
+            if let Ok(fault) = bincode::deserialize::<FaultPacket>(payload) {
+                let _ = fault_tx.send(fault).await;
+            }
+            last_any_recv_us = recv_us;
+            continue;
+        }
+
+        if packet_type != PacketType::SensorData as u8 {
+            tracing::warn!("Received unknown packet type: {}", packet_type);
+            continue;
+        }
+
+        let packet: TelemetryPacket = match bincode::deserialize(payload) {
             Ok(p) => p,
-            Err(_) => {
-                // If it failed as TelemetryPacket, try as FaultPacket
-                if let Ok(fault) = bincode::deserialize::<FaultPacket>(&bytes) {
-                    let _ = fault_tx.send(fault).await;
-                }
+            Err(e) => {
+                tracing::error!("Failed to deserialize TelemetryPacket: {}", e);
                 continue;
             }
         };

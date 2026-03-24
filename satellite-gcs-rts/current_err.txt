@@ -1,0 +1,90 @@
+cargo : warning: unused 
+imports: `FaultPacket` and 
+`PacketType`
+At line:1 char:1
++ cargo check -p satellite 
+--color never 2>&1 | 
+Out-File -Encoding ASCI ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (warning  
+  : unused...nd `PacketTyp   
+ e`:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+ --> 
+satellite\src\buffer.rs:4:23
+  |
+4 | use shared::packets::{Fau
+ltPacket, PacketType, 
+TelemetryPacket};
+  |                       
+^^^^^^^^^^^  ^^^^^^^^^^
+  |
+  = note: 
+`#[warn(unused_imports)]` 
+(part of `#[warn(unused)]`) 
+on by default
+
+warning: variable `replaced` 
+is assigned to, but never 
+used
+  --> 
+satellite\src\buffer.rs:79:13
+   |
+79 |         let mut 
+replaced = false;
+   |             ^^^^^^^^^^^^
+   |
+   = note: consider using 
+`_replaced` instead
+   = note: 
+`#[warn(unused_variables)]` 
+(part of `#[warn(unused)]`) 
+on by default
+
+warning: value assigned to 
+`dropped_reading` is never 
+read
+  --> 
+satellite\src\buffer.rs:78:35
+   |
+78 |         let mut 
+dropped_reading = None;
+   |                         
+          ^^^^
+   |
+   = help: maybe it is 
+overwritten before being 
+read?
+   = note: `#[warn(unused_ass
+ignments)]` (part of 
+`#[warn(unused)]`) on by 
+default
+
+warning: value assigned to 
+`replaced` is never read
+   --> satellite\src\buffer.r
+s:106:17
+    |
+106 |                 
+replaced = true;
+    |                 
+^^^^^^^^^^^^^^^
+    |
+    = help: maybe it is 
+overwritten before being 
+read?
+
+warning: `satellite` (bin 
+"satellite") generated 4 
+warnings (run `cargo fix 
+--bin "satellite" -p 
+satellite` to apply 1 
+suggestion)
+    Finished `dev` profile 
+[unoptimized + debuginfo] 
+target(s) in 0.09s
