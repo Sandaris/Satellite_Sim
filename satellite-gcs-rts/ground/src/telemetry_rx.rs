@@ -76,6 +76,10 @@ pub async fn run_telemetry_rx(
         let packet_type = bytes[0];
         let payload = &bytes[1..];
 
+        // AUTHORITATIVE ROUTING: The first byte of the raw frame is the byte-prefix 
+        // that determines how to route the remaining bytes. We must not rely on 
+        // internal fields of the deserialized packet for routing decisions to 
+        // avoid silent drops if those fields are misconfigured.
         if packet_type == PacketType::FaultNotify as u8 {
             if let Ok(fault) = bincode::deserialize::<FaultPacket>(payload) {
                 let _ = fault_tx.send(fault).await;

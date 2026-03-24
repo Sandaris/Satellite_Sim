@@ -124682,3 +124682,950 @@
 2026-03-24T02:32:53.013654Z  WARN ThreadId(23) Satellite session tasks cleaned up. Ready for new connection.
 2026-03-24T02:36:40.650265Z  INFO ThreadId(01) Simulation timer expired. Shutting down.
 2026-03-24T02:36:40.650342Z  INFO ThreadId(01) === GCS SIMULATION COMPLETE === total_pkts_received=0 total_pkts_lost=0 pkt_loss_rate_pct=0.0 avg_one_way_latency_us=0 p99_latency_us=0 total_cmds_sent=0 cmds_dispatch_missed=0 total_faults_received=0 avg_interlock_latency_us=0 loss_of_contact_events=0
+2026-03-24T03:03:42.404603Z  INFO ThreadId(01) Starting Satellite Ground Control Simulation (TCP MODE)
+2026-03-24T03:03:42.405811Z  INFO ThreadId(01) GCS listening for satellite connection on port 8888...
+2026-03-24T03:03:53.410536Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=11
+2026-03-24T03:03:53.410617Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=11
+2026-03-24T03:03:53.410621Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=11
+2026-03-24T03:03:54.408901Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=12
+2026-03-24T03:03:54.408927Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=12
+2026-03-24T03:03:54.408932Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=12
+2026-03-24T03:03:55.411226Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=13
+2026-03-24T03:03:55.411253Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=13
+2026-03-24T03:03:55.411258Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=13
+2026-03-24T03:03:56.407817Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=14
+2026-03-24T03:03:56.407845Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=14
+2026-03-24T03:03:56.407850Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=14
+2026-03-24T03:03:57.408719Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=15
+2026-03-24T03:03:57.408736Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=15
+2026-03-24T03:03:57.408738Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=15
+2026-03-24T03:03:58.408204Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=16
+2026-03-24T03:03:58.408233Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=16
+2026-03-24T03:03:58.408237Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=16
+2026-03-24T03:03:59.411109Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=17
+2026-03-24T03:03:59.411125Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=17
+2026-03-24T03:03:59.411127Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=17
+2026-03-24T03:04:00.408257Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=18
+2026-03-24T03:04:00.408273Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=18
+2026-03-24T03:04:00.408275Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=18
+2026-03-24T03:04:01.408548Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=19
+2026-03-24T03:04:01.408568Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=19
+2026-03-24T03:04:01.408571Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=19
+2026-03-24T03:04:02.408089Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=20
+2026-03-24T03:04:02.408107Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=20
+2026-03-24T03:04:02.408109Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=20
+2026-03-24T03:04:03.409453Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=0 now_s=21
+2026-03-24T03:04:03.409470Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=0 now_s=21
+2026-03-24T03:04:03.409471Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=0 now_s=21
+2026-03-24T03:04:03.583138Z  INFO ThreadId(24) Satellite connected from: 127.0.0.1:54846
+2026-03-24T03:04:03.607590Z  INFO ThreadId(23) uplink_tx: sent cmd=Heartbeat dispatch_us=179 queue_latency_us=15391 seq=0 elapsed_us=21203804
+2026-03-24T03:04:03.683485Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177329 drift_us=0 seq=0 value=23.058091106391775 elapsed_us=21279660
+2026-03-24T03:04:03.784188Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178207 drift_us=738 seq=1 value=74.89118669801297 elapsed_us=21380398
+2026-03-24T03:04:03.784351Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178348 drift_us=0 seq=0 value=4.367614250839977 elapsed_us=21380514
+2026-03-24T03:04:03.884036Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178074 drift_us=-149 seq=2 value=53.61239970706815 elapsed_us=21480249
+2026-03-24T03:04:03.984333Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178377 drift_us=294 seq=3 value=75.12244610663043 elapsed_us=21580543
+2026-03-24T03:04:03.984428Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178490 drift_us=142 seq=1 value=2.273124571819661 elapsed_us=21580656
+2026-03-24T03:04:04.084479Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178529 drift_us=152 seq=4 value=61.95821208481882 elapsed_us=21680695
+2026-03-24T03:04:04.084567Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178514 drift_us=0 seq=0 value=-0.076603693195398 elapsed_us=21680754
+2026-03-24T03:04:04.183494Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177539 drift_us=-990 seq=5 value=46.77717884173141 elapsed_us=21779705
+2026-03-24T03:04:04.183545Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177601 drift_us=-881 seq=2 value=0.9948020277321153 elapsed_us=21779775
+2026-03-24T03:04:04.283611Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177661 drift_us=122 seq=6 value=27.9232068349529 elapsed_us=21879827
+2026-03-24T03:04:04.384525Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178565 drift_us=904 seq=7 value=37.77813793223514 elapsed_us=21980731
+2026-03-24T03:04:04.384645Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178709 drift_us=1099 seq=3 value=2.0172842564450075 elapsed_us=21980874
+2026-03-24T03:04:04.483746Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177795 drift_us=-770 seq=8 value=30.394395244344267 elapsed_us=22079961
+2026-03-24T03:04:04.585438Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179485 drift_us=1690 seq=9 value=72.61921993491828 elapsed_us=22181651
+2026-03-24T03:04:04.585550Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179614 drift_us=906 seq=4 value=4.995836780668147 elapsed_us=22181780
+2026-03-24T03:04:04.585579Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21179570 drift_us=1055 seq=1 value=0.027857214646333672 elapsed_us=22181809
+2026-03-24T03:04:04.684418Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178469 drift_us=-1016 seq=10 value=22.647997900037264 elapsed_us=22280635
+2026-03-24T03:04:04.784094Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178143 drift_us=-326 seq=11 value=62.43334222681246 elapsed_us=22380309
+2026-03-24T03:04:04.784141Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178205 drift_us=-1409 seq=5 value=1.6011963506573779 elapsed_us=22380371
+2026-03-24T03:04:04.884725Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178768 drift_us=625 seq=12 value=70.91309076354449 elapsed_us=22480934
+2026-03-24T03:04:04.984090Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178138 drift_us=-630 seq=13 value=74.67770369396898 elapsed_us=22580304
+2026-03-24T03:04:04.984138Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178202 drift_us=-3 seq=6 value=1.1515611837854327 elapsed_us=22580368
+2026-03-24T03:04:05.084774Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178822 drift_us=684 seq=14 value=32.12358872672725 elapsed_us=22680988
+2026-03-24T03:04:05.084824Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178814 drift_us=-755 seq=2 value=0.07876392793023107 elapsed_us=22681054
+2026-03-24T03:04:05.183955Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178002 drift_us=-820 seq=15 value=20.136691546986142 elapsed_us=22780168
+2026-03-24T03:04:05.184007Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178071 drift_us=-131 seq=7 value=2.4549539450760824 elapsed_us=22780237
+2026-03-24T03:04:05.284570Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178618 drift_us=616 seq=16 value=58.7135737442112 elapsed_us=22880784
+2026-03-24T03:04:05.384256Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178305 drift_us=-313 seq=17 value=39.691320002691846 elapsed_us=22980471
+2026-03-24T03:04:05.384305Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178369 drift_us=298 seq=8 value=4.269408144048274 elapsed_us=22980535
+2026-03-24T03:04:05.484456Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178505 drift_us=200 seq=18 value=51.279581922648255 elapsed_us=23080671
+2026-03-24T03:04:05.584337Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178384 drift_us=-121 seq=19 value=28.53162851732516 elapsed_us=23180550
+2026-03-24T03:04:05.584391Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178455 drift_us=86 seq=9 value=2.596081460797171 elapsed_us=23180621
+2026-03-24T03:04:05.584419Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178409 drift_us=-405 seq=3 value=0.03686921973935414 elapsed_us=23180649
+2026-03-24T03:04:05.684319Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178368 drift_us=-16 seq=20 value=43.14253218769432 elapsed_us=23280534
+2026-03-24T03:04:05.784319Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178356 drift_us=-12 seq=21 value=72.44683787383858 elapsed_us=23380522
+2026-03-24T03:04:05.784436Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178498 drift_us=43 seq=10 value=1.2656863370212859 elapsed_us=23380664
+2026-03-24T03:04:05.884672Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178720 drift_us=364 seq=22 value=44.73583777863721 elapsed_us=23480886
+2026-03-24T03:04:05.984952Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179001 drift_us=281 seq=23 value=79.88855649548589 elapsed_us=23581167
+2026-03-24T03:04:05.985001Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179066 drift_us=567 seq=11 value=3.953011650674152 elapsed_us=23581231
+2026-03-24T03:04:06.084739Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178789 drift_us=-212 seq=24 value=36.99322957438893 elapsed_us=23680955
+2026-03-24T03:04:06.084788Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178778 drift_us=369 seq=4 value=-0.07427211514343535 elapsed_us=23681018
+2026-03-24T03:04:06.184950Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178996 drift_us=207 seq=25 value=33.520400048810416 elapsed_us=23781162
+2026-03-24T03:04:06.185023Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21179087 drift_us=22 seq=12 value=3.9774043578109586 elapsed_us=23781253
+2026-03-24T03:04:06.285807Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179856 drift_us=860 seq=26 value=25.66400232638999 elapsed_us=23882022
+2026-03-24T03:04:06.383841Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177889 drift_us=-1967 seq=27 value=40.886752545652946 elapsed_us=23980055
+2026-03-24T03:04:06.383891Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177955 drift_us=-1132 seq=13 value=3.8770126107383716 elapsed_us=23980121
+2026-03-24T03:04:06.483493Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177541 drift_us=-348 seq=28 value=39.594622557868206 elapsed_us=24079707
+2026-03-24T03:04:06.585471Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179513 drift_us=1972 seq=29 value=20.241600114755002 elapsed_us=24181679
+2026-03-24T03:04:06.585587Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179649 drift_us=1694 seq=14 value=3.196314621985236 elapsed_us=24181815
+2026-03-24T03:04:06.585662Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21179652 drift_us=874 seq=5 value=-0.06940934114566 elapsed_us=24181892
+2026-03-24T03:04:06.685596Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179637 drift_us=124 seq=30 value=79.98315437409316 elapsed_us=24281803
+2026-03-24T03:04:06.784232Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178280 drift_us=-1357 seq=31 value=24.695375506877028 elapsed_us=24380446
+2026-03-24T03:04:06.784281Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178345 drift_us=-1304 seq=15 value=1.6133980681366435 elapsed_us=24380511
+2026-03-24T03:04:06.884860Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178908 drift_us=628 seq=32 value=70.63079779922437 elapsed_us=24481074
+2026-03-24T03:04:06.985463Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179508 drift_us=600 seq=33 value=26.704225151852704 elapsed_us=24581674
+2026-03-24T03:04:06.985562Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179624 drift_us=1279 seq=16 value=0.9327530172148413 elapsed_us=24581790
+2026-03-24T03:04:07.084437Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178485 drift_us=-1023 seq=34 value=69.48142182855085 elapsed_us=24680651
+2026-03-24T03:04:07.084492Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178482 drift_us=-1170 seq=6 value=-0.055574568044237355 elapsed_us=24680722
+2026-03-24T03:04:07.185004Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179047 drift_us=563 seq=35 value=56.87819444613626 elapsed_us=24781214
+2026-03-24T03:04:07.185082Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179144 drift_us=-479 seq=17 value=2.2784837937507083 elapsed_us=24781311
+2026-03-24T03:04:07.283725Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177772 drift_us=-1276 seq=36 value=21.733028943812375 elapsed_us=24879938
+2026-03-24T03:04:07.384131Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178179 drift_us=407 seq=37 value=26.761984616690388 elapsed_us=24980345
+2026-03-24T03:04:07.384180Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178244 drift_us=-901 seq=18 value=2.387146831835823 elapsed_us=24980410
+2026-03-24T03:04:07.483715Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177764 drift_us=-415 seq=38 value=37.7916580472277 elapsed_us=25079930
+2026-03-24T03:04:07.585514Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179563 drift_us=1799 seq=39 value=74.5911367582811 elapsed_us=25181729
+2026-03-24T03:04:07.585566Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179630 drift_us=1386 seq=19 value=2.4608016066003877 elapsed_us=25181796
+2026-03-24T03:04:07.585594Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21179586 drift_us=1103 seq=7 value=0.05551273761182371 elapsed_us=25181825
+2026-03-24T03:04:07.683791Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177840 drift_us=-1723 seq=40 value=51.315425473238385 elapsed_us=25280006
+2026-03-24T03:04:07.784182Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178231 drift_us=391 seq=41 value=60.59036349168941 elapsed_us=25380397
+2026-03-24T03:04:07.784232Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178297 drift_us=-1334 seq=20 value=2.707491390245707 elapsed_us=25380462
+2026-03-24T03:04:07.883602Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177651 drift_us=-580 seq=42 value=56.30321498796722 elapsed_us=25479817
+2026-03-24T03:04:07.984941Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178991 drift_us=1339 seq=43 value=61.03550812005966 elapsed_us=25581156
+2026-03-24T03:04:07.984993Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179056 drift_us=760 seq=21 value=3.9058348929823774 elapsed_us=25581222
+2026-03-24T03:04:08.084208Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178257 drift_us=-733 seq=44 value=24.871903293273128 elapsed_us=25680423
+2026-03-24T03:04:08.084259Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178249 drift_us=-1336 seq=8 value=0.009167672164988525 elapsed_us=25680489
+2026-03-24T03:04:08.183447Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177495 drift_us=-762 seq=45 value=39.48337652502527 elapsed_us=25779661
+2026-03-24T03:04:08.183497Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177561 drift_us=-1495 seq=22 value=1.6331013548406617 elapsed_us=25779727
+2026-03-24T03:04:08.284868Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178917 drift_us=1422 seq=46 value=71.92888818447497 elapsed_us=25881083
+2026-03-24T03:04:08.383835Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177884 drift_us=-1033 seq=47 value=37.957852426805104 elapsed_us=25980050
+2026-03-24T03:04:08.383885Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177949 drift_us=388 seq=23 value=4.9106785728459625 elapsed_us=25980115
+2026-03-24T03:04:08.485415Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179463 drift_us=1579 seq=48 value=73.17934602722826 elapsed_us=26081629
+2026-03-24T03:04:08.585498Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179546 drift_us=83 seq=49 value=73.82202328849884 elapsed_us=26181712
+2026-03-24T03:04:08.585549Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179613 drift_us=1664 seq=24 value=3.7317894366603444 elapsed_us=26181779
+2026-03-24T03:04:08.585581Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21179572 drift_us=1322 seq=9 value=0.09913381169081112 elapsed_us=26181811
+2026-03-24T03:04:08.598362Z  INFO ThreadId(03) uplink_tx: sent cmd=Heartbeat dispatch_us=71 queue_latency_us=12811 seq=1 elapsed_us=26194587
+2026-03-24T03:04:08.685511Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179551 drift_us=5 seq=50 value=48.98929175768492 elapsed_us=26281717
+2026-03-24T03:04:08.783869Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177916 drift_us=-1635 seq=51 value=58.886935402404795 elapsed_us=26380082
+2026-03-24T03:04:08.783921Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177984 drift_us=-1629 seq=25 value=3.6200394745278306 elapsed_us=26380150
+2026-03-24T03:04:08.884431Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178470 drift_us=554 seq=52 value=76.30811818815727 elapsed_us=26480636
+2026-03-24T03:04:08.983572Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177620 drift_us=-850 seq=53 value=21.846665233257582 elapsed_us=26579786
+2026-03-24T03:04:08.983624Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177688 drift_us=-296 seq=26 value=4.415887668086963 elapsed_us=26579854
+2026-03-24T03:04:09.084453Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178499 drift_us=879 seq=54 value=33.17118187244314 elapsed_us=26680665
+2026-03-24T03:04:09.084503Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178492 drift_us=-1079 seq=10 value=-0.04938447264860871 elapsed_us=26680732
+2026-03-24T03:04:09.184673Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178720 drift_us=221 seq=55 value=25.52075465627763 elapsed_us=26780886
+2026-03-24T03:04:09.184724Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178788 drift_us=1100 seq=27 value=0.9009569492739011 elapsed_us=26780954
+2026-03-24T03:04:09.283954Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178001 drift_us=-719 seq=56 value=49.824521548046796 elapsed_us=26880167
+2026-03-24T03:04:09.384497Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178543 drift_us=542 seq=57 value=61.679652724314195 elapsed_us=26980709
+2026-03-24T03:04:09.384546Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178609 drift_us=-179 seq=28 value=1.9003778896977415 elapsed_us=26980775
+2026-03-24T03:04:09.484099Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178145 drift_us=-398 seq=58 value=40.71952499028133 elapsed_us=27080311
+2026-03-24T03:04:09.584290Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178338 drift_us=193 seq=59 value=23.91304907810806 elapsed_us=27180504
+2026-03-24T03:04:09.584342Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178405 drift_us=-204 seq=29 value=4.498245149938327 elapsed_us=27180571
+2026-03-24T03:04:09.584370Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178360 drift_us=-132 seq=11 value=0.027268760596056596 elapsed_us=27180600
+2026-03-24T03:04:09.684708Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178742 drift_us=404 seq=60 value=26.146272331000645 elapsed_us=27280908
+2026-03-24T03:04:09.784835Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178882 drift_us=140 seq=61 value=50.13683590569805 elapsed_us=27381048
+2026-03-24T03:04:09.784884Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178947 drift_us=542 seq=30 value=4.196123015774865 elapsed_us=27381113
+2026-03-24T03:04:09.883740Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177786 drift_us=-1096 seq=62 value=26.92448232027037 elapsed_us=27479952
+2026-03-24T03:04:09.984320Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178367 drift_us=581 seq=63 value=58.02136437866225 elapsed_us=27580533
+2026-03-24T03:04:09.984370Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178434 drift_us=-513 seq=31 value=1.6212872833352885 elapsed_us=27580600
+2026-03-24T03:04:10.085494Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179541 drift_us=1174 seq=64 value=35.40085521297197 elapsed_us=27681707
+2026-03-24T03:04:10.085545Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21179535 drift_us=1174 seq=12 value=-0.06585203151187975 elapsed_us=27681774
+2026-03-24T03:04:10.185595Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179642 drift_us=101 seq=65 value=79.69104642389095 elapsed_us=27781808
+2026-03-24T03:04:10.185645Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179709 drift_us=1275 seq=32 value=2.949582251749038 elapsed_us=27781875
+2026-03-24T03:04:10.284045Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178092 drift_us=-1550 seq=66 value=48.95206277617615 elapsed_us=27880258
+2026-03-24T03:04:10.383536Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177583 drift_us=-509 seq=67 value=25.420082169385086 elapsed_us=27979749
+2026-03-24T03:04:10.383588Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177651 drift_us=-2058 seq=33 value=4.433464187742055 elapsed_us=27979817
+2026-03-24T03:04:10.485795Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179842 drift_us=2259 seq=68 value=74.91884211312853 elapsed_us=28082008
+2026-03-24T03:04:10.584292Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178336 drift_us=-1506 seq=69 value=37.301567226490185 elapsed_us=28180502
+2026-03-24T03:04:10.584360Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178422 drift_us=772 seq=34 value=1.4909954597012933 elapsed_us=28180589
+2026-03-24T03:04:10.584404Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178395 drift_us=-1140 seq=13 value=-0.04721635803048035 elapsed_us=28180634
+2026-03-24T03:04:10.683740Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177782 drift_us=-553 seq=70 value=50.024911592270996 elapsed_us=28279949
+2026-03-24T03:04:10.784384Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178431 drift_us=648 seq=71 value=36.914523597932885 elapsed_us=28380597
+2026-03-24T03:04:10.784434Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178499 drift_us=75 seq=35 value=3.2434161320715487 elapsed_us=28380664
+2026-03-24T03:04:10.884020Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178067 drift_us=-364 seq=72 value=42.35102924507652 elapsed_us=28480233
+2026-03-24T03:04:10.984012Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178048 drift_us=-19 seq=73 value=62.69953051091561 elapsed_us=28580214
+2026-03-24T03:04:10.984168Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178220 drift_us=-278 seq=36 value=4.194870657078898 elapsed_us=28580386
+2026-03-24T03:04:11.085404Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179451 drift_us=1403 seq=74 value=65.32572249148876 elapsed_us=28681617
+2026-03-24T03:04:11.085454Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21179445 drift_us=1050 seq=14 value=-0.04152282674988781 elapsed_us=28681684
+2026-03-24T03:04:11.184387Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178425 drift_us=-1026 seq=75 value=55.61198221037309 elapsed_us=28780591
+2026-03-24T03:04:11.184506Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178568 drift_us=347 seq=37 value=4.136497027605646 elapsed_us=28780733
+2026-03-24T03:04:11.285869Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179916 drift_us=1491 seq=76 value=64.89986603895082 elapsed_us=28882082
+2026-03-24T03:04:11.383955Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178000 drift_us=-1916 seq=77 value=72.16586187618387 elapsed_us=28980166
+2026-03-24T03:04:11.384006Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178069 drift_us=-498 seq=38 value=0.6526994763427246 elapsed_us=28980235
+2026-03-24T03:04:11.484178Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178225 drift_us=225 seq=78 value=44.666861113632905 elapsed_us=29080391
+2026-03-24T03:04:11.584888Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178934 drift_us=710 seq=79 value=67.29005383087454 elapsed_us=29181101
+2026-03-24T03:04:11.584939Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179002 drift_us=933 seq=39 value=1.374431564296025 elapsed_us=29181168
+2026-03-24T03:04:11.584966Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178958 drift_us=-487 seq=15 value=-0.0022115396505893725 elapsed_us=29181197
+2026-03-24T03:04:11.684196Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178239 drift_us=-696 seq=80 value=54.94952816773745 elapsed_us=29280405
+2026-03-24T03:04:11.783704Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177751 drift_us=-488 seq=81 value=35.98683559879673 elapsed_us=29379917
+2026-03-24T03:04:11.783801Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177863 drift_us=-1139 seq=40 value=1.8919223936833915 elapsed_us=29380029
+2026-03-24T03:04:11.884362Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178398 drift_us=657 seq=82 value=73.08248308793395 elapsed_us=29480574
+2026-03-24T03:04:11.983741Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177790 drift_us=-618 seq=83 value=50.230158023406574 elapsed_us=29579956
+2026-03-24T03:04:11.983792Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177855 drift_us=-8 seq=41 value=3.4612204574171175 elapsed_us=29580021
+2026-03-24T03:04:12.084205Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178240 drift_us=450 seq=84 value=73.14148399474001 elapsed_us=29680406
+2026-03-24T03:04:12.084320Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178308 drift_us=-650 seq=16 value=-0.04678544380592427 elapsed_us=29680547
+2026-03-24T03:04:12.184796Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178843 drift_us=603 seq=85 value=57.75918633442738 elapsed_us=29781009
+2026-03-24T03:04:12.184845Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178909 drift_us=1053 seq=42 value=4.776022711303142 elapsed_us=29781074
+2026-03-24T03:04:12.285588Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179636 drift_us=793 seq=86 value=22.225643145612914 elapsed_us=29881802
+2026-03-24T03:04:12.383575Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177622 drift_us=-2014 seq=87 value=70.06461392830582 elapsed_us=29979788
+2026-03-24T03:04:12.383626Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177689 drift_us=-1219 seq=43 value=3.4674208371580426 elapsed_us=29979855
+2026-03-24T03:04:12.410812Z  INFO ThreadId(23) === PERFORMANCE REPORT === report=1 elapsed_s=30 elapsed_us=30007029 pkts_received=0 pkts_lost=0 avg_latency_us=0 deadline_misses=0 interlock_count=0 fault_count=0
+2026-03-24T03:04:12.484388Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178435 drift_us=813 seq=88 value=30.321959418455098 elapsed_us=30080601
+2026-03-24T03:04:12.584138Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178185 drift_us=-250 seq=89 value=27.175691438241557 elapsed_us=30180351
+2026-03-24T03:04:12.584189Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178253 drift_us=564 seq=44 value=1.4491349181230868 elapsed_us=30180419
+2026-03-24T03:04:12.584218Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178209 drift_us=-99 seq=17 value=-0.0337010035030592 elapsed_us=30180448
+2026-03-24T03:04:12.685681Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179718 drift_us=1532 seq=90 value=27.216008942551504 elapsed_us=30281883
+2026-03-24T03:04:12.783710Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177746 drift_us=-1971 seq=91 value=42.062531161788385 elapsed_us=30379912
+2026-03-24T03:04:12.783825Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177887 drift_us=-367 seq=45 value=2.9574759844929126 elapsed_us=30380052
+2026-03-24T03:04:12.884385Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178432 drift_us=686 seq=92 value=25.47178363070044 elapsed_us=30480598
+2026-03-24T03:04:12.985756Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179789 drift_us=1357 seq=93 value=47.260418569565985 elapsed_us=30581955
+2026-03-24T03:04:12.985881Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179943 drift_us=2057 seq=46 value=2.127395535096789 elapsed_us=30582109
+2026-03-24T03:04:13.084671Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178716 drift_us=-1072 seq=94 value=51.1198210506303 elapsed_us=30680883
+2026-03-24T03:04:13.084718Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178708 drift_us=500 seq=18 value=0.008090157143473858 elapsed_us=30680948
+2026-03-24T03:04:13.184621Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178667 drift_us=-50 seq=95 value=34.49582770314541 elapsed_us=30780833
+2026-03-24T03:04:13.184671Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178735 drift_us=-1208 seq=47 value=1.028536620184267 elapsed_us=30780901
+2026-03-24T03:04:13.283788Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177827 drift_us=-840 seq=96 value=74.70094513097081 elapsed_us=30879993
+2026-03-24T03:04:13.384508Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178550 drift_us=723 seq=97 value=39.743140669299535 elapsed_us=30980716
+2026-03-24T03:04:13.384579Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178642 drift_us=-93 seq=48 value=0.5780946131844854 elapsed_us=30980808
+2026-03-24T03:04:13.484100Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178147 drift_us=-403 seq=98 value=63.16569487648492 elapsed_us=31080313
+2026-03-24T03:04:13.583625Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177672 drift_us=-475 seq=99 value=25.23946196913436 elapsed_us=31179838
+2026-03-24T03:04:13.583676Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177740 drift_us=-902 seq=49 value=1.1238185497480615 elapsed_us=31179906
+2026-03-24T03:04:13.583705Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21177696 drift_us=-1013 seq=19 value=0.07840299502731765 elapsed_us=31179935
+2026-03-24T03:04:13.591154Z  INFO ThreadId(24) uplink_tx: sent cmd=Heartbeat dispatch_us=113 queue_latency_us=7239 seq=2 elapsed_us=31187377
+2026-03-24T03:04:13.683973Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178017 drift_us=345 seq=100 value=78.67803058367171 elapsed_us=31280183
+2026-03-24T03:04:13.784312Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178361 drift_us=344 seq=101 value=40.77235106309869 elapsed_us=31380527
+2026-03-24T03:04:13.784362Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178426 drift_us=686 seq=50 value=2.792860913334522 elapsed_us=31380592
+2026-03-24T03:04:13.883643Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177691 drift_us=-670 seq=102 value=36.287198334282266 elapsed_us=31479857
+2026-03-24T03:04:13.985611Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179661 drift_us=1970 seq=103 value=66.89042699797172 elapsed_us=31581827
+2026-03-24T03:04:13.985661Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179725 drift_us=1299 seq=51 value=1.2176656283818148 elapsed_us=31581891
+2026-03-24T03:04:14.084719Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178767 drift_us=-894 seq=104 value=58.40723991255441 elapsed_us=31680933
+2026-03-24T03:04:14.084769Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178758 drift_us=1063 seq=20 value=0.002058516405896424 elapsed_us=31680998
+2026-03-24T03:04:14.183991Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178041 drift_us=-726 seq=105 value=22.83347034847128 elapsed_us=31780207
+2026-03-24T03:04:14.184042Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178105 drift_us=-1620 seq=52 value=0.9071004994548166 elapsed_us=31780271
+2026-03-24T03:04:14.284855Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178903 drift_us=862 seq=106 value=49.2330725419739 elapsed_us=31881069
+2026-03-24T03:04:14.384354Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178402 drift_us=-501 seq=107 value=20.518725323460917 elapsed_us=31980568
+2026-03-24T03:04:14.384405Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178469 drift_us=364 seq=53 value=2.243221712902613 elapsed_us=31980635
+2026-03-24T03:04:14.485600Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179647 drift_us=1245 seq=108 value=51.269919966921506 elapsed_us=32081813
+2026-03-24T03:04:14.584333Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178377 drift_us=-1270 seq=109 value=68.60645861369777 elapsed_us=32180543
+2026-03-24T03:04:14.584400Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178464 drift_us=-5 seq=54 value=2.27819730950327 elapsed_us=32180630
+2026-03-24T03:04:14.584445Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178436 drift_us=-323 seq=21 value=-0.049559734751417665 elapsed_us=32180675
+2026-03-24T03:04:14.685514Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179561 drift_us=1184 seq=110 value=20.101313711585213 elapsed_us=32281727
+2026-03-24T03:04:14.783491Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177540 drift_us=-2021 seq=111 value=33.884179135221615 elapsed_us=32379706
+2026-03-24T03:04:14.783541Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177604 drift_us=-860 seq=55 value=1.6487214373616523 elapsed_us=32379770
+2026-03-24T03:04:14.884347Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178395 drift_us=855 seq=112 value=78.60945100261509 elapsed_us=32480561
+2026-03-24T03:04:14.983893Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177942 drift_us=-453 seq=113 value=24.074391099794955 elapsed_us=32580108
+2026-03-24T03:04:14.984003Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178066 drift_us=462 seq=56 value=3.6769361943970407 elapsed_us=32580232
+2026-03-24T03:04:15.084453Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178502 drift_us=560 seq=114 value=54.94102130822157 elapsed_us=32680668
+2026-03-24T03:04:15.084503Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178494 drift_us=58 seq=22 value=0.0636669018798531 elapsed_us=32680733
+2026-03-24T03:04:15.184223Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178272 drift_us=-230 seq=115 value=69.76085458451904 elapsed_us=32780438
+2026-03-24T03:04:15.184273Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178337 drift_us=271 seq=57 value=1.637159726992717 elapsed_us=32780503
+2026-03-24T03:04:15.285400Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179443 drift_us=1171 seq=116 value=21.799109078965294 elapsed_us=32881609
+2026-03-24T03:04:15.384396Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178444 drift_us=-999 seq=117 value=63.27499894931086 elapsed_us=32980610
+2026-03-24T03:04:15.384446Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178510 drift_us=173 seq=58 value=3.316748202978924 elapsed_us=32980676
+2026-03-24T03:04:15.484813Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178861 drift_us=417 seq=118 value=22.126780773389946 elapsed_us=33081027
+2026-03-24T03:04:15.584245Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178291 drift_us=-570 seq=119 value=52.33933710376532 elapsed_us=33180457
+2026-03-24T03:04:15.584313Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178376 drift_us=-134 seq=59 value=2.5514045796333513 elapsed_us=33180542
+2026-03-24T03:04:15.584355Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178345 drift_us=-148 seq=23 value=0.07416466489369009 elapsed_us=33180585
+2026-03-24T03:04:15.683758Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177805 drift_us=-486 seq=120 value=41.92655246739149 elapsed_us=33279971
+2026-03-24T03:04:15.784111Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178155 drift_us=350 seq=121 value=35.34900795895998 elapsed_us=33380321
+2026-03-24T03:04:15.784176Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178239 drift_us=-137 seq=60 value=3.2248742384348557 elapsed_us=33380405
+2026-03-24T03:04:15.884278Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178324 drift_us=169 seq=122 value=51.65756958077233 elapsed_us=33480490
+2026-03-24T03:04:15.983772Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177820 drift_us=-504 seq=123 value=74.85797704404912 elapsed_us=33579986
+2026-03-24T03:04:15.983822Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177886 drift_us=-353 seq=61 value=4.5683903932469825 elapsed_us=33580052
+2026-03-24T03:04:16.084126Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178176 drift_us=356 seq=124 value=39.97075929369956 elapsed_us=33680342
+2026-03-24T03:04:16.084173Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178164 drift_us=-182 seq=24 value=-0.031086377971240253 elapsed_us=33680403
+2026-03-24T03:04:16.183786Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177835 drift_us=-341 seq=125 value=56.47849382073635 elapsed_us=33780001
+2026-03-24T03:04:16.183835Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177899 drift_us=13 seq=62 value=4.462118229513862 elapsed_us=33780065
+2026-03-24T03:04:16.283745Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177794 drift_us=-41 seq=126 value=23.733625684433285 elapsed_us=33879960
+2026-03-24T03:04:16.384608Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178657 drift_us=863 seq=127 value=57.75389338942134 elapsed_us=33980823
+2026-03-24T03:04:16.384657Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178721 drift_us=822 seq=63 value=3.153750898651446 elapsed_us=33980887
+2026-03-24T03:04:16.484348Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178397 drift_us=-260 seq=128 value=22.506846088853543 elapsed_us=34080563
+2026-03-24T03:04:16.585415Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179463 drift_us=1066 seq=129 value=49.8338924524225 elapsed_us=34181629
+2026-03-24T03:04:16.585466Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179530 drift_us=809 seq=64 value=1.7180192960901475 elapsed_us=34181696
+2026-03-24T03:04:16.585493Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21179485 drift_us=1321 seq=25 value=0.002120549194343152 elapsed_us=34181724
+2026-03-24T03:04:16.684690Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178738 drift_us=-725 seq=130 value=37.230055202104566 elapsed_us=34280904
+2026-03-24T03:04:16.784881Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178924 drift_us=186 seq=131 value=28.380633795025297 elapsed_us=34381090
+2026-03-24T03:04:16.784988Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179050 drift_us=-480 seq=65 value=1.349485659178889 elapsed_us=34381216
+2026-03-24T03:04:16.884234Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178281 drift_us=-643 seq=132 value=33.403130452141596 elapsed_us=34480447
+2026-03-24T03:04:16.984256Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178304 drift_us=23 seq=133 value=36.57624590306384 elapsed_us=34580470
+2026-03-24T03:04:16.984312Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178376 drift_us=-674 seq=66 value=2.426436977715241 elapsed_us=34580542
+2026-03-24T03:04:17.083929Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177978 drift_us=-326 seq=134 value=24.32308320994432 elapsed_us=34680144
+2026-03-24T03:04:17.083976Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21177967 drift_us=-1518 seq=26 value=0.026986119152985127 elapsed_us=34680206
+2026-03-24T03:04:17.185522Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179570 drift_us=1592 seq=135 value=58.864589766932006 elapsed_us=34781736
+2026-03-24T03:04:17.185573Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179636 drift_us=1260 seq=67 value=2.2206397372039843 elapsed_us=34781802
+2026-03-24T03:04:17.284635Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178683 drift_us=-887 seq=136 value=32.1911387413855 elapsed_us=34880849
+2026-03-24T03:04:17.384764Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178811 drift_us=128 seq=137 value=78.45135097288097 elapsed_us=34980977
+2026-03-24T03:04:17.384812Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178876 drift_us=-760 seq=68 value=3.5551064916812933 elapsed_us=34981042
+2026-03-24T03:04:17.484272Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178321 drift_us=-490 seq=138 value=22.729547517420016 elapsed_us=35080487
+2026-03-24T03:04:17.584187Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178236 drift_us=-85 seq=139 value=75.56436492121912 elapsed_us=35180402
+2026-03-24T03:04:17.584236Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178300 drift_us=-576 seq=69 value=2.3814409645275725 elapsed_us=35180466
+2026-03-24T03:04:17.584263Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178253 drift_us=287 seq=27 value=-0.039644606303863794 elapsed_us=35180493
+2026-03-24T03:04:17.684369Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178419 drift_us=183 seq=140 value=23.306823298306337 elapsed_us=35280585
+2026-03-24T03:04:17.784304Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178342 drift_us=-77 seq=141 value=27.057108689776076 elapsed_us=35380508
+2026-03-24T03:04:17.784411Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178473 drift_us=173 seq=70 value=0.8365701190224596 elapsed_us=35380639
+2026-03-24T03:04:17.884703Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178751 drift_us=409 seq=142 value=72.33359591922309 elapsed_us=35480917
+2026-03-24T03:04:17.984951Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178992 drift_us=241 seq=143 value=27.410018057615787 elapsed_us=35581158
+2026-03-24T03:04:17.985059Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179123 drift_us=649 seq=71 value=2.1018212243039285 elapsed_us=35581288
+2026-03-24T03:04:18.084102Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178150 drift_us=-842 seq=144 value=22.868350242387123 elapsed_us=35680316
+2026-03-24T03:04:18.084151Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178141 drift_us=-112 seq=28 value=0.03369343346261083 elapsed_us=35680381
+2026-03-24T03:04:18.183736Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177783 drift_us=-367 seq=145 value=23.485264223011693 elapsed_us=35779949
+2026-03-24T03:04:18.183786Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177850 drift_us=-1272 seq=72 value=2.455536869969075 elapsed_us=35780016
+2026-03-24T03:04:18.284964Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179013 drift_us=1230 seq=146 value=58.02328744845392 elapsed_us=35881179
+2026-03-24T03:04:18.383702Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177750 drift_us=-1263 seq=147 value=48.95130514564835 elapsed_us=35979916
+2026-03-24T03:04:18.383748Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177812 drift_us=-38 seq=73 value=1.9723137992153374 elapsed_us=35979978
+2026-03-24T03:04:18.484074Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178118 drift_us=368 seq=148 value=53.293241599528244 elapsed_us=36080284
+2026-03-24T03:04:18.584892Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178928 drift_us=810 seq=149 value=38.07028089897994 elapsed_us=36181094
+2026-03-24T03:04:18.585003Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179066 drift_us=1254 seq=74 value=4.382515897449936 elapsed_us=36181232
+2026-03-24T03:04:18.585085Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21179075 drift_us=933 seq=29 value=-0.09444408803370159 elapsed_us=36181314
+2026-03-24T03:04:18.602550Z  INFO ThreadId(15) uplink_tx: sent cmd=Heartbeat dispatch_us=129 queue_latency_us=17535 seq=3 elapsed_us=36198763
+2026-03-24T03:04:18.683561Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177602 drift_us=-1326 seq=150 value=70.81032054808527 elapsed_us=36279768
+2026-03-24T03:04:18.783861Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177910 drift_us=308 seq=151 value=20.80182710384316 elapsed_us=36380076
+2026-03-24T03:04:18.783913Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177977 drift_us=-1089 seq=75 value=1.7818710069792236 elapsed_us=36380143
+2026-03-24T03:04:18.885708Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179752 drift_us=1842 seq=152 value=72.34916427647738 elapsed_us=36481918
+2026-03-24T03:04:18.984862Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178902 drift_us=-850 seq=153 value=60.934842047458126 elapsed_us=36581068
+2026-03-24T03:04:18.984973Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21179036 drift_us=1059 seq=76 value=0.8485031454608177 elapsed_us=36581202
+2026-03-24T03:04:19.084170Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178218 drift_us=-684 seq=154 value=45.23685847457227 elapsed_us=36680384
+2026-03-24T03:04:19.084219Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178209 drift_us=-866 seq=30 value=-0.0054470762276823265 elapsed_us=36680448
+2026-03-24T03:04:19.184127Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178176 drift_us=-42 seq=155 value=44.38149674815143 elapsed_us=36780342
+2026-03-24T03:04:19.184177Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178240 drift_us=-796 seq=77 value=4.86998739851522 elapsed_us=36780406
+2026-03-24T03:04:19.284131Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178179 drift_us=3 seq=156 value=63.266850840344475 elapsed_us=36880345
+2026-03-24T03:04:19.383820Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177868 drift_us=-311 seq=157 value=69.62181627417166 elapsed_us=36980034
+2026-03-24T03:04:19.383868Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177932 drift_us=-308 seq=78 value=3.183029276240024 elapsed_us=36980098
+2026-03-24T03:04:19.485721Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179769 drift_us=1901 seq=158 value=23.489076670525098 elapsed_us=37081935
+2026-03-24T03:04:19.583814Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177863 drift_us=-1906 seq=159 value=53.5266239161511 elapsed_us=37180029
+2026-03-24T03:04:19.583862Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177926 drift_us=-6 seq=79 value=3.542741016007062 elapsed_us=37180092
+2026-03-24T03:04:19.583889Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21177881 drift_us=-328 seq=31 value=0.0988192152034689 elapsed_us=37180120
+2026-03-24T03:04:19.683866Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177915 drift_us=52 seq=160 value=43.21368257261021 elapsed_us=37280081
+2026-03-24T03:04:19.785078Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179127 drift_us=1212 seq=161 value=48.12748518743774 elapsed_us=37381293
+2026-03-24T03:04:19.785126Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179191 drift_us=1264 seq=80 value=0.6437954572050696 elapsed_us=37381356
+2026-03-24T03:04:19.885588Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179636 drift_us=509 seq=162 value=75.46137011280149 elapsed_us=37481802
+2026-03-24T03:04:19.983695Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177743 drift_us=-1893 seq=163 value=59.05185636836931 elapsed_us=37579909
+2026-03-24T03:04:19.983743Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177806 drift_us=-1384 seq=81 value=0.8043733110362398 elapsed_us=37579972
+2026-03-24T03:04:20.084630Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178677 drift_us=934 seq=164 value=22.245493876697417 elapsed_us=37680843
+2026-03-24T03:04:20.084679Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178668 drift_us=788 seq=32 value=-0.09606408881115223 elapsed_us=37680908
+2026-03-24T03:04:20.184164Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178213 drift_us=-464 seq=165 value=41.039610644838675 elapsed_us=37780379
+2026-03-24T03:04:20.184213Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178277 drift_us=471 seq=82 value=3.119235573526944 elapsed_us=37780443
+2026-03-24T03:04:20.284576Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178620 drift_us=407 seq=166 value=68.03268598912645 elapsed_us=37880786
+2026-03-24T03:04:20.384233Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178278 drift_us=-342 seq=167 value=74.4905867623043 elapsed_us=37980444
+2026-03-24T03:04:20.384301Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178363 drift_us=87 seq=83 value=4.700320549789062 elapsed_us=37980530
+2026-03-24T03:04:20.484750Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178797 drift_us=519 seq=168 value=55.513617803373776 elapsed_us=38080963
+2026-03-24T03:04:20.583573Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177622 drift_us=-1175 seq=169 value=23.455662024277064 elapsed_us=38179788
+2026-03-24T03:04:20.583621Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177685 drift_us=-679 seq=84 value=2.8428788633832522 elapsed_us=38179851
+2026-03-24T03:04:20.583647Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21177638 drift_us=-1031 seq=33 value=0.040665391088307606 elapsed_us=38179877
+2026-03-24T03:04:20.684104Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178152 drift_us=530 seq=170 value=23.582421070336363 elapsed_us=38280318
+2026-03-24T03:04:20.783712Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177762 drift_us=-390 seq=171 value=43.769119385419685 elapsed_us=38379928
+2026-03-24T03:04:20.783761Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177826 drift_us=141 seq=85 value=1.7796727655066258 elapsed_us=38379992
+2026-03-24T03:04:20.884187Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178229 drift_us=466 seq=172 value=59.41609633262183 elapsed_us=38480394
+2026-03-24T03:04:20.983885Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177934 drift_us=-294 seq=173 value=35.85826872450414 elapsed_us=38580100
+2026-03-24T03:04:20.983934Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177998 drift_us=172 seq=86 value=0.7229204551472195 elapsed_us=38580164
+2026-03-24T03:04:21.084883Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178931 drift_us=997 seq=174 value=57.64260087983527 elapsed_us=38681097
+2026-03-24T03:04:21.085011Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21179001 drift_us=1363 seq=34 value=0.0029133189573932877 elapsed_us=38681240
+2026-03-24T03:04:21.184657Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178706 drift_us=-225 seq=175 value=76.36051551664923 elapsed_us=38780872
+2026-03-24T03:04:21.184705Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178769 drift_us=771 seq=87 value=1.2885242408579138 elapsed_us=38780935
+2026-03-24T03:04:21.284367Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178409 drift_us=-297 seq=176 value=20.588798690392757 elapsed_us=38880575
+2026-03-24T03:04:21.383921Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177970 drift_us=-439 seq=177 value=59.74272916811172 elapsed_us=38980136
+2026-03-24T03:04:21.383970Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178034 drift_us=-735 seq=88 value=2.211011242278379 elapsed_us=38980200
+2026-03-24T03:04:21.483770Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177820 drift_us=-150 seq=178 value=20.76632010142115 elapsed_us=39079986
+2026-03-24T03:04:21.583696Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177744 drift_us=-76 seq=179 value=25.652106284940437 elapsed_us=39179910
+2026-03-24T03:04:21.583747Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177811 drift_us=-223 seq=89 value=4.98183376114464 elapsed_us=39179977
+2026-03-24T03:04:21.583774Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21177764 drift_us=-1236 seq=35 value=0.0016435802873756844 elapsed_us=39180004
+2026-03-24T03:04:21.683738Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177786 drift_us=42 seq=180 value=55.74699998199689 elapsed_us=39279952
+2026-03-24T03:04:21.783944Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177979 drift_us=193 seq=181 value=29.921073343826873 elapsed_us=39380145
+2026-03-24T03:04:21.784057Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178119 drift_us=308 seq=90 value=3.3157752134304017 elapsed_us=39380285
+2026-03-24T03:04:21.884524Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178565 drift_us=586 seq=182 value=73.76025546058139 elapsed_us=39480731
+2026-03-24T03:04:21.984631Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178672 drift_us=107 seq=183 value=61.04983870615128 elapsed_us=39580838
+2026-03-24T03:04:21.984739Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178801 drift_us=682 seq=91 value=4.920644169696104 elapsed_us=39580967
+2026-03-24T03:04:22.084299Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178340 drift_us=-332 seq=184 value=52.793094831670125 elapsed_us=39680506
+2026-03-24T03:04:22.084407Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178396 drift_us=631 seq=36 value=0.024828500868819603 elapsed_us=39680635
+2026-03-24T03:04:22.183983Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178033 drift_us=-307 seq=185 value=73.29504298913473 elapsed_us=39780199
+2026-03-24T03:04:22.184035Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178099 drift_us=-702 seq=92 value=1.200052047931539 elapsed_us=39780265
+2026-03-24T03:04:22.283690Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177739 drift_us=-294 seq=186 value=47.49701547016916 elapsed_us=39879905
+2026-03-24T03:04:22.383816Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177858 drift_us=120 seq=187 value=52.95564526215952 elapsed_us=39980025
+2026-03-24T03:04:22.383883Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177946 drift_us=-153 seq=93 value=4.5733615360894975 elapsed_us=39980112
+2026-03-24T03:04:22.484086Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178134 drift_us=275 seq=188 value=38.13279362393047 elapsed_us=40080300
+2026-03-24T03:04:22.584372Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178421 drift_us=287 seq=189 value=59.74770608498454 elapsed_us=40180587
+2026-03-24T03:04:22.584420Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178483 drift_us=537 seq=94 value=2.0995943423538272 elapsed_us=40180649
+2026-03-24T03:04:22.584446Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178436 drift_us=41 seq=37 value=-0.0754059572213488 elapsed_us=40180676
+2026-03-24T03:04:22.683772Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177821 drift_us=-600 seq=190 value=62.30386574857008 elapsed_us=40279987
+2026-03-24T03:04:22.784024Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178062 drift_us=241 seq=191 value=74.14241526334331 elapsed_us=40380228
+2026-03-24T03:04:22.784103Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178163 drift_us=-320 seq=95 value=3.274207495128249 elapsed_us=40380329
+2026-03-24T03:04:22.884610Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178658 drift_us=596 seq=192 value=39.90474270954931 elapsed_us=40480824
+2026-03-24T03:04:22.984409Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178456 drift_us=-202 seq=193 value=28.901806360327058 elapsed_us=40580622
+2026-03-24T03:04:22.984459Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178523 drift_us=360 seq=96 value=4.402703156276043 elapsed_us=40580689
+2026-03-24T03:04:23.084475Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178523 drift_us=67 seq=194 value=36.89894043884611 elapsed_us=40680689
+2026-03-24T03:04:23.084524Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178514 drift_us=78 seq=38 value=0.02108508456588258 elapsed_us=40680754
+2026-03-24T03:04:23.185017Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179065 drift_us=542 seq=195 value=46.32227727608199 elapsed_us=40781231
+2026-03-24T03:04:23.185065Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179129 drift_us=606 seq=97 value=2.493271436997947 elapsed_us=40781295
+2026-03-24T03:04:23.283522Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177571 drift_us=-1494 seq=196 value=50.836438031933525 elapsed_us=40879737
+2026-03-24T03:04:23.384087Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178135 drift_us=564 seq=197 value=33.6397100708499 elapsed_us=40980301
+2026-03-24T03:04:23.384135Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178199 drift_us=-930 seq=98 value=1.8671040679521136 elapsed_us=40980365
+2026-03-24T03:04:23.483516Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177565 drift_us=-570 seq=198 value=44.257330871884584 elapsed_us=41079731
+2026-03-24T03:04:23.583876Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177920 drift_us=355 seq=199 value=35.019656938923376 elapsed_us=41180086
+2026-03-24T03:04:23.583950Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178013 drift_us=-186 seq=99 value=3.4014432977394855 elapsed_us=41180179
+2026-03-24T03:04:23.583996Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21177985 drift_us=-529 seq=39 value=0.03921497331731355 elapsed_us=41180225
+2026-03-24T03:04:23.599607Z  INFO ThreadId(24) uplink_tx: sent cmd=Heartbeat dispatch_us=150 queue_latency_us=15709 seq=4 elapsed_us=41195823
+2026-03-24T03:04:23.684362Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178412 drift_us=492 seq=200 value=52.60295753653885 elapsed_us=41280578
+2026-03-24T03:04:23.784486Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178526 drift_us=114 seq=201 value=79.83380859663359 elapsed_us=41380692
+2026-03-24T03:04:23.784553Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178616 drift_us=603 seq=100 value=3.26650292901883 elapsed_us=41380782
+2026-03-24T03:04:23.885505Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179547 drift_us=1021 seq=202 value=52.064255407818536 elapsed_us=41481713
+2026-03-24T03:04:23.983787Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177834 drift_us=-1713 seq=203 value=45.080408130216796 elapsed_us=41580000
+2026-03-24T03:04:23.983835Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177899 drift_us=-717 seq=101 value=4.320607659489577 elapsed_us=41580065
+2026-03-24T03:04:24.085860Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179901 drift_us=2067 seq=204 value=39.00682619201672 elapsed_us=41682067
+2026-03-24T03:04:24.085970Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21179960 drift_us=1974 seq=40 value=0.023105824652645837 elapsed_us=41682199
+2026-03-24T03:04:24.185578Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179618 drift_us=-283 seq=205 value=30.197630335474365 elapsed_us=41781784
+2026-03-24T03:04:24.185690Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179752 drift_us=1853 seq=102 value=4.333799956206175 elapsed_us=41781918
+2026-03-24T03:04:24.284184Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178231 drift_us=-1387 seq=206 value=76.25257034192265 elapsed_us=41880397
+2026-03-24T03:04:24.383666Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177714 drift_us=-517 seq=207 value=54.458335727729086 elapsed_us=41979880
+2026-03-24T03:04:24.383716Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177780 drift_us=-1972 seq=103 value=0.5408790176495231 elapsed_us=41979946
+2026-03-24T03:04:24.484694Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178742 drift_us=1028 seq=208 value=28.08178071784393 elapsed_us=42080908
+2026-03-24T03:04:24.583890Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177939 drift_us=-803 seq=209 value=53.63206725234968 elapsed_us=42180105
+2026-03-24T03:04:24.583938Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178002 drift_us=222 seq=104 value=3.6586237566159214 elapsed_us=42180168
+2026-03-24T03:04:24.583966Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21177957 drift_us=-2003 seq=41 value=-0.0013248814250829827 elapsed_us=42180196
+2026-03-24T03:04:24.685428Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179436 drift_us=1497 seq=210 value=67.90049200181306 elapsed_us=42281602
+2026-03-24T03:04:24.785815Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179843 drift_us=408 seq=211 value=43.88820318080241 elapsed_us=42382010
+2026-03-24T03:04:24.785926Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179982 drift_us=1981 seq=105 value=0.503696005901855 elapsed_us=42382149
+2026-03-24T03:04:24.884872Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178914 drift_us=-928 seq=212 value=55.427573228540496 elapsed_us=42481082
+2026-03-24T03:04:24.984472Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178514 drift_us=-401 seq=213 value=23.28938200424709 elapsed_us=42580681
+2026-03-24T03:04:24.984660Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178705 drift_us=-1277 seq=106 value=4.589060954098166 elapsed_us=42580872
+2026-03-24T03:04:25.085104Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179148 drift_us=634 seq=214 value=46.40650410234602 elapsed_us=42681315
+2026-03-24T03:04:25.085221Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21179198 drift_us=1242 seq=42 value=-0.06460317851498024 elapsed_us=42681438
+2026-03-24T03:04:25.184424Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178471 drift_us=-678 seq=215 value=58.13119145827761 elapsed_us=42780637
+2026-03-24T03:04:25.184477Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178541 drift_us=-165 seq=107 value=1.7672549159943651 elapsed_us=42780707
+2026-03-24T03:04:25.284267Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178309 drift_us=-162 seq=216 value=21.320868976373298 elapsed_us=42880475
+2026-03-24T03:04:25.383933Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177971 drift_us=-337 seq=217 value=33.05148620580049 elapsed_us=42980138
+2026-03-24T03:04:25.384118Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178172 drift_us=-368 seq=108 value=4.89339714432603 elapsed_us=42980339
+2026-03-24T03:04:25.484233Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178279 drift_us=308 seq=218 value=31.39222512177743 elapsed_us=43080446
+2026-03-24T03:04:25.584711Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178760 drift_us=480 seq=219 value=78.68385215829605 elapsed_us=43180926
+2026-03-24T03:04:25.584761Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178818 drift_us=652 seq=109 value=2.1787022245886867 elapsed_us=43180991
+2026-03-24T03:04:25.584793Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178784 drift_us=-415 seq=43 value=-0.026428892642428856 elapsed_us=43181023
+2026-03-24T03:04:25.683833Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177881 drift_us=-878 seq=220 value=46.25207173047456 elapsed_us=43280048
+2026-03-24T03:04:25.784062Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178109 drift_us=227 seq=221 value=20.703384313271176 elapsed_us=43380275
+2026-03-24T03:04:25.784446Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178504 drift_us=-321 seq=110 value=2.645293231258885 elapsed_us=43380670
+2026-03-24T03:04:25.884349Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178397 drift_us=288 seq=222 value=77.7396414569421 elapsed_us=43480563
+2026-03-24T03:04:25.983706Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177751 drift_us=-646 seq=223 value=38.89702242498255 elapsed_us=43579917
+2026-03-24T03:04:25.983785Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177848 drift_us=-656 seq=111 value=3.118973248255551 elapsed_us=43580014
+2026-03-24T03:04:26.084809Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178851 drift_us=1101 seq=224 value=28.14971163028526 elapsed_us=43681018
+2026-03-24T03:04:26.084896Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178885 drift_us=102 seq=44 value=-0.0016568369882163092 elapsed_us=43681125
+2026-03-24T03:04:26.185944Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179989 drift_us=1138 seq=225 value=38.53984529742643 elapsed_us=43782156
+2026-03-24T03:04:26.186000Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21180063 drift_us=2216 seq=112 value=3.426339408964238 elapsed_us=43782230
+2026-03-24T03:04:26.284516Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178557 drift_us=-1432 seq=226 value=58.02673775377689 elapsed_us=43880724
+2026-03-24T03:04:26.383696Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177743 drift_us=-814 seq=227 value=72.56352240505718 elapsed_us=43979910
+2026-03-24T03:04:26.383746Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177808 drift_us=-2255 seq=113 value=3.9571633274135474 elapsed_us=43979975
+2026-03-24T03:04:26.485026Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179062 drift_us=1318 seq=228 value=55.35533616268946 elapsed_us=44081228
+2026-03-24T03:04:26.583802Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177838 drift_us=-1217 seq=229 value=34.612797478646854 elapsed_us=44180011
+2026-03-24T03:04:26.583880Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177925 drift_us=134 seq=114 value=1.250027372134841 elapsed_us=44180109
+2026-03-24T03:04:26.583928Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21177919 drift_us=-967 seq=45 value=0.06825473238782251 elapsed_us=44180158
+2026-03-24T03:04:26.684886Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178929 drift_us=1084 seq=230 value=43.22923669273216 elapsed_us=44281095
+2026-03-24T03:04:26.784283Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178330 drift_us=-599 seq=231 value=67.40278386168308 elapsed_us=44380496
+2026-03-24T03:04:26.784337Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178401 drift_us=458 seq=115 value=2.979389664711674 elapsed_us=44380567
+2026-03-24T03:04:26.884441Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178485 drift_us=155 seq=232 value=65.69334997905132 elapsed_us=44480651
+2026-03-24T03:04:26.984252Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178296 drift_us=-189 seq=233 value=30.193496075654785 elapsed_us=44580462
+2026-03-24T03:04:26.984327Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178388 drift_us=-13 seq=116 value=3.791784125528687 elapsed_us=44580554
+2026-03-24T03:04:27.084244Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178287 drift_us=-9 seq=234 value=51.35206975920924 elapsed_us=44680453
+2026-03-24T03:04:27.084325Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178312 drift_us=394 seq=46 value=-0.011549855795410749 elapsed_us=44680552
+2026-03-24T03:04:27.185830Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179873 drift_us=1587 seq=235 value=47.72049652834008 elapsed_us=44782040
+2026-03-24T03:04:27.185921Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179981 drift_us=1593 seq=117 value=0.834604880941168 elapsed_us=44782147
+2026-03-24T03:04:27.285446Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179492 drift_us=-381 seq=236 value=23.492476953047245 elapsed_us=44881659
+2026-03-24T03:04:27.385933Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179973 drift_us=482 seq=237 value=43.22316970422759 elapsed_us=44982141
+2026-03-24T03:04:27.386063Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21180124 drift_us=145 seq=118 value=4.285122817037383 elapsed_us=44982292
+2026-03-24T03:04:27.484509Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178553 drift_us=-1420 seq=238 value=70.01326893485997 elapsed_us=45080721
+2026-03-24T03:04:27.584709Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178757 drift_us=202 seq=239 value=27.105872174483284 elapsed_us=45180923
+2026-03-24T03:04:27.584766Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178817 drift_us=-1296 seq=119 value=2.786278441539615 elapsed_us=45180996
+2026-03-24T03:04:27.584796Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178787 drift_us=474 seq=47 value=0.07054325095299016 elapsed_us=45181026
+2026-03-24T03:04:27.684733Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178780 drift_us=23 seq=240 value=25.650381134136893 elapsed_us=45280946
+2026-03-24T03:04:27.784293Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178337 drift_us=-443 seq=241 value=77.08831237294999 elapsed_us=45380503
+2026-03-24T03:04:27.784365Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178428 drift_us=-401 seq=120 value=4.675603552201231 elapsed_us=45380595
+2026-03-24T03:04:27.883603Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177639 drift_us=-697 seq=242 value=33.902042508425524 elapsed_us=45479806
+2026-03-24T03:04:27.985671Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179714 drift_us=2074 seq=243 value=33.90270910609141 elapsed_us=45581880
+2026-03-24T03:04:27.985750Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21179813 drift_us=1384 seq=121 value=1.9392079117244336 elapsed_us=45581979
+2026-03-24T03:04:28.084534Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178578 drift_us=-1136 seq=244 value=28.332403030565896 elapsed_us=45680744
+2026-03-24T03:04:28.084607Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178595 drift_us=-191 seq=48 value=-0.08778658083601193 elapsed_us=45680835
+2026-03-24T03:04:28.183767Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177810 drift_us=-768 seq=245 value=52.19119864810016 elapsed_us=45779976
+2026-03-24T03:04:28.183848Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177910 drift_us=-1902 seq=122 value=3.697466579932339 elapsed_us=45780077
+2026-03-24T03:04:28.284326Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178375 drift_us=565 seq=246 value=60.06288090215882 elapsed_us=45880541
+2026-03-24T03:04:28.384757Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178800 drift_us=425 seq=247 value=44.787006771544945 elapsed_us=45980966
+2026-03-24T03:04:28.384837Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178900 drift_us=989 seq=123 value=3.6672595248803734 elapsed_us=45981066
+2026-03-24T03:04:28.483802Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177849 drift_us=-951 seq=248 value=56.516900239114776 elapsed_us=46080015
+2026-03-24T03:04:28.584296Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178344 drift_us=496 seq=249 value=52.314646059006705 elapsed_us=46180511
+2026-03-24T03:04:28.584354Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178417 drift_us=-483 seq=124 value=0.6807072218106253 elapsed_us=46180583
+2026-03-24T03:04:28.584386Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178377 drift_us=-219 seq=49 value=-0.014250695107031988 elapsed_us=46180616
+2026-03-24T03:04:28.594738Z  INFO ThreadId(23) uplink_tx: sent cmd=Heartbeat dispatch_us=105 queue_latency_us=10297 seq=5 elapsed_us=46190955
+2026-03-24T03:04:28.684711Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178755 drift_us=410 seq=250 value=21.495860697831436 elapsed_us=46280921
+2026-03-24T03:04:28.784504Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178547 drift_us=-208 seq=251 value=28.353884493380292 elapsed_us=46380713
+2026-03-24T03:04:28.784581Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178644 drift_us=227 seq=125 value=2.368672117872909 elapsed_us=46380810
+2026-03-24T03:04:28.885450Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179498 drift_us=951 seq=252 value=25.54292757341998 elapsed_us=46481664
+2026-03-24T03:04:28.984270Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178314 drift_us=-1184 seq=253 value=54.499882653378805 elapsed_us=46580480
+2026-03-24T03:04:28.984344Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178405 drift_us=-239 seq=126 value=3.519107280310522 elapsed_us=46580571
+2026-03-24T03:04:29.084623Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178667 drift_us=353 seq=254 value=21.983901319115702 elapsed_us=46680833
+2026-03-24T03:04:29.084700Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178690 drift_us=313 seq=50 value=-0.04419479454344271 elapsed_us=46680929
+2026-03-24T03:04:29.183777Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177813 drift_us=-854 seq=255 value=64.88558836028345 elapsed_us=46779979
+2026-03-24T03:04:29.183913Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177976 drift_us=-429 seq=127 value=1.1629874183980475 elapsed_us=46780142
+2026-03-24T03:04:29.283704Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177747 drift_us=-65 seq=256 value=34.416145065339364 elapsed_us=46879914
+2026-03-24T03:04:29.383795Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177840 drift_us=92 seq=257 value=66.90808075493796 elapsed_us=46980006
+2026-03-24T03:04:29.383875Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177939 drift_us=-37 seq=128 value=2.8549903593636703 elapsed_us=46980105
+2026-03-24T03:04:29.484877Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178919 drift_us=1080 seq=258 value=20.699541972208536 elapsed_us=47081086
+2026-03-24T03:04:29.584067Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178111 drift_us=-808 seq=259 value=79.48131285560476 elapsed_us=47180278
+2026-03-24T03:04:29.584125Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178188 drift_us=250 seq=129 value=0.6842066006381118 elapsed_us=47180355
+2026-03-24T03:04:29.584160Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178149 drift_us=-539 seq=51 value=-0.09070009849759023 elapsed_us=47180390
+2026-03-24T03:04:29.683780Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177827 drift_us=-285 seq=260 value=41.50045084182267 elapsed_us=47279993
+2026-03-24T03:04:29.784062Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178109 drift_us=283 seq=261 value=55.360672078032074 elapsed_us=47380276
+2026-03-24T03:04:29.784117Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178180 drift_us=-8 seq=130 value=2.1308542617256148 elapsed_us=47380347
+2026-03-24T03:04:29.884289Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178336 drift_us=227 seq=262 value=55.81841848329687 elapsed_us=47480503
+2026-03-24T03:04:29.985869Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179908 drift_us=1572 seq=263 value=55.13319384560773 elapsed_us=47582075
+2026-03-24T03:04:29.985918Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179981 drift_us=1801 seq=131 value=3.1438163927072016 elapsed_us=47582148
+2026-03-24T03:04:30.085840Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179888 drift_us=-21 seq=264 value=52.92439669637956 elapsed_us=47682054
+2026-03-24T03:04:30.085894Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21179885 drift_us=1734 seq=52 value=0.04939413199776882 elapsed_us=47682124
+2026-03-24T03:04:30.183665Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177708 drift_us=-2180 seq=265 value=37.02933576622546 elapsed_us=47779874
+2026-03-24T03:04:30.183741Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177804 drift_us=-2178 seq=132 value=4.817224435918129 elapsed_us=47779970
+2026-03-24T03:04:30.284411Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178458 drift_us=750 seq=266 value=62.14080169707868 elapsed_us=47880624
+2026-03-24T03:04:30.383598Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177644 drift_us=-814 seq=267 value=36.76491072622961 elapsed_us=47979810
+2026-03-24T03:04:30.383654Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177717 drift_us=-87 seq=133 value=3.9127797772387725 elapsed_us=47979883
+2026-03-24T03:04:30.483611Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177656 drift_us=12 seq=268 value=75.21880105070537 elapsed_us=48079822
+2026-03-24T03:04:30.583645Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177693 drift_us=37 seq=269 value=26.462216024053614 elapsed_us=48179859
+2026-03-24T03:04:30.583697Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177761 drift_us=44 seq=134 value=4.882009560181666 elapsed_us=48179927
+2026-03-24T03:04:30.583728Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21177711 drift_us=-2167 seq=53 value=-0.015088489423173049 elapsed_us=48179957
+2026-03-24T03:04:30.683954Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178000 drift_us=307 seq=270 value=55.76284836228731 elapsed_us=48280166
+2026-03-24T03:04:30.785836Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179880 drift_us=1880 seq=271 value=63.3005889603526 elapsed_us=48382046
+2026-03-24T03:04:30.785897Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21179959 drift_us=2198 seq=135 value=3.3973879592564553 elapsed_us=48382125
+2026-03-24T03:04:30.885524Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179570 drift_us=-310 seq=272 value=29.626260929150693 elapsed_us=48481736
+2026-03-24T03:04:30.984194Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178241 drift_us=-1329 seq=273 value=77.5648273445565 elapsed_us=48580407
+2026-03-24T03:04:30.984247Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178311 drift_us=-1648 seq=136 value=4.543419489319307 elapsed_us=48580477
+2026-03-24T03:04:31.084075Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178122 drift_us=-119 seq=274 value=42.64509756259663 elapsed_us=48680288
+2026-03-24T03:04:31.084128Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178118 drift_us=400 seq=54 value=0.06244849014665657 elapsed_us=48680357
+2026-03-24T03:04:31.184046Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178091 drift_us=-30 seq=275 value=33.611838941041796 elapsed_us=48780258
+2026-03-24T03:04:31.184103Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178166 drift_us=-145 seq=137 value=0.5126871151818468 elapsed_us=48780332
+2026-03-24T03:04:31.285545Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179592 drift_us=1500 seq=276 value=34.91447057376925 elapsed_us=48881758
+2026-03-24T03:04:31.384458Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178504 drift_us=-1088 seq=277 value=51.08509732158335 elapsed_us=48980670
+2026-03-24T03:04:31.384518Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178581 drift_us=415 seq=138 value=1.9836681631864563 elapsed_us=48980747
+2026-03-24T03:04:31.485424Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179469 drift_us=965 seq=278 value=54.412329681235356 elapsed_us=49081635
+2026-03-24T03:04:31.584597Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178639 drift_us=-830 seq=279 value=63.041699686737545 elapsed_us=49180805
+2026-03-24T03:04:31.584683Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178743 drift_us=163 seq=139 value=2.2080364924068077 elapsed_us=49180910
+2026-03-24T03:04:31.584742Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178732 drift_us=614 seq=55 value=0.03565722077763964 elapsed_us=49180971
+2026-03-24T03:04:31.684343Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178387 drift_us=-251 seq=280 value=37.55650761950892 elapsed_us=49280554
+2026-03-24T03:04:31.784142Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178187 drift_us=-201 seq=281 value=29.128064488465746 elapsed_us=49380353
+2026-03-24T03:04:31.784234Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178297 drift_us=-447 seq=140 value=3.915521136323524 elapsed_us=49380463
+2026-03-24T03:04:31.884479Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178517 drift_us=330 seq=282 value=64.12828281145343 elapsed_us=49480683
+2026-03-24T03:04:31.984487Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178533 drift_us=16 seq=283 value=67.55446201723555 elapsed_us=49580699
+2026-03-24T03:04:31.984545Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178607 drift_us=311 seq=141 value=2.5230903971823424 elapsed_us=49580774
+2026-03-24T03:04:32.084203Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178247 drift_us=-286 seq=284 value=50.463778689972365 elapsed_us=49680413
+2026-03-24T03:04:32.084263Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178252 drift_us=-480 seq=56 value=-0.058197447552121195 elapsed_us=49680491
+2026-03-24T03:04:32.184211Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178248 drift_us=1 seq=285 value=62.582156925009464 elapsed_us=49780414
+2026-03-24T03:04:32.184350Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178411 drift_us=-197 seq=142 value=3.9251607837916502 elapsed_us=49780577
+2026-03-24T03:04:32.284895Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178943 drift_us=695 seq=286 value=25.09569273477885 elapsed_us=49881109
+2026-03-24T03:04:32.385745Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179791 drift_us=848 seq=287 value=34.21071493094356 elapsed_us=49981957
+2026-03-24T03:04:32.385798Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21179861 drift_us=1450 seq=143 value=4.563955956881692 elapsed_us=49982027
+2026-03-24T03:04:32.484331Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178376 drift_us=-1414 seq=288 value=31.119298238292856 elapsed_us=50080543
+2026-03-24T03:04:32.584171Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178217 drift_us=-160 seq=289 value=66.63787738597381 elapsed_us=50180383
+2026-03-24T03:04:32.584229Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178291 drift_us=-1570 seq=144 value=2.901012742917728 elapsed_us=50180457
+2026-03-24T03:04:32.584262Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178253 drift_us=1 seq=57 value=0.09824588878787091 elapsed_us=50180492
+2026-03-24T03:04:32.683727Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177768 drift_us=-448 seq=290 value=26.529513841489617 elapsed_us=50279935
+2026-03-24T03:04:32.784181Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178222 drift_us=453 seq=291 value=58.882714909972776 elapsed_us=50380388
+2026-03-24T03:04:32.784272Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178334 drift_us=43 seq=145 value=1.6825113104067473 elapsed_us=50380500
+2026-03-24T03:04:32.883940Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177987 drift_us=-235 seq=292 value=46.09588775029927 elapsed_us=50480153
+2026-03-24T03:04:32.984783Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178830 drift_us=843 seq=293 value=69.45655023353456 elapsed_us=50580996
+2026-03-24T03:04:32.984835Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178898 drift_us=564 seq=146 value=1.5674394690990305 elapsed_us=50581064
+2026-03-24T03:04:33.084273Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178320 drift_us=-510 seq=294 value=54.4112651456484 elapsed_us=50680486
+2026-03-24T03:04:33.084319Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178310 drift_us=57 seq=58 value=0.031898927940230026 elapsed_us=50680549
+2026-03-24T03:04:33.184925Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178971 drift_us=652 seq=295 value=78.29567145887637 elapsed_us=50781138
+2026-03-24T03:04:33.184981Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179044 drift_us=147 seq=147 value=1.5311584636411877 elapsed_us=50781211
+2026-03-24T03:04:33.284208Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178258 drift_us=-714 seq=296 value=21.272661705748842 elapsed_us=50880424
+2026-03-24T03:04:33.384329Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178365 drift_us=107 seq=297 value=20.084881075140665 elapsed_us=50980531
+2026-03-24T03:04:33.384450Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178512 drift_us=-533 seq=148 value=1.677090049454793 elapsed_us=50980678
+2026-03-24T03:04:33.484337Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178384 drift_us=19 seq=298 value=45.60496875704655 elapsed_us=51080550
+2026-03-24T03:04:33.584656Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178704 drift_us=320 seq=299 value=61.82671731134064 elapsed_us=51180870
+2026-03-24T03:04:33.584701Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178765 drift_us=253 seq=149 value=4.058861779457471 elapsed_us=51180931
+2026-03-24T03:04:33.584726Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178717 drift_us=407 seq=59 value=0.08317059629079879 elapsed_us=51180956
+2026-03-24T03:04:33.598614Z  INFO ThreadId(03) uplink_tx: sent cmd=Heartbeat dispatch_us=77 queue_latency_us=13902 seq=6 elapsed_us=51194834
+2026-03-24T03:04:33.684193Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178242 drift_us=-462 seq=300 value=63.78101144638029 elapsed_us=51280408
+2026-03-24T03:04:33.784241Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178289 drift_us=47 seq=301 value=52.60644201389224 elapsed_us=51380455
+2026-03-24T03:04:33.784297Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178360 drift_us=-405 seq=150 value=1.754311674686931 elapsed_us=51380526
+2026-03-24T03:04:33.883745Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177788 drift_us=-500 seq=302 value=39.37602297299757 elapsed_us=51479955
+2026-03-24T03:04:33.985634Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179682 drift_us=1893 seq=303 value=28.392547433407948 elapsed_us=51581848
+2026-03-24T03:04:33.985685Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179749 drift_us=1389 seq=151 value=2.7411184079015456 elapsed_us=51581915
+2026-03-24T03:04:34.084828Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178875 drift_us=-806 seq=304 value=37.70199350296494 elapsed_us=51681042
+2026-03-24T03:04:34.084875Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178865 drift_us=149 seq=60 value=0.0873675327539851 elapsed_us=51681105
+2026-03-24T03:04:34.184229Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178274 drift_us=-602 seq=305 value=23.51920660550812 elapsed_us=51780440
+2026-03-24T03:04:34.184490Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178539 drift_us=-1210 seq=152 value=2.258011272118723 elapsed_us=51780705
+2026-03-24T03:04:34.284056Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178103 drift_us=-171 seq=306 value=41.3480826814606 elapsed_us=51880269
+2026-03-24T03:04:34.383631Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177670 drift_us=-432 seq=307 value=60.56500404317945 elapsed_us=51979837
+2026-03-24T03:04:34.383749Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177807 drift_us=-732 seq=153 value=4.598891616127255 elapsed_us=51979973
+2026-03-24T03:04:34.483641Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177688 drift_us=17 seq=308 value=76.31562972582796 elapsed_us=52079854
+2026-03-24T03:04:34.584578Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178626 drift_us=938 seq=309 value=71.2920073582732 elapsed_us=52180792
+2026-03-24T03:04:34.584633Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178696 drift_us=889 seq=154 value=0.8334120982132242 elapsed_us=52180862
+2026-03-24T03:04:34.584664Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178655 drift_us=-211 seq=61 value=-0.011620367353002342 elapsed_us=52180894
+2026-03-24T03:04:34.685029Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179072 drift_us=447 seq=310 value=28.124653810616458 elapsed_us=52281239
+2026-03-24T03:04:34.785486Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179530 drift_us=458 seq=311 value=72.57057309140264 elapsed_us=52381697
+2026-03-24T03:04:34.785539Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179603 drift_us=907 seq=155 value=3.347528189547003 elapsed_us=52381769
+2026-03-24T03:04:34.885429Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179477 drift_us=-54 seq=312 value=42.629447911534925 elapsed_us=52481643
+2026-03-24T03:04:34.984317Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178364 drift_us=-1113 seq=313 value=50.444036082193406 elapsed_us=52580530
+2026-03-24T03:04:34.984365Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178428 drift_us=-1175 seq=156 value=4.736680987223241 elapsed_us=52580594
+2026-03-24T03:04:35.084401Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178444 drift_us=81 seq=314 value=68.64084278081776 elapsed_us=52680611
+2026-03-24T03:04:35.084472Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178462 drift_us=-193 seq=62 value=-0.008767867034856242 elapsed_us=52680701
+2026-03-24T03:04:35.183904Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177953 drift_us=-492 seq=315 value=63.24554813532738 elapsed_us=52780119
+2026-03-24T03:04:35.183953Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178017 drift_us=-411 seq=157 value=3.7154421765147494 elapsed_us=52780183
+2026-03-24T03:04:35.284634Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178681 drift_us=729 seq=316 value=52.82165277715821 elapsed_us=52880848
+2026-03-24T03:04:35.384429Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178466 drift_us=-216 seq=317 value=62.419877843614664 elapsed_us=52980632
+2026-03-24T03:04:35.384554Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178615 drift_us=599 seq=158 value=0.5304339459169867 elapsed_us=52980782
+2026-03-24T03:04:35.483560Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177595 drift_us=-870 seq=318 value=68.58981438206209 elapsed_us=53079762
+2026-03-24T03:04:35.584482Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178528 drift_us=932 seq=319 value=47.62488595560746 elapsed_us=53180694
+2026-03-24T03:04:35.584534Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178597 drift_us=-19 seq=159 value=0.8427763353033153 elapsed_us=53180763
+2026-03-24T03:04:35.584565Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178556 drift_us=94 seq=63 value=0.019741278063050954 elapsed_us=53180795
+2026-03-24T03:04:35.685398Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179441 drift_us=914 seq=320 value=66.60277483482204 elapsed_us=53281608
+2026-03-24T03:04:35.784115Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178158 drift_us=-1284 seq=321 value=77.04701544499127 elapsed_us=53380324
+2026-03-24T03:04:35.784198Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178260 drift_us=-337 seq=160 value=2.493939235059372 elapsed_us=53380426
+2026-03-24T03:04:35.883621Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177667 drift_us=-491 seq=322 value=72.87288790565042 elapsed_us=53479833
+2026-03-24T03:04:35.984204Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178252 drift_us=585 seq=323 value=34.01557591234857 elapsed_us=53580418
+2026-03-24T03:04:35.984248Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178312 drift_us=52 seq=161 value=3.6430655043286753 elapsed_us=53580478
+2026-03-24T03:04:36.084255Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178302 drift_us=50 seq=324 value=50.820782722257064 elapsed_us=53680468
+2026-03-24T03:04:36.084303Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178294 drift_us=-262 seq=64 value=-0.024551475028909045 elapsed_us=53680533
+2026-03-24T03:04:36.183702Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177751 drift_us=-551 seq=325 value=63.254209622387535 elapsed_us=53779917
+2026-03-24T03:04:36.183754Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177817 drift_us=-495 seq=162 value=0.643784645836806 elapsed_us=53779983
+2026-03-24T03:04:36.284191Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178234 drift_us=483 seq=326 value=21.622497861109387 elapsed_us=53880400
+2026-03-24T03:04:36.384438Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178484 drift_us=251 seq=327 value=61.92121961363058 elapsed_us=53980651
+2026-03-24T03:04:36.384487Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178550 drift_us=734 seq=163 value=2.8360833590012335 elapsed_us=53980717
+2026-03-24T03:04:36.484850Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178897 drift_us=412 seq=328 value=70.52367308439946 elapsed_us=54081063
+2026-03-24T03:04:36.584587Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178635 drift_us=-261 seq=329 value=68.10101992862839 elapsed_us=54180802
+2026-03-24T03:04:36.584640Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178702 drift_us=152 seq=164 value=3.0608375449062826 elapsed_us=54180869
+2026-03-24T03:04:36.584670Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178656 drift_us=368 seq=65 value=0.09529023364097183 elapsed_us=54180901
+2026-03-24T03:04:36.684889Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178936 drift_us=300 seq=330 value=35.95148820791334 elapsed_us=54281102
+2026-03-24T03:04:36.784267Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178313 drift_us=-623 seq=331 value=70.99691539300267 elapsed_us=54380479
+2026-03-24T03:04:36.784323Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178386 drift_us=-317 seq=165 value=4.795653178418133 elapsed_us=54380552
+2026-03-24T03:04:36.884447Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178495 drift_us=182 seq=332 value=27.76159866500094 elapsed_us=54480661
+2026-03-24T03:04:36.984196Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178243 drift_us=-252 seq=333 value=70.95498620932872 elapsed_us=54580409
+2026-03-24T03:04:36.984245Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178308 drift_us=-78 seq=166 value=2.2698762601690743 elapsed_us=54580474
+2026-03-24T03:04:37.084751Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178800 drift_us=557 seq=334 value=26.744375647280766 elapsed_us=54680966
+2026-03-24T03:04:37.084803Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178794 drift_us=132 seq=66 value=0.05966101217471298 elapsed_us=54681033
+2026-03-24T03:04:37.184585Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178631 drift_us=-169 seq=335 value=55.34089487126927 elapsed_us=54780797
+2026-03-24T03:04:37.184638Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178701 drift_us=393 seq=167 value=4.014505899403967 elapsed_us=54780867
+2026-03-24T03:04:37.284446Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178493 drift_us=-138 seq=336 value=60.59452952524049 elapsed_us=54880659
+2026-03-24T03:04:37.384653Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178700 drift_us=207 seq=337 value=57.954963231824706 elapsed_us=54980866
+2026-03-24T03:04:37.384706Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178770 drift_us=69 seq=168 value=1.87509403185586 elapsed_us=54980936
+2026-03-24T03:04:37.484619Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178668 drift_us=-32 seq=338 value=41.551864586093124 elapsed_us=55080834
+2026-03-24T03:04:37.585888Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179931 drift_us=1263 seq=339 value=36.68034763102737 elapsed_us=55182097
+2026-03-24T03:04:37.585981Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21180043 drift_us=1273 seq=169 value=1.5542257647974904 elapsed_us=55182209
+2026-03-24T03:04:37.586047Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21180030 drift_us=1244 seq=67 value=-0.09323190487560216 elapsed_us=55182277
+2026-03-24T03:04:37.684379Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178428 drift_us=-1503 seq=340 value=44.52828122613185 elapsed_us=55280594
+2026-03-24T03:04:37.784009Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178057 drift_us=-371 seq=341 value=30.95481369758348 elapsed_us=55380223
+2026-03-24T03:04:37.784058Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178121 drift_us=-1922 seq=170 value=2.1602762711102756 elapsed_us=55380287
+2026-03-24T03:04:37.884667Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178715 drift_us=658 seq=342 value=41.32032004108339 elapsed_us=55480881
+2026-03-24T03:04:37.984516Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178563 drift_us=-152 seq=343 value=70.45455285657708 elapsed_us=55580729
+2026-03-24T03:04:37.984566Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178630 drift_us=509 seq=171 value=2.031585396713046 elapsed_us=55580796
+2026-03-24T03:04:38.084622Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178669 drift_us=106 seq=344 value=53.58973282313224 elapsed_us=55680835
+2026-03-24T03:04:38.084673Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178664 drift_us=-1374 seq=68 value=0.05077694076090164 elapsed_us=55680903
+2026-03-24T03:04:38.185791Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179836 drift_us=1169 seq=345 value=36.97867458774298 elapsed_us=55782004
+2026-03-24T03:04:38.185848Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179910 drift_us=1281 seq=172 value=3.6364624520184043 elapsed_us=55782077
+2026-03-24T03:04:38.284362Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178406 drift_us=-1431 seq=346 value=20.18290838209932 elapsed_us=55880573
+2026-03-24T03:04:38.383598Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177640 drift_us=-766 seq=347 value=55.225987796087395 elapsed_us=55979807
+2026-03-24T03:04:38.383684Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177745 drift_us=-2166 seq=173 value=2.5797625050272615 elapsed_us=55979911
+2026-03-24T03:04:38.483711Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177753 drift_us=113 seq=348 value=42.72098426440466 elapsed_us=56079920
+2026-03-24T03:04:38.584589Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178624 drift_us=870 seq=349 value=59.36951828109343 elapsed_us=56180790
+2026-03-24T03:04:38.584699Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178761 drift_us=1016 seq=174 value=3.9783597536445545 elapsed_us=56180927
+2026-03-24T03:04:38.584772Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178762 drift_us=98 seq=69 value=0.08289011843873909 elapsed_us=56181001
+2026-03-24T03:04:38.599113Z  INFO ThreadId(15) uplink_tx: sent cmd=Heartbeat dispatch_us=71 queue_latency_us=15295 seq=7 elapsed_us=56195332
+2026-03-24T03:04:38.683511Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177559 drift_us=-1065 seq=350 value=60.419586640379144 elapsed_us=56279725
+2026-03-24T03:04:38.784350Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178386 drift_us=827 seq=351 value=55.7211919153356 elapsed_us=56380552
+2026-03-24T03:04:38.784499Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178561 drift_us=-200 seq=175 value=3.6757226406057395 elapsed_us=56380727
+2026-03-24T03:04:38.883840Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177888 drift_us=-497 seq=352 value=33.603998340687625 elapsed_us=56480055
+2026-03-24T03:04:38.984231Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178277 drift_us=388 seq=353 value=77.91726685750534 elapsed_us=56580443
+2026-03-24T03:04:38.984322Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178384 drift_us=-177 seq=176 value=1.6418208696880239 elapsed_us=56580550
+2026-03-24T03:04:39.084677Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178722 drift_us=446 seq=354 value=38.64994288392919 elapsed_us=56680889
+2026-03-24T03:04:39.084734Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178724 drift_us=-38 seq=70 value=0.07072451639411917 elapsed_us=56680963
+2026-03-24T03:04:39.183988Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178037 drift_us=-686 seq=355 value=21.661991180294677 elapsed_us=56780203
+2026-03-24T03:04:39.184038Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178102 drift_us=-282 seq=177 value=3.9376726801745683 elapsed_us=56780268
+2026-03-24T03:04:39.283933Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177973 drift_us=-64 seq=356 value=34.57912975274451 elapsed_us=56880139
+2026-03-24T03:04:39.384836Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178870 drift_us=897 seq=357 value=73.4292720618934 elapsed_us=56981036
+2026-03-24T03:04:39.384982Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179044 drift_us=942 seq=178 value=1.1716960500118494 elapsed_us=56981210
+2026-03-24T03:04:39.483882Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177920 drift_us=-948 seq=358 value=24.644034407185295 elapsed_us=57080088
+2026-03-24T03:04:39.584662Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178710 drift_us=788 seq=359 value=25.594069481706065 elapsed_us=57180876
+2026-03-24T03:04:39.584708Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178772 drift_us=-272 seq=179 value=4.339407142947795 elapsed_us=57180938
+2026-03-24T03:04:39.584733Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178723 drift_us=0 seq=71 value=-0.013055684280432439 elapsed_us=57180963
+2026-03-24T03:04:39.683585Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177634 drift_us=-1076 seq=360 value=59.05719689728039 elapsed_us=57279800
+2026-03-24T03:04:39.784352Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178401 drift_us=767 seq=361 value=40.831984931571185 elapsed_us=57380567
+2026-03-24T03:04:39.784398Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178462 drift_us=-310 seq=180 value=2.8717133693769754 elapsed_us=57380628
+2026-03-24T03:04:39.883726Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177770 drift_us=-631 seq=362 value=42.26391163275356 elapsed_us=57479936
+2026-03-24T03:04:39.984684Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178734 drift_us=964 seq=363 value=36.603681206021264 elapsed_us=57580900
+2026-03-24T03:04:39.984734Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178797 drift_us=335 seq=181 value=4.491056893146353 elapsed_us=57580963
+2026-03-24T03:04:40.084846Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178884 drift_us=150 seq=364 value=40.69753224154661 elapsed_us=57681050
+2026-03-24T03:04:40.084959Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21178948 drift_us=225 seq=72 value=0.002753702515282619 elapsed_us=57681188
+2026-03-24T03:04:40.184174Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178224 drift_us=-660 seq=365 value=25.07358616503902 elapsed_us=57780390
+2026-03-24T03:04:40.184221Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178285 drift_us=-512 seq=182 value=1.0081550607612346 elapsed_us=57780451
+2026-03-24T03:04:40.284481Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178529 drift_us=305 seq=366 value=41.181525136235955 elapsed_us=57880695
+2026-03-24T03:04:40.384870Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178918 drift_us=389 seq=367 value=36.583215607490374 elapsed_us=57981084
+2026-03-24T03:04:40.384921Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178985 drift_us=700 seq=183 value=2.2521632144365578 elapsed_us=57981151
+2026-03-24T03:04:40.483702Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177750 drift_us=-1169 seq=368 value=23.33045600888414 elapsed_us=58079915
+2026-03-24T03:04:40.583850Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177898 drift_us=149 seq=369 value=37.38033223278792 elapsed_us=58180064
+2026-03-24T03:04:40.583900Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177964 drift_us=-1021 seq=184 value=0.7908655182663739 elapsed_us=58180130
+2026-03-24T03:04:40.583928Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21177919 drift_us=-1030 seq=73 value=0.06873737139376956 elapsed_us=58180158
+2026-03-24T03:04:40.683752Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177803 drift_us=-96 seq=370 value=42.311431147988216 elapsed_us=58279968
+2026-03-24T03:04:40.784539Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178580 drift_us=778 seq=371 value=59.15661643479761 elapsed_us=58380746
+2026-03-24T03:04:40.784629Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178692 drift_us=728 seq=185 value=1.6348981695981277 elapsed_us=58380858
+2026-03-24T03:04:40.884281Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178323 drift_us=-257 seq=372 value=47.93936272936294 elapsed_us=58480489
+2026-03-24T03:04:40.984276Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178324 drift_us=1 seq=373 value=78.50080539575305 elapsed_us=58580490
+2026-03-24T03:04:40.984326Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178390 drift_us=-302 seq=186 value=0.8624484688046089 elapsed_us=58580556
+2026-03-24T03:04:41.084191Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178239 drift_us=-85 seq=374 value=28.01742392715048 elapsed_us=58680405
+2026-03-24T03:04:41.084239Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178230 drift_us=311 seq=74 value=-0.07568732926149742 elapsed_us=58680469
+2026-03-24T03:04:41.184724Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178773 drift_us=534 seq=375 value=28.281264020574778 elapsed_us=58780939
+2026-03-24T03:04:41.184776Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178841 drift_us=450 seq=187 value=0.5816232716847762 elapsed_us=58781006
+2026-03-24T03:04:41.284208Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178255 drift_us=-517 seq=376 value=78.49726042190096 elapsed_us=58880422
+2026-03-24T03:04:41.384916Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178965 drift_us=709 seq=377 value=76.45593912781985 elapsed_us=58981131
+2026-03-24T03:04:41.384966Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21179030 drift_us=190 seq=188 value=2.723879013117761 elapsed_us=58981196
+2026-03-24T03:04:41.483966Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178011 drift_us=-954 seq=378 value=26.250780490165994 elapsed_us=59080177
+2026-03-24T03:04:41.584300Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178349 drift_us=338 seq=379 value=46.9643186763992 elapsed_us=59180515
+2026-03-24T03:04:41.584349Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178413 drift_us=-617 seq=189 value=4.702929360571001 elapsed_us=59180579
+2026-03-24T03:04:41.584378Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178369 drift_us=139 seq=75 value=0.06828948652879802 elapsed_us=59180608
+2026-03-24T03:04:41.685011Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179060 drift_us=711 seq=380 value=53.10450921096425 elapsed_us=59281226
+2026-03-24T03:04:41.783468Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177516 drift_us=-1544 seq=381 value=42.44059925893246 elapsed_us=59379682
+2026-03-24T03:04:41.783516Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177580 drift_us=-833 seq=190 value=2.3838548425872066 elapsed_us=59379746
+2026-03-24T03:04:41.885327Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179376 drift_us=1860 seq=382 value=35.47280146358907 elapsed_us=59481542
+2026-03-24T03:04:41.984361Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178409 drift_us=-967 seq=383 value=36.94564101715065 elapsed_us=59580575
+2026-03-24T03:04:41.984410Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178474 drift_us=894 seq=191 value=3.966434239528483 elapsed_us=59580640
+2026-03-24T03:04:42.083889Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177936 drift_us=-473 seq=384 value=69.91403144417666 elapsed_us=59680102
+2026-03-24T03:04:42.083938Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21177928 drift_us=-440 seq=76 value=0.025401336976011463 elapsed_us=59680168
+2026-03-24T03:04:42.185405Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179452 drift_us=1516 seq=385 value=28.721724624433783 elapsed_us=59781618
+2026-03-24T03:04:42.185455Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179519 drift_us=1045 seq=192 value=0.6409964526122189 elapsed_us=59781685
+2026-03-24T03:04:42.283524Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177573 drift_us=-1879 seq=386 value=64.10804284319487 elapsed_us=59879739
+2026-03-24T03:04:42.384107Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178155 drift_us=582 seq=387 value=45.871042347707046 elapsed_us=59980321
+2026-03-24T03:04:42.384156Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178219 drift_us=-1300 seq=193 value=2.795677344539974 elapsed_us=59980385
+2026-03-24T03:04:42.411423Z  INFO ThreadId(23) === PERFORMANCE REPORT === report=2 elapsed_s=60 elapsed_us=60007642 pkts_received=0 pkts_lost=0 avg_latency_us=0 deadline_misses=0 interlock_count=0 fault_count=0
+2026-03-24T03:04:42.484526Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178573 drift_us=418 seq=388 value=48.757892404653546 elapsed_us=60080739
+2026-03-24T03:04:42.583833Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177872 drift_us=-701 seq=389 value=59.30606615027791 elapsed_us=60180038
+2026-03-24T03:04:42.583947Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178009 drift_us=-210 seq=194 value=2.105023418054198 elapsed_us=60180175
+2026-03-24T03:04:42.584033Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21178022 drift_us=94 seq=77 value=0.08529060833833135 elapsed_us=60180262
+2026-03-24T03:04:42.683735Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177784 drift_us=-88 seq=390 value=30.042771995900686 elapsed_us=60279950
+2026-03-24T03:04:42.785444Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21179483 drift_us=1699 seq=391 value=61.43141855674018 elapsed_us=60381649
+2026-03-24T03:04:42.785496Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179560 drift_us=1551 seq=195 value=3.3684517053547993 elapsed_us=60381726
+2026-03-24T03:04:42.883953Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177988 drift_us=-1495 seq=392 value=79.54311496839209 elapsed_us=60480154
+2026-03-24T03:04:42.984429Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178474 drift_us=486 seq=393 value=59.141586447085906 elapsed_us=60580640
+2026-03-24T03:04:42.984478Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178543 drift_us=-1018 seq=196 value=3.246876946192309 elapsed_us=60580708
+2026-03-24T03:04:43.083835Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177882 drift_us=-592 seq=394 value=60.986452100350796 elapsed_us=60680048
+2026-03-24T03:04:43.083885Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21177875 drift_us=-148 seq=78 value=0.021166573918721537 elapsed_us=60680114
+2026-03-24T03:04:43.183544Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177591 drift_us=-291 seq=395 value=37.009778874914815 elapsed_us=60779757
+2026-03-24T03:04:43.183591Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21177655 drift_us=-887 seq=197 value=1.1867220730518107 elapsed_us=60779821
+2026-03-24T03:04:43.284366Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178413 drift_us=822 seq=396 value=47.76571296387799 elapsed_us=60880579
+2026-03-24T03:04:43.383631Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177678 drift_us=-735 seq=397 value=62.92277005235719 elapsed_us=60979844
+2026-03-24T03:04:43.383681Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177744 drift_us=89 seq=198 value=4.81024249027869 elapsed_us=60979910
+2026-03-24T03:04:43.484005Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178053 drift_us=375 seq=398 value=29.341789692565424 elapsed_us=61080219
+2026-03-24T03:04:43.583958Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178006 drift_us=-47 seq=399 value=40.273179278716846 elapsed_us=61180172
+2026-03-24T03:04:43.584007Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178070 drift_us=326 seq=199 value=2.3393816612021245 elapsed_us=61180236
+2026-03-24T03:04:43.584033Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178025 drift_us=150 seq=79 value=-0.05539456534041523 elapsed_us=61180264
+2026-03-24T03:04:43.593533Z  INFO ThreadId(23) uplink_tx: sent cmd=Heartbeat dispatch_us=177 queue_latency_us=9366 seq=8 elapsed_us=61189745
+2026-03-24T03:04:43.685377Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179421 drift_us=1415 seq=400 value=40.246030532268854 elapsed_us=61281587
+2026-03-24T03:04:43.783985Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178032 drift_us=-1388 seq=401 value=59.781855607404765 elapsed_us=61380199
+2026-03-24T03:04:43.784033Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178097 drift_us=27 seq=200 value=2.361969765441818 elapsed_us=61380263
+2026-03-24T03:04:43.884768Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178815 drift_us=783 seq=402 value=33.64895478717578 elapsed_us=61480982
+2026-03-24T03:04:43.984037Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178087 drift_us=-730 seq=403 value=30.308774888589465 elapsed_us=61580252
+2026-03-24T03:04:43.984092Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178155 drift_us=58 seq=201 value=3.5610599709470954 elapsed_us=61580321
+2026-03-24T03:04:44.083615Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177663 drift_us=-423 seq=404 value=47.667775875951534 elapsed_us=61679829
+2026-03-24T03:04:44.083664Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21177654 drift_us=-371 seq=80 value=0.07918900042367347 elapsed_us=61679893
+2026-03-24T03:04:44.184058Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178106 drift_us=443 seq=405 value=55.517063840722145 elapsed_us=61780272
+2026-03-24T03:04:44.184104Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178168 drift_us=13 seq=202 value=4.328260606254693 elapsed_us=61780334
+2026-03-24T03:04:44.285687Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179732 drift_us=1626 seq=406 value=52.49553309544236 elapsed_us=61881898
+2026-03-24T03:04:44.383809Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177848 drift_us=-1884 seq=407 value=58.86446553631258 elapsed_us=61980014
+2026-03-24T03:04:44.383921Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21177984 drift_us=-184 seq=203 value=1.8999431568097842 elapsed_us=61980150
+2026-03-24T03:04:44.484510Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178558 drift_us=710 seq=408 value=50.712427249752594 elapsed_us=62080724
+2026-03-24T03:04:44.584848Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178888 drift_us=330 seq=409 value=59.59928545283614 elapsed_us=62181054
+2026-03-24T03:04:44.584969Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21179031 drift_us=1047 seq=204 value=4.599514487540936 elapsed_us=62181197
+2026-03-24T03:04:44.585054Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21179044 drift_us=1390 seq=81 value=0.023459120206867606 elapsed_us=62181283
+2026-03-24T03:04:44.684468Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178512 drift_us=-376 seq=410 value=48.24909240498833 elapsed_us=62280678
+2026-03-24T03:04:44.784059Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178104 drift_us=-408 seq=411 value=69.37231724554408 elapsed_us=62380270
+2026-03-24T03:04:44.784124Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178187 drift_us=-844 seq=205 value=2.095870177122272 elapsed_us=62380353
+2026-03-24T03:04:44.885812Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179859 drift_us=1755 seq=412 value=26.753618998079883 elapsed_us=62482025
+2026-03-24T03:04:44.983876Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177923 drift_us=-1936 seq=413 value=27.68124117665021 elapsed_us=62580089
+2026-03-24T03:04:44.983940Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178003 drift_us=-184 seq=206 value=2.7734962577475053 elapsed_us=62580169
+2026-03-24T03:04:45.083869Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177918 drift_us=-5 seq=414 value=42.415745793222726 elapsed_us=62680084
+2026-03-24T03:04:45.083916Z  INFO ThreadId(15) telemetry_rx sensor=Imu latency_us=21177907 drift_us=-1137 seq=82 value=-0.08011199745926514 elapsed_us=62680146
+2026-03-24T03:04:45.184055Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178102 drift_us=184 seq=415 value=67.73960987688139 elapsed_us=62780268
+2026-03-24T03:04:45.184103Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178167 drift_us=164 seq=207 value=1.009512788085439 elapsed_us=62780333
+2026-03-24T03:04:45.284505Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178552 drift_us=450 seq=416 value=36.3863371180651 elapsed_us=62880718
+2026-03-24T03:04:45.384288Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178336 drift_us=-216 seq=417 value=74.07554560262255 elapsed_us=62980502
+2026-03-24T03:04:45.384337Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178401 drift_us=234 seq=208 value=3.742904763603898 elapsed_us=62980567
+2026-03-24T03:04:45.483749Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177796 drift_us=-540 seq=418 value=27.433625536404328 elapsed_us=63079962
+2026-03-24T03:04:45.584089Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178137 drift_us=341 seq=419 value=78.28974039844323 elapsed_us=63180303
+2026-03-24T03:04:45.584138Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178200 drift_us=-200 seq=209 value=4.398289855595756 elapsed_us=63180367
+2026-03-24T03:04:45.584167Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178157 drift_us=251 seq=83 value=0.07349470353776583 elapsed_us=63180397
+2026-03-24T03:04:45.683668Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21177711 drift_us=-425 seq=420 value=33.82288343451466 elapsed_us=63279878
+2026-03-24T03:04:45.783988Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178035 drift_us=323 seq=421 value=21.831809151078772 elapsed_us=63380201
+2026-03-24T03:04:45.784034Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178098 drift_us=-103 seq=210 value=2.658076446956297 elapsed_us=63380264
+2026-03-24T03:04:45.884431Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178480 drift_us=445 seq=422 value=50.006101350217094 elapsed_us=63480646
+2026-03-24T03:04:45.984459Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178504 drift_us=24 seq=423 value=78.04209386633873 elapsed_us=63580670
+2026-03-24T03:04:45.984526Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178589 drift_us=491 seq=211 value=4.621382235942264 elapsed_us=63580755
+2026-03-24T03:04:46.084656Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178705 drift_us=201 seq=424 value=54.238133933946344 elapsed_us=63680871
+2026-03-24T03:04:46.084703Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178693 drift_us=536 seq=84 value=-0.052514909248118705 elapsed_us=63680933
+2026-03-24T03:04:46.184485Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178532 drift_us=-173 seq=425 value=58.027276375737486 elapsed_us=63780698
+2026-03-24T03:04:46.184530Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178594 drift_us=5 seq=212 value=3.136446936445068 elapsed_us=63780760
+2026-03-24T03:04:46.284802Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178848 drift_us=316 seq=426 value=61.428983921902464 elapsed_us=63881014
+2026-03-24T03:04:46.384227Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178276 drift_us=-572 seq=427 value=60.93196219163994 elapsed_us=63980442
+2026-03-24T03:04:46.384274Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178338 drift_us=-256 seq=213 value=3.17832216721206 elapsed_us=63980504
+2026-03-24T03:04:46.484161Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178210 drift_us=-66 seq=428 value=76.3036678700652 elapsed_us=64080376
+2026-03-24T03:04:46.584748Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178792 drift_us=582 seq=429 value=24.83927581314946 elapsed_us=64180958
+2026-03-24T03:04:46.584822Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178885 drift_us=547 seq=214 value=3.4174344850208156 elapsed_us=64181051
+2026-03-24T03:04:46.584862Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178851 drift_us=158 seq=85 value=-0.07465224855663291 elapsed_us=64181091
+2026-03-24T03:04:46.684603Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178644 drift_us=-147 seq=430 value=42.644100865219734 elapsed_us=64280811
+2026-03-24T03:04:46.784268Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178317 drift_us=-328 seq=431 value=53.35748531471304 elapsed_us=64380483
+2026-03-24T03:04:46.784312Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178376 drift_us=-509 seq=215 value=3.4242944353292506 elapsed_us=64380542
+2026-03-24T03:04:46.885725Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21179773 drift_us=1457 seq=432 value=44.163183881136476 elapsed_us=64481940
+2026-03-24T03:04:46.985509Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179557 drift_us=-217 seq=433 value=53.08184322517842 elapsed_us=64581723
+2026-03-24T03:04:46.985555Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21179619 drift_us=1243 seq=216 value=4.412363241931996 elapsed_us=64581785
+2026-03-24T03:04:47.083928Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21177975 drift_us=-1582 seq=434 value=65.41027187985165 elapsed_us=64680141
+2026-03-24T03:04:47.083975Z  INFO ThreadId(23) telemetry_rx sensor=Imu latency_us=21177966 drift_us=-886 seq=86 value=-0.057965895454184985 elapsed_us=64680205
+2026-03-24T03:04:47.184151Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21178199 drift_us=224 seq=435 value=45.386832380189006 elapsed_us=64780365
+2026-03-24T03:04:47.184197Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21178261 drift_us=-1358 seq=217 value=2.9345473857995947 elapsed_us=64780427
+2026-03-24T03:04:47.285485Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179533 drift_us=1334 seq=436 value=49.37155370647808 elapsed_us=64881699
+2026-03-24T03:04:47.383527Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177575 drift_us=-1958 seq=437 value=21.333167864298108 elapsed_us=64979741
+2026-03-24T03:04:47.383572Z  INFO ThreadId(15) telemetry_rx sensor=Power latency_us=21177636 drift_us=-625 seq=218 value=2.674748497578869 elapsed_us=64979802
+2026-03-24T03:04:47.485566Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179611 drift_us=2036 seq=438 value=71.55497105100025 elapsed_us=65081777
+2026-03-24T03:04:47.583853Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21177902 drift_us=-1709 seq=439 value=42.60293572100327 elapsed_us=65180068
+2026-03-24T03:04:47.583896Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21177960 drift_us=324 seq=219 value=3.4132539363700003 elapsed_us=65180126
+2026-03-24T03:04:47.583920Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21177911 drift_us=-55 seq=87 value=-0.038053886500398496 elapsed_us=65180150
+2026-03-24T03:04:47.685693Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21179740 drift_us=1838 seq=440 value=52.192708805675295 elapsed_us=65281906
+2026-03-24T03:04:47.784050Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178093 drift_us=-1647 seq=441 value=51.26258280684455 elapsed_us=65380259
+2026-03-24T03:04:47.784101Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178165 drift_us=205 seq=220 value=4.7632445525063805 elapsed_us=65380331
+2026-03-24T03:04:47.884744Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178791 drift_us=698 seq=442 value=32.184807101578485 elapsed_us=65480957
+2026-03-24T03:04:47.984271Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178320 drift_us=-471 seq=443 value=29.202404764183637 elapsed_us=65580486
+2026-03-24T03:04:47.984315Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178380 drift_us=215 seq=221 value=3.4764751083267935 elapsed_us=65580546
+2026-03-24T03:04:48.084527Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178575 drift_us=255 seq=444 value=77.9622136249596 elapsed_us=65680741
+2026-03-24T03:04:48.084572Z  INFO ThreadId(24) telemetry_rx sensor=Imu latency_us=21178562 drift_us=651 seq=88 value=0.010964103240023393 elapsed_us=65680801
+2026-03-24T03:04:48.184260Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21178308 drift_us=-267 seq=445 value=25.30547166510553 elapsed_us=65780474
+2026-03-24T03:04:48.184303Z  INFO ThreadId(24) telemetry_rx sensor=Power latency_us=21178367 drift_us=-13 seq=222 value=1.3564788815604925 elapsed_us=65780533
+2026-03-24T03:04:48.285443Z  INFO ThreadId(24) telemetry_rx sensor=Thermal latency_us=21179491 drift_us=1183 seq=446 value=22.178408195489638 elapsed_us=65881657
+2026-03-24T03:04:48.384455Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178504 drift_us=-987 seq=447 value=67.46359202384622 elapsed_us=65980670
+2026-03-24T03:04:48.384500Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178564 drift_us=197 seq=223 value=1.9439043106001097 elapsed_us=65980730
+2026-03-24T03:04:48.484452Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178500 drift_us=-4 seq=448 value=52.903811123790526 elapsed_us=66080666
+2026-03-24T03:04:48.584327Z  INFO ThreadId(03) telemetry_rx sensor=Thermal latency_us=21178375 drift_us=-125 seq=449 value=38.27927495178801 elapsed_us=66180541
+2026-03-24T03:04:48.584373Z  INFO ThreadId(03) telemetry_rx sensor=Power latency_us=21178436 drift_us=-128 seq=224 value=3.074357928128473 elapsed_us=66180602
+2026-03-24T03:04:48.584397Z  INFO ThreadId(03) telemetry_rx sensor=Imu latency_us=21178387 drift_us=-174 seq=89 value=0.06941734069794256 elapsed_us=66180627
+2026-03-24T03:04:48.597455Z  INFO ThreadId(23) uplink_tx: sent cmd=Heartbeat dispatch_us=172 queue_latency_us=12942 seq=9 elapsed_us=66193665
+2026-03-24T03:04:48.683884Z  INFO ThreadId(15) telemetry_rx sensor=Thermal latency_us=21177933 drift_us=-442 seq=450 value=28.665768403883988 elapsed_us=66280099
+2026-03-24T03:04:48.784250Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178298 drift_us=365 seq=451 value=35.42111606581457 elapsed_us=66380464
+2026-03-24T03:04:48.784297Z  INFO ThreadId(23) telemetry_rx sensor=Power latency_us=21178361 drift_us=-76 seq=225 value=0.6289603530985349 elapsed_us=66380526
+2026-03-24T03:04:48.884209Z  INFO ThreadId(23) telemetry_rx sensor=Thermal latency_us=21178258 drift_us=-40 seq=452 value=50.212053056050316 elapsed_us=66480424
+2026-03-24T03:04:48.886551Z  WARN ThreadId(23) Satellite telemetry connection closed.
+2026-03-24T03:04:48.886629Z  WARN ThreadId(23) telemetry_rx stopped, signaling session end.
+2026-03-24T03:04:48.886653Z  WARN ThreadId(15) Satellite session signaling end. Cleaning up handles...
+2026-03-24T03:04:48.939062Z  WARN ThreadId(15) Satellite session tasks cleaned up. Ready for new connection.
+2026-03-24T03:04:59.410493Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=77
+2026-03-24T03:04:59.410512Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=77
+2026-03-24T03:04:59.410517Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=77
+2026-03-24T03:05:00.416537Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=78
+2026-03-24T03:05:00.416560Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=78
+2026-03-24T03:05:00.416562Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=78
+2026-03-24T03:05:01.410623Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=79
+2026-03-24T03:05:01.410639Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=79
+2026-03-24T03:05:01.410641Z ERROR ThreadId(23) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=79
+2026-03-24T03:05:02.410926Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=80
+2026-03-24T03:05:02.410944Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=80
+2026-03-24T03:05:02.410945Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=80
+2026-03-24T03:05:03.419338Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=81
+2026-03-24T03:05:03.419366Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=81
+2026-03-24T03:05:03.419371Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=81
+2026-03-24T03:05:04.414415Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=82
+2026-03-24T03:05:04.414432Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=82
+2026-03-24T03:05:04.414433Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=82
+2026-03-24T03:05:05.418397Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=83
+2026-03-24T03:05:05.418421Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=83
+2026-03-24T03:05:05.418423Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=83
+2026-03-24T03:05:06.410408Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=84
+2026-03-24T03:05:06.410430Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=84
+2026-03-24T03:05:06.410433Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=84
+2026-03-24T03:05:07.410169Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=85
+2026-03-24T03:05:07.410197Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=85
+2026-03-24T03:05:07.410202Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=85
+2026-03-24T03:05:08.421667Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=86
+2026-03-24T03:05:08.421692Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=86
+2026-03-24T03:05:08.421695Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=86
+2026-03-24T03:05:09.414352Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=87
+2026-03-24T03:05:09.414371Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=87
+2026-03-24T03:05:09.414373Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=87
+2026-03-24T03:05:10.411146Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=88
+2026-03-24T03:05:10.411180Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=88
+2026-03-24T03:05:10.411186Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=88
+2026-03-24T03:05:11.419790Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=89
+2026-03-24T03:05:11.419806Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=89
+2026-03-24T03:05:11.419811Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=89
+2026-03-24T03:05:12.419671Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=90
+2026-03-24T03:05:12.419663Z  INFO ThreadId(24) === PERFORMANCE REPORT === report=3 elapsed_s=90 elapsed_us=90015885 pkts_received=0 pkts_lost=0 avg_latency_us=0 deadline_misses=0 interlock_count=0 fault_count=0
+2026-03-24T03:05:12.419684Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=90
+2026-03-24T03:05:12.419687Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=90
+2026-03-24T03:05:13.415398Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=91
+2026-03-24T03:05:13.415416Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=91
+2026-03-24T03:05:13.415418Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=91
+2026-03-24T03:05:14.410985Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=92
+2026-03-24T03:05:14.411015Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=92
+2026-03-24T03:05:14.411020Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=92
+2026-03-24T03:05:15.409062Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=93
+2026-03-24T03:05:15.409080Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=93
+2026-03-24T03:05:15.409081Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=93
+2026-03-24T03:05:16.421718Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=94
+2026-03-24T03:05:16.421734Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=94
+2026-03-24T03:05:16.421735Z ERROR ThreadId(15) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=94
+2026-03-24T03:05:17.418590Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=95
+2026-03-24T03:05:17.418618Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=95
+2026-03-24T03:05:17.418624Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=95
+2026-03-24T03:05:18.410255Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=96
+2026-03-24T03:05:18.410275Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=96
+2026-03-24T03:05:18.410278Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=96
+2026-03-24T03:05:19.408591Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=97
+2026-03-24T03:05:19.408610Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=97
+2026-03-24T03:05:19.408613Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=97
+2026-03-24T03:05:20.410044Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=98
+2026-03-24T03:05:20.410074Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=98
+2026-03-24T03:05:20.410079Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=98
+2026-03-24T03:05:21.415478Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=99
+2026-03-24T03:05:21.415496Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=99
+2026-03-24T03:05:21.415497Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=99
+2026-03-24T03:05:22.415615Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=100
+2026-03-24T03:05:22.415648Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=100
+2026-03-24T03:05:22.415654Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=100
+2026-03-24T03:05:23.410664Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=101
+2026-03-24T03:05:23.410686Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=101
+2026-03-24T03:05:23.410688Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=101
+2026-03-24T03:05:24.414547Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=102
+2026-03-24T03:05:24.414569Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=102
+2026-03-24T03:05:24.414571Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=102
+2026-03-24T03:05:25.411654Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=103
+2026-03-24T03:05:25.411676Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=103
+2026-03-24T03:05:25.411678Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=103
+2026-03-24T03:05:26.411901Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=104
+2026-03-24T03:05:26.411932Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=104
+2026-03-24T03:05:26.411938Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=104
+2026-03-24T03:05:27.421952Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=105
+2026-03-24T03:05:27.421982Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=105
+2026-03-24T03:05:27.421988Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=105
+2026-03-24T03:05:28.420032Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=106
+2026-03-24T03:05:28.420055Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=106
+2026-03-24T03:05:28.420058Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=106
+2026-03-24T03:05:29.421677Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=107
+2026-03-24T03:05:29.421705Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=107
+2026-03-24T03:05:29.421712Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=107
+2026-03-24T03:05:30.419547Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=108
+2026-03-24T03:05:30.419576Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=108
+2026-03-24T03:05:30.419581Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=108
+2026-03-24T03:05:31.414261Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=109
+2026-03-24T03:05:31.414281Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=109
+2026-03-24T03:05:31.414287Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=109
+2026-03-24T03:05:32.418883Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=110
+2026-03-24T03:05:32.418905Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=110
+2026-03-24T03:05:32.418908Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=110
+2026-03-24T03:05:33.414322Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=111
+2026-03-24T03:05:33.414346Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=111
+2026-03-24T03:05:33.414348Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=111
+2026-03-24T03:05:34.414575Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=112
+2026-03-24T03:05:34.414615Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=112
+2026-03-24T03:05:34.414622Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=112
+2026-03-24T03:05:35.419281Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=113
+2026-03-24T03:05:35.419302Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=113
+2026-03-24T03:05:35.419304Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=113
+2026-03-24T03:05:36.411717Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=114
+2026-03-24T03:05:36.411737Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=114
+2026-03-24T03:05:36.411740Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=114
+2026-03-24T03:05:37.420739Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=115
+2026-03-24T03:05:37.420757Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=115
+2026-03-24T03:05:37.420758Z ERROR ThreadId(24) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=115
+2026-03-24T03:05:38.418486Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=116
+2026-03-24T03:05:38.418513Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=116
+2026-03-24T03:05:38.418517Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=116
+2026-03-24T03:05:39.407689Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="telemetry_rx" last_seen_s=66 now_s=117
+2026-03-24T03:05:39.407717Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="uplink_tx" last_seen_s=66 now_s=117
+2026-03-24T03:05:39.407720Z ERROR ThreadId(03) WATCHDOG: task is STALE — would restart task="fault_mgr" last_seen_s=66 now_s=117
+2026-03-24T03:08:42.410588Z  INFO ThreadId(01) Simulation timer expired. Shutting down.
+2026-03-24T03:08:42.410696Z  INFO ThreadId(01) === GCS SIMULATION COMPLETE === total_pkts_received=769 total_pkts_lost=0 reception_rate_pct=100.0 latency_p50_us=21184511 latency_p99_us=21184511 latency_max_us=21184511 total_cmds_sent=10 cmds_dispatch_missed=0 total_faults_received=0 interlock_max_us=0 critical_alerts_count=0

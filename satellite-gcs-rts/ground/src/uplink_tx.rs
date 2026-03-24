@@ -78,12 +78,14 @@ pub async fn run_uplink_tx(
             }
         }
 
+        let enqueue_ts = cmd.enqueue_us;
         let dispatch_start = Instant::now();
         let deadline_ms = CMD_DISPATCH_MS; 
 
         let mut pkt = cmd.packet;
         pkt.seq_no = tx_seq;
-        pkt.timestamp_us = sim_start.elapsed().as_micros() as u64;
+        let send_time_us = sim_start.elapsed().as_micros() as u64;
+        pkt.timestamp_us = send_time_us;
 
         let bytes = bincode::serialize(&pkt).unwrap();
 
@@ -93,7 +95,7 @@ pub async fn run_uplink_tx(
         ).await;
 
         let dispatch_us = dispatch_start.elapsed().as_micros() as u64;
-        let queue_latency_us = pkt.timestamp_us.saturating_sub(cmd.enqueue_us);
+        let queue_latency_us = send_time_us.saturating_sub(enqueue_ts);
         let elapsed_us = sim_start.elapsed().as_micros() as u64;
 
         match send_result {
