@@ -58,12 +58,13 @@ pub async fn run_fault_injector(
             }
             FaultType::CorruptedData => {
                 corrupt_flag.store(true, std::sync::atomic::Ordering::Relaxed);
-                tokio::time::sleep(Duration::from_millis(500)).await;
+                tokio::time::sleep(Duration::from_millis(150)).await;
                 corrupt_flag.store(false, std::sync::atomic::Ordering::Relaxed);
             }
             _ => {}
         }
 
+        let recovery_start = Instant::now();
         let fault_pkt = FaultPacket {
             seq_no: engine.total_faults as u32,
             timestamp_us: sim_start.elapsed().as_micros() as u64,
@@ -77,7 +78,7 @@ pub async fn run_fault_injector(
             wait_for_nominal(&state, &mut cancel)
         ).await;
 
-        let recovery_ms = fault_start.elapsed().as_millis() as u64;
+        let recovery_ms = recovery_start.elapsed().as_millis() as u64;
         engine.max_recovery_ms = engine.max_recovery_ms.max(recovery_ms);
 
         match recovery_result {

@@ -154,6 +154,7 @@ pub async fn run_telemetry_rx(
                     }
                 }
             }
+            if let Some(h) = lat_hist.get(&packet.sensor_id) {
                 m.latency_p50_us = h.value_at_percentile(50.0);
                 m.latency_p99_us = h.value_at_percentile(99.0);
                 m.latency_max_us = h.max();
