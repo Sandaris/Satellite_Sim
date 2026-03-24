@@ -13,6 +13,7 @@ pub struct ScheduledTask {
     pub next_release: Instant,
     pub exec_count:  u64,
     pub miss_count:  u64,
+    pub preemption_count: u64,
 }
 
 pub async fn run_rms_scheduler(
@@ -30,7 +31,7 @@ pub async fn run_rms_scheduler(
             wcet_ms: 5,
             deadline_ms: THERMAL_CTRL_PERIOD_MS,
             next_release: task_start + Duration::from_millis(THERMAL_CTRL_PERIOD_MS),
-            exec_count: 0, miss_count: 0,
+            exec_count: 0, miss_count: 0, preemption_count: 0,
         },
         ScheduledTask {
             name: "DataCompress",
@@ -39,7 +40,7 @@ pub async fn run_rms_scheduler(
             wcet_ms: 20,
             deadline_ms: DATA_COMPRESS_PERIOD_MS,
             next_release: task_start + Duration::from_millis(DATA_COMPRESS_PERIOD_MS),
-            exec_count: 0, miss_count: 0,
+            exec_count: 0, miss_count: 0, preemption_count: 0,
         },
         ScheduledTask {
             name: "HealthMonitor",
@@ -48,7 +49,7 @@ pub async fn run_rms_scheduler(
             wcet_ms: 50,
             deadline_ms: HEALTH_MONITOR_PERIOD_MS,
             next_release: task_start + Duration::from_millis(HEALTH_MONITOR_PERIOD_MS),
-            exec_count: 0, miss_count: 0,
+            exec_count: 0, miss_count: 0, preemption_count: 0,
         },
     ];
 
@@ -102,14 +103,23 @@ pub async fn run_rms_scheduler(
             let thermal_release = tasks[0].next_release;
             
             if idx > 0 && now + wcet > thermal_release {
-                let time_until_thermal = thermal_release.saturating_duration_since(now);
-                tokio::select! {
-                    _ = cancel.changed() => break,
-                    _ = tokio::time::sleep(time_until_thermal) => {
-                        // Preempted by ThermalControl
+                tasks[idx].miss_count += 1;
+                tasks[idx].preemption_count += 1;
+                let period_ms = tasks[idx].period_ms;
+                tasks[idx].next_release += Duration::from_millis(period_ms);
+                tracing::warn!(task=tasks[idx].name, elapsed_us=actual_start_us, 
+                               "PREEMPTED — deadline missed, advancing to next period");
+                crate::ui::push_log(&ui_metrics, 1, format!("TASK PREEMPTED {} - deadline missed", tasks[idx].name), &sim_start);
+                
+                // Update metrics for preemption
+                if let Ok(mut m) = ui_metrics.try_lock() {
+                    match tasks[idx].name {
+                        "DataCompress" => m.data_compress_preemptions = tasks[idx].preemption_count,
+                        "HealthMonitor" => m.health_monitor_preemptions = tasks[idx].preemption_count,
+                        _ => {}
                     }
                 }
-                continue; // Skip advancing next_release for preempted task
+                continue;
             } else {
                 tokio::select! {
                     _ = cancel.changed() => break,
@@ -149,10 +159,12 @@ pub async fn run_rms_scheduler(
                     "DataCompress" => {
                         m.data_compress_drift_us = drift_us as i64;
                         m.data_compress_violations = tasks[idx].miss_count;
+                        m.data_compress_preemptions = tasks[idx].preemption_count;
                     }
                     "HealthMonitor" => {
                         m.health_monitor_drift_us = drift_us as i64;
                         m.health_monitor_violations = tasks[idx].miss_count;
+                        m.health_monitor_preemptions = tasks[idx].preemption_count;
                     }
                     _ => {}
                 }

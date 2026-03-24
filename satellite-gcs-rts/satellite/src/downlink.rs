@@ -25,7 +25,7 @@ pub async fn run_downlink_tx(
     let mut framed_writer = FramedWrite::new(writer, codec.new_codec());
 
     let mut interval = tokio::time::interval(Duration::from_millis(shared::config::DOWNLINK_WINDOW_MS));
-    let mut tx_seq: u32 = 0;
+    let mut tx_log_seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
 
     loop {
@@ -67,7 +67,6 @@ pub async fn run_downlink_tx(
             if degraded && reading.packet.priority > 1 { continue; }
 
             let mut pkt = reading.packet;
-            pkt.seq_no = tx_seq; 
 
             let bytes = match bincode::serialize(&pkt) {
                 Ok(b)  => b,
@@ -88,13 +87,13 @@ pub async fn run_downlink_tx(
 
             match send_result {
                 Ok(Ok(_)) => {
-                    tracing::info!(tx_seq, sensor=?pkt.sensor_id, queue_latency_us, elapsed_us, "downlink_tx: sent");
+                    tracing::info!(tx_log_seq, sensor=?pkt.sensor_id, sensor_seq=pkt.seq_no, queue_latency_us, elapsed_us, "downlink_tx: sent");
                 }
                 _ => { 
                     tracing::warn!(elapsed_us, "downlink_tx: send timeout/error"); 
                 }
             }
-            tx_seq += 1;
+            tx_log_seq += 1;
         }
 
         let elapsed_ms = window_start.elapsed().as_millis();
@@ -110,7 +109,7 @@ pub async fn run_downlink_tx(
             m.downlink_queue_p50_us = hist.value_at_percentile(50.0);
             m.downlink_queue_p99_us = hist.value_at_percentile(99.0);
             m.downlink_queue_max_us = hist.max();
-            m.downlink_total_sent = tx_seq as u64;
+            m.downlink_total_sent = tx_log_seq as u64;
         }
         
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);

@@ -22,6 +22,7 @@ pub async fn run_thermal_sensor(
     let mut seq: u32 = 0;
     let mut consecutive_miss: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
+    let mut prev_actual_start_us: Option<u64> = None;
 
     loop {
         tokio::select! {
@@ -36,7 +37,15 @@ pub async fn run_thermal_sensor(
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
         let expected_start_us = startup_offset_us + ((seq + 1) as u64 * THERMAL_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
-        let jitter_us         = drift_us;
+        
+        let jitter_us = match prev_actual_start_us {
+            Some(prev) => {
+                let actual_interval = actual_start_us - prev;
+                let expected_period_us = THERMAL_PERIOD_MS * 1000;
+                (actual_interval as i64 - expected_period_us as i64).abs() as u64
+            }
+            None => 0,
+        };
         
         hist.record(jitter_us).ok();
 
@@ -44,8 +53,12 @@ pub async fn run_thermal_sensor(
 
         if jitter_us > THERMAL_JITTER_LIMIT_US {
             consecutive_miss += 1;
-            tracing::error!(sensor="thermal", jitter_us, limit_us=THERMAL_JITTER_LIMIT_US, elapsed_us=actual_start_us, "JITTER LIMIT VIOLATED");
-            crate::ui::push_log(&metrics, 2, format!("JITTER ALERT: {}us", jitter_us), &sim_start);
+            tracing::warn!(sensor="thermal", jitter_us, consecutive_miss,
+                           limit_us=THERMAL_JITTER_LIMIT_US, elapsed_us=actual_start_us,
+                           "JITTER EXCEEDED 1ms limit");
+            crate::ui::push_log(&metrics, 1, 
+                format!("JITTER EXCEEDED 1ms limit: {}us (miss #{})", jitter_us, consecutive_miss), 
+                &sim_start);
         } else {
             consecutive_miss = 0;
         }
@@ -103,6 +116,7 @@ pub async fn run_thermal_sensor(
         }
 
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
+        prev_actual_start_us = Some(actual_start_us);
         seq += 1;
         next_deadline += period;
     }
@@ -127,6 +141,7 @@ pub async fn run_power_sensor(
     let mut next_deadline = task_start + period;
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
+    let mut prev_actual_start_us: Option<u64> = None;
 
     loop {
         tokio::select! {
@@ -141,7 +156,16 @@ pub async fn run_power_sensor(
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
         let expected_start_us = startup_offset_us + ((seq + 1) as u64 * POWER_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
-        let jitter_us         = drift_us;
+
+        let jitter_us = match prev_actual_start_us {
+            Some(prev) => {
+                let actual_interval = actual_start_us - prev;
+                let expected_period_us = POWER_PERIOD_MS * 1000;
+                (actual_interval as i64 - expected_period_us as i64).abs() as u64
+            }
+            None => 0,
+        };
+
         hist.record(jitter_us).ok();
 
         let value: f64 = rand::thread_rng().gen_range(0.5..5.0);
@@ -177,6 +201,7 @@ pub async fn run_power_sensor(
         }
 
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
+        prev_actual_start_us = Some(actual_start_us);
         seq += 1;
         next_deadline += period;
     }
@@ -196,6 +221,7 @@ pub async fn run_imu_sensor(
     let mut next_deadline = task_start + period;
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
+    let mut prev_actual_start_us: Option<u64> = None;
 
     loop {
         tokio::select! {
@@ -210,7 +236,16 @@ pub async fn run_imu_sensor(
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
         let expected_start_us = startup_offset_us + ((seq + 1) as u64 * IMU_PERIOD_MS * 1000);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
-        let jitter_us         = drift_us;
+
+        let jitter_us = match prev_actual_start_us {
+            Some(prev) => {
+                let actual_interval = actual_start_us - prev;
+                let expected_period_us = IMU_PERIOD_MS * 1000;
+                (actual_interval as i64 - expected_period_us as i64).abs() as u64
+            }
+            None => 0,
+        };
+
         hist.record(jitter_us).ok();
 
         let value: f64 = rand::thread_rng().gen_range(-0.1..0.1);
@@ -246,6 +281,7 @@ pub async fn run_imu_sensor(
         }
 
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
+        prev_actual_start_us = Some(actual_start_us);
         seq += 1;
         next_deadline += period;
     }

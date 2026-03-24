@@ -100,6 +100,9 @@ pub struct SatMetricsSnapshot {
     pub thermal_ctrl_violations: u64,
     pub data_compress_violations: u64,
     pub health_monitor_violations: u64,
+    pub thermal_ctrl_preemptions: u64,
+    pub data_compress_preemptions: u64,
+    pub health_monitor_preemptions: u64,
     pub cpu_util_pct:           f64,
 
     // Downlink
@@ -133,7 +136,9 @@ impl Default for SatMetricsSnapshot {
             buffer_len: 0, buffer_capacity: 64, buffer_fill_pct: 0.0, buffer_total_dropped: 0, buffer_degraded: false, thermal_consecutive_miss: 0,
             system_state: "NOMINAL".to_string(),
             thermal_ctrl_drift_us: 0, data_compress_drift_us: 0, health_monitor_drift_us: 0,
-            thermal_ctrl_violations: 0, data_compress_violations: 0, health_monitor_violations: 0, cpu_util_pct: 0.0,
+            thermal_ctrl_violations: 0, data_compress_violations: 0, health_monitor_violations: 0,
+            thermal_ctrl_preemptions: 0, data_compress_preemptions: 0, health_monitor_preemptions: 0,
+            cpu_util_pct: 0.0,
             downlink_queue_latency_sparkline: std::collections::VecDeque::with_capacity(60),
             downlink_queue_p50_us: 0, downlink_queue_p99_us: 0, downlink_queue_max_us: 0, downlink_total_sent: 0, downlink_window_violations: 0,
             fault_total_injected: 0, fault_next_in_s: 0, fault_last_type: "None".to_string(), fault_last_recovery_ms: 0, fault_max_recovery_ms: 0, fault_circuit_state: "CLOSED".to_string(), mission_aborts: 0, fault_next_fire_at_s: 30,
