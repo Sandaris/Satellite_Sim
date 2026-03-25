@@ -20,7 +20,13 @@ pub async fn run_rms_scheduler(
     ui_metrics: Arc<tokio::sync::Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
     let task_start = Instant::now();
-    let tasks = Arc::new(tokio::sync::Mutex::new(vec![
+    
+    // In Rate Monotonic Scheduling (RMS), highest frequency has highest priority.
+    // 1. ThermalControl (fastest)
+    // 2. DataCompress 
+    // 3. HealthMonitor (slowest)
+    // We execute them sequentially to simulate real CPU sharing.
+    let mut tasks = vec![
         ScheduledTask {
             name: "ThermalControl",
             period_ms: THERMAL_CTRL_PERIOD_MS,
@@ -45,12 +51,11 @@ pub async fn run_rms_scheduler(
             next_release: task_start + Duration::from_millis(HEALTH_MONITOR_PERIOD_MS),
             exec_count: 0, miss_count: 0,
         },
-    ]));
+    ];
 
-    let mut tick = tokio::time::interval(Duration::from_millis(10));
-    let mut total_ticks = 0u64;
-    let mut active_ticks = 0u64;
-    let mut next_report = *sim_start + Duration::from_secs(10);
+    let mut tick = tokio::time::interval(Duration::from_millis(5)); // smaller tick for better resolution
+    let mut total_active_us = 0u64;
+    let mut interval_start = Instant::now();
 
     loop {
         tokio::select! {
@@ -58,85 +63,78 @@ pub async fn run_rms_scheduler(
             _ = tick.tick() => {}
         }
 
-        let now = Instant::now();
-        total_ticks += 1;
+        let mut now = Instant::now();
 
-        if now >= next_report {
-            let cpu_util_pct = (active_ticks as f64 / total_ticks as f64) * 100.0;
+        // 10-second utilization reporting
+        if now.duration_since(interval_start) >= Duration::from_secs(10) {
+            let elapsed_us = now.duration_since(interval_start).as_micros() as u64;
+            let cpu_util_pct = (total_active_us as f64 / elapsed_us as f64) * 100.0;
             tracing::info!(cpu_util_pct, "rms_scheduler CPU usage");
             crate::ui::push_log(&ui_metrics, 0, format!("rms_scheduler CPU usage {:.1}%", cpu_util_pct), &sim_start);
             if let Ok(mut m) = ui_metrics.try_lock() {
                 m.cpu_util_pct = cpu_util_pct;
             }
-            active_ticks = 0;
-            total_ticks = 0;
-            next_report = now + Duration::from_secs(10);
+            total_active_us = 0;
+            interval_start = now;
         }
 
-        let mut tasks_guard = tasks.lock().await;
-        // Priority sorted dispatch: Thermal (Prio 1) is always at tasks[0]
-        for i in 0..tasks_guard.len() {
-            if now >= tasks_guard[i].next_release {
-                active_ticks += 1;
-                
-                let task_name = tasks_guard[i].name;
-                let wcet = Duration::from_millis(tasks_guard[i].wcet_ms);
-                let deadline = Duration::from_millis(tasks_guard[i].deadline_ms);
-                let release_time = tasks_guard[i].next_release;
-                let period = Duration::from_millis(tasks_guard[i].period_ms);
+        // Find the highest priority task (lowest index) that is ready to run
+        let mut task_to_run = None;
+        for i in 0..tasks.len() {
+            if now >= tasks[i].next_release {
+                task_to_run = Some(i);
+                break; // Highest priority task found
+            }
+        }
 
-                // Advance release time immediately
-                tasks_guard[i].next_release += period;
-                tasks_guard[i].exec_count += 1;
+        if let Some(i) = task_to_run {
+            let task_name = tasks[i].name;
+            let wcet = Duration::from_millis(tasks[i].wcet_ms);
+            let release_time = tasks[i].next_release;
+            let period = Duration::from_millis(tasks[i].period_ms);
+            let deadline = release_time + Duration::from_millis(tasks[i].deadline_ms);
 
-                // Spawn task execution
-                let ui_metrics_clone = ui_metrics.clone();
-                let sim_start_clone = sim_start.clone();
-                let tasks_shared = tasks.clone();
-                let task_idx = i;
+            let expected_start_us = release_time.duration_since(*sim_start).as_micros() as u64;
+            let actual_start_us = now.duration_since(*sim_start).as_micros() as u64;
+            let drift_us = actual_start_us.saturating_sub(expected_start_us);
 
-                tokio::spawn(async move {
-                    let start_exec = Instant::now();
-                    let expected_start_us = release_time.duration_since(*sim_start_clone).as_micros() as u64;
-                    let actual_start_us = start_exec.duration_since(*sim_start_clone).as_micros() as u64;
-                    let drift_us = actual_start_us.saturating_sub(expected_start_us);
+            tracing::info!(task=task_name, drift_us, "Task dispatched");
+            crate::ui::push_log(&ui_metrics, 0, format!("Task dispatched {} drift={}us", task_name, drift_us), &sim_start);
 
-                    tracing::info!(task=task_name, drift_us, "Task dispatched");
-                    crate::ui::push_log(&ui_metrics_clone, 0, format!("Task dispatched {} drift={}us", task_name, drift_us), &sim_start_clone);
+            // Execute the task sequentially (Simulated CPU execution blocking)
+            tokio::time::sleep(wcet).await;
+            
+            now = Instant::now(); // Update now after execution
+            total_active_us += wcet.as_micros() as u64;
+            
+            // Advance release time
+            tasks[i].next_release += period;
+            tasks[i].exec_count += 1;
 
-                    // Simulate workload
-                    tokio::time::sleep(wcet).await;
+            let is_miss = now > deadline;
+            if is_miss {
+                tasks[i].miss_count += 1;
+                let violation_us = now.duration_since(deadline).as_micros() as u64;
+                tracing::warn!(task=task_name, violation_us, "DEADLINE VIOLATION");
+                crate::ui::push_log(&ui_metrics, 1, format!("DEADLINE VIOLATION {} ({}us)", task_name, violation_us), &sim_start);
+            }
 
-                    let actual_finish = Instant::now();
-                    let _execution_time_us = actual_finish.duration_since(start_exec).as_micros() as u64;
-                    let is_miss = actual_finish > (release_time + deadline);
-
-                    let mut final_tasks = tasks_shared.lock().await;
-                    if is_miss {
-                        final_tasks[task_idx].miss_count += 1;
-                        let violation_us = actual_finish.duration_since(release_time + deadline).as_micros() as u64;
-                        tracing::warn!(task=task_name, violation_us, "DEADLINE VIOLATION");
-                        crate::ui::push_log(&ui_metrics_clone, 1, format!("DEADLINE VIOLATION {} ({}us)", task_name, violation_us), &sim_start_clone);
+            if let Ok(mut m) = ui_metrics.try_lock() {
+                match task_name {
+                    "ThermalControl" => {
+                        m.thermal_ctrl_drift_us = drift_us as i64;
+                        m.thermal_ctrl_violations = tasks[i].miss_count;
                     }
-
-                    if let Ok(mut m) = ui_metrics_clone.try_lock() {
-                        match task_name {
-                            "ThermalControl" => {
-                                m.thermal_ctrl_drift_us = drift_us as i64;
-                                m.thermal_ctrl_violations = final_tasks[task_idx].miss_count;
-                            }
-                            "DataCompress" => {
-                                m.data_compress_drift_us = drift_us as i64;
-                                m.data_compress_violations = final_tasks[task_idx].miss_count;
-                            }
-                            "HealthMonitor" => {
-                                m.health_monitor_drift_us = drift_us as i64;
-                                m.health_monitor_violations = final_tasks[task_idx].miss_count;
-                            }
-                            _ => {}
-                        }
+                    "DataCompress" => {
+                        m.data_compress_drift_us = drift_us as i64;
+                        m.data_compress_violations = tasks[i].miss_count;
                     }
-                });
+                    "HealthMonitor" => {
+                        m.health_monitor_drift_us = drift_us as i64;
+                        m.health_monitor_violations = tasks[i].miss_count;
+                    }
+                    _ => {}
+                }
             }
         }
 
