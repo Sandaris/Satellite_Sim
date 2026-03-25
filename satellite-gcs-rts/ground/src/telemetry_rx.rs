@@ -296,12 +296,14 @@ async fn enqueue_re_request(
     gap: u32,
 ) {
     let enqueue_ts = sim_start.elapsed().as_micros() as u64;
+    let mut payload = [0u8; 32];
+    payload[0] = sensor as u8;
     let pkt = CommandPacket {
         seq_no: missing_from,           // encodes which seq we want re-sent
         timestamp_us: ts_us,
         cmd_type: CommandType::RequestTelemetry,
         priority: 2,                    // URGENT — above routine heartbeats
-        payload: [0u8; 32],
+        payload,
     };
     let cmd = PrioritizedCommand { packet: pkt, enqueue_us: enqueue_ts };
     cmd_queue.lock().await.push(cmd);

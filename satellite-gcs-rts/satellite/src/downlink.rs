@@ -1,9 +1,11 @@
+use std::collections::VecDeque;
 use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use shared::packets::{FaultPacket, PacketType};
-use crate::buffer::SensorBuffer;
+use shared::packets::{FaultPacket, PacketType, TelemetryPacket};
+use crate::buffer::{SensorBuffer, SensorReading};
 use crate::state::SystemState;
+use crate::telemetry_cache::TelemetryCache;
 
 use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
 use futures::SinkExt;
@@ -11,14 +13,16 @@ use tokio::net::tcp::OwnedWriteHalf;
 use bytes::Bytes;
 
 pub async fn run_downlink_tx(
-    buffer:     Arc<Mutex<SensorBuffer>>,
-    writer:     OwnedWriteHalf,
-    sim_start:  Arc<Instant>,
-    _state:     Arc<Mutex<SystemState>>,
-    mut cancel:     tokio::sync::watch::Receiver<bool>,
-    heartbeat:  Arc<AtomicU64>,
-    mut fault_rx: tokio::sync::mpsc::Receiver<FaultPacket>,
-    ui_metrics: Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
+    buffer:          Arc<Mutex<SensorBuffer>>,
+    telemetry_cache: Arc<Mutex<TelemetryCache>>,
+    retransmit_q:    Arc<Mutex<VecDeque<TelemetryPacket>>>,
+    writer:          OwnedWriteHalf,
+    sim_start:       Arc<Instant>,
+    _state:          Arc<Mutex<SystemState>>,
+    mut cancel:      tokio::sync::watch::Receiver<bool>,
+    heartbeat:       Arc<AtomicU64>,
+    mut fault_rx:    tokio::sync::mpsc::Receiver<FaultPacket>,
+    ui_metrics:      Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
     let mut codec = LengthDelimitedCodec::builder();
     codec.max_frame_length(1024);
@@ -73,8 +77,24 @@ pub async fn run_downlink_tx(
         for _ in 0..10 {
             if abort { break; } // Respect MissionAbort
 
-            let reading = { buffer.lock().await.pop() };
-            let reading = match reading { Some(r) => r, None => break };
+            let (reading, from_retransmit) = {
+                let mut rq = retransmit_q.lock().await;
+                if let Some(pkt) = rq.pop_front() {
+                    let now_us = sim_start.elapsed().as_micros() as u64;
+                    (
+                        SensorReading {
+                            packet: pkt,
+                            buffer_insert_us: now_us,
+                        },
+                        true,
+                    )
+                } else {
+                    match buffer.lock().await.pop() {
+                        Some(r) => (r, false),
+                        None => break,
+                    }
+                }
+            };
 
             if degraded && reading.packet.priority > 1 { continue; }
 
@@ -99,7 +119,16 @@ pub async fn run_downlink_tx(
 
             match send_result {
                 Ok(Ok(_)) => {
-                    tracing::info!(tx_log_seq, sensor=?pkt.sensor_id, sensor_seq=pkt.seq_no, queue_latency_us, elapsed_us, "downlink_tx: sent");
+                    telemetry_cache.lock().await.record(pkt);
+                    tracing::info!(
+                        tx_log_seq,
+                        sensor=?pkt.sensor_id,
+                        sensor_seq=pkt.seq_no,
+                        queue_latency_us,
+                        elapsed_us,
+                        retransmit=from_retransmit,
+                        "downlink_tx: sent"
+                    );
                 }
                 _ => { 
                     tracing::warn!(elapsed_us, "downlink_tx: send timeout/error"); 

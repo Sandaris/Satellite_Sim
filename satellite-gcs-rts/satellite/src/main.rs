@@ -7,6 +7,7 @@ use tokio::time::Instant;
 
 mod state;
 mod buffer;
+mod telemetry_cache;
 mod sensor;
 mod scheduler;
 mod downlink;
@@ -18,6 +19,8 @@ mod ui;
 use state::SystemState;
 
 use tracing_subscriber::prelude::*;
+use std::collections::VecDeque;
+use shared::packets::TelemetryPacket;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -65,6 +68,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let state = Arc::new(Mutex::new(SystemState::Nominal));
     let buffer = Arc::new(Mutex::new(buffer::SensorBuffer::new(shared::config::SENSOR_BUFFER_CAPACITY)));
+    let telemetry_cache = Arc::new(Mutex::new(telemetry_cache::TelemetryCache::new()));
+    let retransmit_q: Arc<Mutex<VecDeque<TelemetryPacket>>> =
+        Arc::new(Mutex::new(VecDeque::with_capacity(64)));
     let corrupt_flag = Arc::new(std::sync::atomic::AtomicBool::new(false));
 
     let (fault_tx, fault_rx) = tokio::sync::mpsc::channel(100);
@@ -127,11 +133,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Communication Tasks (Split TCP)
     handles.push(tokio::spawn(downlink::run_downlink_tx(
-        buffer.clone(), writer, sim_start.clone(), state.clone(), cancel_rx.clone(), hb_downlink.clone(), fault_rx, metrics_snapshot.clone()
+        buffer.clone(),
+        telemetry_cache.clone(),
+        retransmit_q.clone(),
+        writer,
+        sim_start.clone(),
+        state.clone(),
+        cancel_rx.clone(),
+        hb_downlink.clone(),
+        fault_rx,
+        metrics_snapshot.clone(),
     )));
 
     handles.push(tokio::spawn(uplink_rx::run_uplink_rx(
-        reader, state.clone(), sim_start.clone(), cancel_rx.clone(), hb_uplink.clone()
+        reader,
+        state.clone(),
+        sim_start.clone(),
+        cancel_rx.clone(),
+        hb_uplink.clone(),
+        telemetry_cache.clone(),
+        retransmit_q.clone(),
     )));
 
     handles.push(tokio::spawn(fault::run_fault_injector(

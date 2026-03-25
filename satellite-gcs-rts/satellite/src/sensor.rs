@@ -24,7 +24,7 @@ pub async fn run_thermal_sensor(
     let mut consecutive_miss: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
     let mut prev_actual_start_us: Option<u64> = None;
-    let mut prev_actual_interval_us: Option<u64> = None;
+    let period_us = THERMAL_PERIOD_MS * 1000;
 
     loop {
         tokio::select! {
@@ -33,21 +33,17 @@ pub async fn run_thermal_sensor(
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * THERMAL_PERIOD_MS * 1000);
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * period_us);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
         
         let actual_interval = match prev_actual_start_us {
             Some(prev) => actual_start_us.saturating_sub(prev),
-            None => THERMAL_PERIOD_MS * 1000,
+            None => period_us,
         };
         
-        let jitter_us = match prev_actual_interval_us {
-            Some(prev_int) => (actual_interval as i64 - prev_int as i64).abs() as u64,
-            None => 0,
-        };
+        let jitter_us = actual_interval.abs_diff(period_us);
         
         hist.record(jitter_us).ok();
-        prev_actual_interval_us = Some(actual_interval);
 
         let value: f64 = rand::thread_rng().gen_range(20.0..80.0);
 
@@ -148,7 +144,7 @@ pub async fn run_power_sensor(
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
     let mut prev_actual_start_us: Option<u64> = None;
-    let mut prev_actual_interval_us: Option<u64> = None;
+    let period_us = POWER_PERIOD_MS * 1000;
 
     loop {
         tokio::select! {
@@ -157,21 +153,17 @@ pub async fn run_power_sensor(
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * POWER_PERIOD_MS * 1000);
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * period_us);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
 
         let actual_interval = match prev_actual_start_us {
             Some(prev) => actual_start_us.saturating_sub(prev),
-            None => POWER_PERIOD_MS * 1000,
+            None => period_us,
         };
         
-        let jitter_us = match prev_actual_interval_us {
-            Some(prev_int) => (actual_interval as i64 - prev_int as i64).abs() as u64,
-            None => 0,
-        };
+        let jitter_us = actual_interval.abs_diff(period_us);
         
         hist.record(jitter_us).ok();
-        prev_actual_interval_us = Some(actual_interval);
 
         let value: f64 = rand::thread_rng().gen_range(0.5..5.0);
         let ts_us = sim_start.elapsed().as_micros() as u64;
@@ -231,7 +223,7 @@ pub async fn run_imu_sensor(
     let mut seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
     let mut prev_actual_start_us: Option<u64> = None;
-    let mut prev_actual_interval_us: Option<u64> = None;
+    let period_us = IMU_PERIOD_MS * 1000;
 
     loop {
         tokio::select! {
@@ -240,21 +232,17 @@ pub async fn run_imu_sensor(
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;
-        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * IMU_PERIOD_MS * 1000);
+        let expected_start_us = startup_offset_us + ((seq + 1) as u64 * period_us);
         let drift_us          = (actual_start_us as i64 - expected_start_us as i64).abs() as u64;
 
         let actual_interval = match prev_actual_start_us {
             Some(prev) => actual_start_us.saturating_sub(prev),
-            None => IMU_PERIOD_MS * 1000,
+            None => period_us,
         };
         
-        let jitter_us = match prev_actual_interval_us {
-            Some(prev_int) => (actual_interval as i64 - prev_int as i64).abs() as u64,
-            None => 0,
-        };
+        let jitter_us = actual_interval.abs_diff(period_us);
         
         hist.record(jitter_us).ok();
-        prev_actual_interval_us = Some(actual_interval);
 
         let value: f64 = rand::thread_rng().gen_range(-0.1..0.1);
         let ts_us = sim_start.elapsed().as_micros() as u64;

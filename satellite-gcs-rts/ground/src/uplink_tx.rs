@@ -3,7 +3,7 @@ use std::collections::BinaryHeap;
 use std::sync::{Arc, atomic::{AtomicU64, Ordering as AtomicOrdering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
-use shared::packets::CommandPacket;
+use shared::packets::{CommandPacket, CommandType};
 use shared::config::CMD_DISPATCH_MS;
 use crate::state::GcsSystemState;
 use hdrhistogram::Histogram;
@@ -95,7 +95,10 @@ pub async fn run_uplink_tx(
         let deadline_ms = if cmd.packet.priority <= 2 { 2 } else { CMD_DISPATCH_MS };
 
         let mut pkt = cmd.packet;
-        pkt.seq_no = tx_seq;
+        // RequestTelemetry carries the missing per-sensor seq in seq_no; do not overwrite.
+        if pkt.cmd_type != CommandType::RequestTelemetry {
+            pkt.seq_no = tx_seq;
+        }
         let send_time_us = sim_start.elapsed().as_micros() as u64;
         pkt.timestamp_us = send_time_us;
 
@@ -114,8 +117,8 @@ pub async fn run_uplink_tx(
         match send_result {
             Ok(Ok(_)) => {
                 tracing::info!(cmd=?pkt.cmd_type, dispatch_us, queue_latency_us,
-                               seq=tx_seq, elapsed_us, "uplink_tx: sent");
-                crate::ui::push_log(&ui_metrics, 0, format!("uplink_tx: sent {:?} seq={}", pkt.cmd_type, tx_seq), &sim_start);
+                               seq=pkt.seq_no, elapsed_us, "uplink_tx: sent");
+                crate::ui::push_log(&ui_metrics, 0, format!("uplink_tx: sent {:?} seq={}", pkt.cmd_type, pkt.seq_no), &sim_start);
             }
             _ => {
                 deadline_misses += 1;
