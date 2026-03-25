@@ -1,0 +1,207 @@
+Satellite Simulation Presentation Runbook
+=========================================
+
+Audience: evaluator / lecturer
+Goal: run the SATELLITE simulation manually and present proof from logs.
+OS: Windows PowerShell
+Project root:
+  C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts
+
+
+------------------------------------------------------------
+0) One-time setup
+------------------------------------------------------------
+
+Open PowerShell:
+
+  cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
+  cargo build --release
+
+Optional clean logs before demo:
+
+  Remove-Item .\satellite.log -ErrorAction SilentlyContinue
+  Remove-Item .\ground.log -ErrorAction SilentlyContinue
+
+
+------------------------------------------------------------
+1) Demo run flow (recommended 3 terminals)
+------------------------------------------------------------
+
+Use:
+  - Terminal A: Ground Control Station (must be up first)
+  - Terminal B: Satellite run #1
+  - Terminal C: Satellite run #2 (reconnect proof)
+
+1.1 Terminal A (start GCS)
+
+  cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
+  cargo run -p ground --release -- --duration-s 90
+
+1.2 Terminal B (start Satellite session 1)
+
+  cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
+  cargo run -p satellite --release -- --duration-s 25
+
+1.3 Terminal C (start Satellite session 2, reconnect demo)
+
+Start after Terminal B completes:
+
+  cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
+  cargo run -p satellite --release -- --duration-s 25
+
+This gives clean proof that satellite can reconnect to GCS over real TCP.
+
+
+------------------------------------------------------------
+2) What to show live during simulation
+------------------------------------------------------------
+
+From satellite runtime:
+- "Connecting to Ground Control..."
+- "Connected to Ground Control Station."
+- periodic sensor and scheduler activity
+- downlink transmission logs
+- uplink received commands from GCS
+
+These demonstrate:
+- real socket connection
+- bi-directional communication
+- real-time periodic tasks and scheduler execution
+
+
+------------------------------------------------------------
+3) Post-run proof extraction commands
+------------------------------------------------------------
+
+Run in project root:
+
+3.1 Satellite connection and command handling
+
+  rg "Connecting to Ground Control|Connected to Ground Control Station|uplink_rx: received cmd|command executed cmd" .\satellite.log
+
+3.2 Satellite downlink, sensor timing, jitter and drift
+
+  rg "sensor_read|Task dispatched|JITTER|drift_us=|jitter_us=|downlink_tx: sent|queue_latency_us=" .\satellite.log
+
+3.3 Fault handling and mission safety responses
+
+  rg "fault|SafeMode|ResetSensor|MISSION ABORT|recovery|recover" .\satellite.log
+
+3.4 End-of-run summary metrics
+
+  rg "=== SATELLITE SIMULATION COMPLETE ===" .\satellite.log
+
+3.5 Reconnect proof in GCS log (cross-check)
+
+  rg "Satellite connected from|telemetry_rx stopped|session tasks cleaned up" .\ground.log
+
+
+------------------------------------------------------------
+4) Satellite requirement-to-proof map
+------------------------------------------------------------
+
+Use this section as your speaking checklist.
+
+[A] Sensor acquisition and periodic scheduling
+  Proof:
+    - "sensor_read sensor=... drift_us=... jitter_us=..."
+    - "Task dispatched task=..."
+  Command:
+    rg "sensor_read|Task dispatched" .\satellite.log
+
+[B] Real-time jitter and drift monitoring
+  Proof:
+    - sensor logs include jitter and drift
+    - jitter violations are explicitly logged
+  Command:
+    rg "jitter_us=|drift_us=|JITTER EXCEEDED|JITTER LIMIT VIOLATED" .\satellite.log
+
+[C] Downlink pipeline and queue latency
+  Proof:
+    - "downlink_tx: sent ... queue_latency_us=..."
+  Command:
+    rg "downlink_tx: sent|queue_latency_us=" .\satellite.log
+
+[D] Uplink command reception and execution
+  Proof:
+    - "uplink_rx: received cmd=..."
+    - "command executed cmd=..."
+  Command:
+    rg "uplink_rx: received cmd|command executed cmd" .\satellite.log
+
+[E] Fault injection and recovery behavior
+  Proof:
+    - fault-related logs and safety command handling (SafeMode/ResetSensor)
+  Command:
+    rg "fault|SafeMode|ResetSensor|recovery|MISSION ABORT" .\satellite.log
+
+[F] System performance summary
+  Proof:
+    - final metrics line with:
+      thermal_jitter_p50_us
+      thermal_jitter_p99_us
+      thermal_jitter_max_us
+      downlink_queue_latency_p50_us
+      downlink_queue_latency_p99_us
+      cpu_util_pct
+      total_faults_injected
+      max_recovery_ms
+  Command:
+    rg "=== SATELLITE SIMULATION COMPLETE ===" .\satellite.log
+
+
+------------------------------------------------------------
+5) Key final metrics to explain to evaluator
+------------------------------------------------------------
+
+From final summary line in satellite log:
+
+- `thermal_jitter_p50_us / p99_us / max_us`
+  -> periodic control timing stability
+
+- `downlink_queue_latency_p50_us / p99_us`
+  -> packet to transmit queue behavior
+
+- `cpu_util_pct`
+  -> runtime load estimate
+
+- `total_faults_injected` and `max_recovery_ms`
+  -> fault stress and recovery responsiveness
+
+- `mission_aborts`
+  -> safety behavior under severe fault conditions
+
+
+------------------------------------------------------------
+6) Quick demo script (short)
+------------------------------------------------------------
+
+1) "I start GCS first, then satellite in release mode."
+2) "Satellite connects to GCS over TCP and starts periodic real-time tasks."
+3) "You can see drift/jitter per sensor and scheduler dispatch logs."
+4) "Satellite sends downlink packets; queue latency is logged."
+5) "Satellite receives and executes uplink commands from GCS."
+6) "Fault and recovery behavior are logged and summarized at the end."
+7) "I run a second satellite session to prove reconnect works."
+
+
+------------------------------------------------------------
+7) Minimal command block (copy/paste)
+------------------------------------------------------------
+
+Terminal A:
+  cargo run -p ground --release -- --duration-s 90
+
+Terminal B:
+  cargo run -p satellite --release -- --duration-s 25
+
+Terminal C:
+  cargo run -p satellite --release -- --duration-s 25
+
+After run:
+  rg "Connected to Ground Control Station|uplink_rx: received cmd|command executed cmd" .\satellite.log
+  rg "sensor_read|Task dispatched|jitter_us=|drift_us=|downlink_tx: sent|queue_latency_us=" .\satellite.log
+  rg "fault|SafeMode|ResetSensor|recovery|MISSION ABORT" .\satellite.log
+  rg "=== SATELLITE SIMULATION COMPLETE ===" .\satellite.log
+  rg "Satellite connected from|telemetry_rx stopped|session tasks cleaned up" .\ground.log
+
