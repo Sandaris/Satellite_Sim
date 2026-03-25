@@ -16,7 +16,7 @@ pub async fn run_telemetry_rx(
     reader:       OwnedReadHalf,
     state:        Arc<Mutex<GcsSystemState>>,
     fault_tx:     tokio::sync::mpsc::Sender<FaultPacket>,
-    _cmd_queue:   Arc<Mutex<BinaryHeap<PrioritizedCommand>>>,
+    cmd_queue:    Arc<Mutex<BinaryHeap<PrioritizedCommand>>>,
     sim_start:    Arc<Instant>,
     mut cancel:       tokio::sync::watch::Receiver<bool>,
     heartbeat:    Arc<AtomicU64>,
@@ -35,7 +35,7 @@ pub async fn run_telemetry_rx(
 
     let mut last_recv_us: HashMap<SensorId, u64> = HashMap::new();
     let mut last_any_recv_us = sim_start.elapsed().as_micros() as u64;
-    let consecutive_gap = 0u32;
+    let mut consecutive_gap = 0u32;  // tracks consecutive sensors with missing packets
 
     loop {
         let now_us = sim_start.elapsed().as_micros() as u64;
@@ -93,6 +93,7 @@ pub async fn run_telemetry_rx(
             continue;
         }
 
+        let decode_start = Instant::now();
         let packet: TelemetryPacket = match bincode::deserialize(payload) {
             Ok(p) => p,
             Err(e) => {
@@ -100,6 +101,11 @@ pub async fn run_telemetry_rx(
                 continue;
             }
         };
+        let decode_duration_us = decode_start.elapsed().as_micros() as u64;
+        if decode_duration_us > 3000 {
+            tracing::error!(sensor=?packet.sensor_id, decode_duration_us, "DECODE DEADLINE MISSED (>3ms)");
+        }
+
 
         if packet.is_corrupted {
             tracing::warn!(sensor=?packet.sensor_id, seq=packet.seq_no,
@@ -128,7 +134,7 @@ pub async fn run_telemetry_rx(
         }
         
         tracing::info!(
-            sensor=?packet.sensor_id, latency_us, drift_us,
+            sensor=?packet.sensor_id, latency_us, drift_us, decode_us=decode_duration_us,
             seq=packet.seq_no, value=packet.value, elapsed_us=recv_us, "telemetry_rx"
         );
         crate::ui::push_log(&ui_metrics, 0, format!("Telemetry {:?} seq={} lat={}us", packet.sensor_id, packet.seq_no, latency_us), &sim_start);
@@ -152,6 +158,18 @@ pub async fn run_telemetry_rx(
                         SensorId::Power   => m.power_lost_count   += gap as u64,
                         SensorId::Imu     => m.imu_lost_count     += gap as u64,
                     }
+                    consecutive_gap += 1;
+                    m.re_request_count += 1;
+                    tracing::warn!(
+                        sensor=?packet.sensor_id, expected=prev_seq+1,
+                        got=packet.seq_no, gap, elapsed_us=recv_us,
+                        "PACKET LOSS DETECTED — enqueuing RequestTelemetry"
+                    );
+                    // Enqueue a re-request uplink command to the satellite
+                    enqueue_re_request(&cmd_queue, recv_us, &sim_start,
+                                       packet.sensor_id, prev_seq + 1, gap).await;
+                } else {
+                    consecutive_gap = 0;
                 }
             }
             if let Some(h) = lat_hist.get(&packet.sensor_id) {
@@ -181,8 +199,10 @@ pub async fn run_telemetry_rx(
                     *s = GcsSystemState::Nominal;
                 }
                 m.gcs_state = format!("{:?}", *s).to_uppercase();
-                if *s == GcsSystemState::LossOfContact || loss_of_contact {
+                if consecutive_gap >= 3 {
                     m.contact_status = "LOST".to_string();
+                    *s = GcsSystemState::LossOfContact;
+                    tracing::error!(gaps=consecutive_gap, "SATELLITE LOSS OF CONTACT: 3+ gaps detected");
                 } else if consecutive_gap > 0 {
                     m.contact_status = "DEGRADED".to_string();
                 } else {
@@ -198,15 +218,27 @@ pub async fn run_telemetry_rx(
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
     }
 }
-async fn enqueue_re_request(cmd_queue: &Arc<Mutex<BinaryHeap<PrioritizedCommand>>>, ts_us: u64, sim_start: &Arc<Instant>) {
-    let _enqueue_ts = sim_start.elapsed().as_micros() as u64;
+async fn enqueue_re_request(
+    cmd_queue: &Arc<Mutex<BinaryHeap<PrioritizedCommand>>>,
+    ts_us: u64,
+    sim_start: &Arc<Instant>,
+    sensor: SensorId,
+    missing_from: u32,
+    gap: u32,
+) {
+    let enqueue_ts = sim_start.elapsed().as_micros() as u64;
     let pkt = CommandPacket {
-        seq_no: 0,
+        seq_no: missing_from,           // encodes which seq we want re-sent
         timestamp_us: ts_us,
         cmd_type: CommandType::RequestTelemetry,
-        priority: 3,
+        priority: 2,                    // URGENT — above routine heartbeats
         payload: [0u8; 32],
     };
-    let cmd = PrioritizedCommand { packet: pkt, enqueue_us: ts_us };
+    let cmd = PrioritizedCommand { packet: pkt, enqueue_us: enqueue_ts };
     cmd_queue.lock().await.push(cmd);
+    tracing::info!(
+        sensor=?sensor, missing_from, gap,
+        enqueue_us=enqueue_ts, elapsed_us=enqueue_ts,
+        "telemetry_rx: RequestTelemetry enqueued"
+    );
 }

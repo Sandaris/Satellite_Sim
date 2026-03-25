@@ -118,6 +118,7 @@ pub struct GcsMetricsSnapshot {
     pub total_pkts_received:    u64,
     pub total_pkts_lost:        u64,
     pub consecutive_gaps:       u32,
+    pub re_request_count:       u64,  // number of RequestTelemetry commands sent
     pub contact_status:         String,  // "ESTABLISHED", "DEGRADED", "LOST"
     pub reception_rate_pct:     f64,
 
@@ -141,7 +142,7 @@ impl Default for GcsMetricsSnapshot {
             gcs_state: "NOMINAL".to_string(),
             fault_received_count: 0, fault_last_type: "None".to_string(), fault_last_time_s: 0,
             interlock_last_us: 0, interlock_max_us: 0, critical_alerts: 0, interlock_active: false,
-            total_pkts_received: 0, total_pkts_lost: 0, consecutive_gaps: 0,
+            total_pkts_received: 0, total_pkts_lost: 0, consecutive_gaps: 0, re_request_count: 0,
             contact_status: "ESTABLISHED".to_string(), reception_rate_pct: 100.0,
             log_lines: std::collections::VecDeque::with_capacity(200),
         }
@@ -335,6 +336,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         Line::from(format!("Max interlock:      {}us", metrics.interlock_max_us)),
         Line::from(format!("Cmds rejected:      {} ", metrics.cmd_rejected_count)),
         Line::from(format!("Critical alerts:    {}", metrics.critical_alerts)),
+        Line::from(format!("Re-requests sent:   {}", metrics.re_request_count)),
     ]).block(Block::default().title(" FAULT MANAGEMENT ").borders(Borders::ALL));
     frame.render_widget(d_para, cd_layout[1]);
 

@@ -64,6 +64,9 @@ async fn handle_command(cmd: CommandPacket, state: &Arc<Mutex<SystemState>>) {
         (CommandType::ResetSensor, SystemState::Fault) => {
             *s = SystemState::Nominal;
         }
+        (CommandType::RequestTelemetry, _) => {
+            tracing::warn!(req_seq=cmd.seq_no, "RE-REQUEST RECEIVED: GCS requesting missing packet");
+        }
         (_, SystemState::Fault) | (_, SystemState::MissionAbort) => {
             tracing::warn!(cmd=?cmd.cmd_type, reason="interlock_active", 
                            "INTERLOCK: command blocked — system in Fault state");

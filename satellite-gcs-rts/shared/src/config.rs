@@ -27,7 +27,7 @@ pub const TELEMETRY_DECODE_MS:     u64 = 10;  // Relaxed
 pub const CMD_DISPATCH_MS:         u64 = 10;  // Relaxed
 
 // ── Fault Injection ───────────────────────────────────────────────────
-pub const FAULT_INJECT_INTERVAL_S: u64 = 60;  // inject every 60 seconds
+pub const FAULT_INJECT_INTERVAL_S: u64 = 10;  // inject every 10 seconds
 pub const FAULT_RECOVERY_LIMIT_MS: u64 = 200; // recovery must complete < 200ms
 pub const GCS_INTERLOCK_LIMIT_MS:  u64 = 100; // interlock must apply < 100ms
 

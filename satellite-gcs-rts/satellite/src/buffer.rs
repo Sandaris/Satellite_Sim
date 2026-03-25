@@ -1,5 +1,4 @@
-use std::cmp::{Ordering, Reverse};
-use std::collections::BinaryHeap;
+use std::cmp::Ordering;
 use tokio::time::Instant;
 use shared::packets::TelemetryPacket;
 
@@ -44,8 +43,7 @@ pub struct BufferStats {
 }
 
 pub struct SensorBuffer {
-    heap:     BinaryHeap<SensorReading>,
-    min_heap: BinaryHeap<Reverse<SensorReading>>,
+    data:     Vec<SensorReading>,
     capacity: usize,
     pub stats: BufferStats,
 }
@@ -53,8 +51,7 @@ pub struct SensorBuffer {
 impl SensorBuffer {
     pub fn new(capacity: usize) -> Self {
         Self {
-            heap: BinaryHeap::with_capacity(capacity),
-            min_heap: BinaryHeap::with_capacity(capacity),
+            data: Vec::with_capacity(capacity),
             capacity,
             stats: BufferStats {
                 total_inserted: 0,
@@ -65,84 +62,72 @@ impl SensorBuffer {
         }
     }
 
+    /// Pushes a new reading into the buffer.
+    /// If the buffer is full, drops the lowest priority packet to make room.
     pub fn push(&mut self, reading: SensorReading, _sim_start: &Instant) -> Option<SensorReading> {
         self.stats.total_inserted += 1;
         
-        if self.heap.len() < self.capacity {
-            self.heap.push(reading.clone());
-            self.min_heap.push(Reverse(reading));
-            self.update_stats();
+        if self.data.len() < self.capacity {
+            self.data.push(reading);
+            self.refresh_stats();
             return None;
         }
 
-        // Peak min_heap for lowest priority item (Reverse heap -> peek is min of original)
-        if let Some(lowest_item_rev) = self.min_heap.peek() {
-            let lowest_item = &lowest_item_rev.0;
-            if reading.packet.priority < lowest_item.packet.priority {
-                // Incoming reading has HIGHER priority than the current lowest.
-                // Replace the lowest-priority item.
-                let target_to_remove = lowest_item.clone();
-                let dropped_reading = Some(target_to_remove.clone());
-                
-                // Remove from both heaps
-                let mut h_vec = self.heap.drain().collect::<Vec<_>>();
-                if let Some(pos) = h_vec.iter().position(|r| r == &target_to_remove) {
-                    h_vec.swap_remove(pos);
-                }
-                self.heap = BinaryHeap::from(h_vec);
-                
-                let mut m_vec = self.min_heap.drain().collect::<Vec<_>>();
-                if let Some(pos) = m_vec.iter().position(|r| r.0 == target_to_remove) {
-                    m_vec.swap_remove(pos);
-                }
-                self.min_heap = BinaryHeap::from(m_vec);
+        // Buffer is full: Find the lowest priority item in the buffer to potentially replace
+        // Since we want the "best" packets (Priority 1), we find the "worst" one (highest priority rank).
+        let worst_idx = self.data.iter().enumerate()
+            .max_by(|(_, a), (_, b)| a.cmp(b)) // SensorReading Ord ranks lower priorities as "better"
+            .map(|(idx, _)| idx);
 
-                // Push new reading to both
-                self.heap.push(reading.clone());
-                self.min_heap.push(Reverse(reading.clone()));
-
-                self.update_stats();
+        if let Some(idx) = worst_idx {
+            // If the incoming reading is BETTER (lower priority number) than the worst one, replace it.
+            // Our Ord implementation ranks lower priority numbers as GREATER than higher ones.
+            if reading.cmp(&self.data[idx]) == Ordering::Greater {
+                let dropped = self.data.swap_remove(idx);
+                self.data.push(reading);
                 self.stats.total_dropped += 1;
-                return dropped_reading;
+                self.refresh_stats();
+                return Some(dropped);
             }
         }
         
+        // Incoming packet is lower priority than anything in the buffer: drop it.
         self.stats.total_dropped += 1;
-        self.update_stats();
-        
+        self.refresh_stats();
         Some(reading)
     }
 
+    /// Returns the highest priority reading from the buffer.
     pub fn pop(&mut self) -> Option<SensorReading> {
-        let popped = self.heap.pop()?;
-        
-        // Remove from min_heap to keep in sync
-        let mut m_vec = self.min_heap.drain().collect::<Vec<_>>();
-        if let Some(pos) = m_vec.iter().position(|r| r.0 == popped) {
-            m_vec.swap_remove(pos);
-        }
-        self.min_heap = BinaryHeap::from(m_vec);
+        // Find the best reading (lowest priority number)
+        let best_idx = self.data.iter().enumerate()
+            .min_by(|(_, a), (_, b)| a.cmp(b))
+            .map(|(idx, _)| idx);
 
-        self.update_stats();
-        Some(popped)
+        if let Some(idx) = best_idx {
+            let popped = self.data.swap_remove(idx);
+            self.refresh_stats();
+            return Some(popped);
+        }
+        None
+    }
+
+    fn refresh_stats(&mut self) {
+        if self.data.len() > self.stats.peak_fill {
+            self.stats.peak_fill = self.data.len();
+        }
+        self.stats.degraded_mode = self.fill_pct() >= shared::config::BUFFER_DEGRADED_PCT;
     }
 
     pub fn len(&self) -> usize {
-        self.heap.len()
+        self.data.len()
     }
 
     pub fn fill_pct(&self) -> f64 {
-        self.heap.len() as f64 / self.capacity as f64
+        self.data.len() as f64 / self.capacity as f64
     }
 
     pub fn is_degraded(&self) -> bool {
         self.stats.degraded_mode
-    }
-
-    fn update_stats(&mut self) {
-        if self.heap.len() > self.stats.peak_fill {
-            self.stats.peak_fill = self.heap.len();
-        }
-        self.stats.degraded_mode = self.fill_pct() >= shared::config::BUFFER_DEGRADED_PCT;
     }
 }
