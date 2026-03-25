@@ -73,10 +73,10 @@ impl SensorBuffer {
             return None;
         }
 
-        // Buffer is full: Find the lowest priority item in the buffer to potentially replace
-        // Since we want the "best" packets (Priority 1), we find the "worst" one (highest priority rank).
+        // Buffer is full: evict the lowest-criticality reading (highest priority number).
+        // Ord: lower numeric priority = Greater — so the "worst" buffer entry is the min_by Ord.
         let worst_idx = self.data.iter().enumerate()
-            .max_by(|(_, a), (_, b)| a.cmp(b)) // SensorReading Ord ranks lower priorities as "better"
+            .min_by(|(_, a), (_, b)| a.cmp(b))
             .map(|(idx, _)| idx);
 
         if let Some(idx) = worst_idx {
@@ -99,9 +99,10 @@ impl SensorBuffer {
 
     /// Returns the highest priority reading from the buffer.
     pub fn pop(&mut self) -> Option<SensorReading> {
-        // Find the best reading (lowest priority number)
+        // Dequeue the highest-criticality reading (lowest priority number).
+        // Ord: lower numeric priority = Greater — so the "best" entry is the max_by Ord.
         let best_idx = self.data.iter().enumerate()
-            .min_by(|(_, a), (_, b)| a.cmp(b))
+            .max_by(|(_, a), (_, b)| a.cmp(b))
             .map(|(idx, _)| idx);
 
         if let Some(idx) = best_idx {

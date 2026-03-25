@@ -3,6 +3,7 @@ Satellite Simulation Presentation Runbook
 
 Audience: evaluator / lecturer
 Goal: run the SATELLITE simulation manually and present proof from logs.
+Minimum run length: at least 5 minutes (300 s) with GCS; section 1 matches that timing.
 OS: Windows PowerShell
 Project root:
   C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts
@@ -27,6 +28,10 @@ Optional clean logs before demo:
 1) Demo run flow (recommended 3 terminals)
 ------------------------------------------------------------
 
+Minimum duration: run the simulation for at least 5 minutes (300 seconds).
+GCS below uses --duration-s 300. Use two satellite sessions of ~140 s each
+(start B soon after A) so reconnect and steady operation fit inside the window.
+
 Use:
   - Terminal A: Ground Control Station (must be up first)
   - Terminal B: Satellite run #1
@@ -35,21 +40,22 @@ Use:
 1.1 Terminal A (start GCS)
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p ground --release -- --duration-s 90
+  cargo run -p ground --release -- --duration-s 300
 
 1.2 Terminal B (start Satellite session 1)
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
 1.3 Terminal C (start Satellite session 2, reconnect demo)
 
 Start after Terminal B completes:
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
-This gives clean proof that satellite can reconnect to GCS over real TCP.
+This gives clean proof that satellite can reconnect to GCS over real TCP while
+meeting the 5-minute minimum overall run.
 
 
 ------------------------------------------------------------
@@ -190,13 +196,13 @@ From final summary line in satellite log:
 ------------------------------------------------------------
 
 Terminal A:
-  cargo run -p ground --release -- --duration-s 90
+  cargo run -p ground --release -- --duration-s 300
 
 Terminal B:
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
 Terminal C:
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
 After run:
   rg "Connected to Ground Control Station|uplink_rx: received cmd|command executed cmd" .\satellite.log

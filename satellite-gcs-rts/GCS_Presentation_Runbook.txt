@@ -3,6 +3,7 @@ GCS Presentation Runbook (Manual Demo Guide)
 
 Audience: evaluator / lecturer
 Goal: run the simulation manually and collect proof for all GCS requirements.
+Minimum run length: at least 5 minutes (300 s); commands in section 1 use that duration.
 OS: Windows PowerShell
 Project root:
   C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts
@@ -31,6 +32,11 @@ Optional: clear old logs so your demo evidence is clean:
 1) Live demo flow (3 terminals)
 ------------------------------------------------------------
 
+Minimum duration: the simulation must run for at least 5 minutes (300 seconds).
+Below, GCS is started with --duration-s 300. Start the satellite sessions soon
+after GCS is listening so both sessions and a short reconnect gap fit inside
+that window (two ~140 s satellite runs ≈ 280 s + overhead).
+
 Use 3 terminals:
   - Terminal A: GCS
   - Terminal B: Satellite run #1
@@ -39,7 +45,7 @@ Use 3 terminals:
 1.1 Terminal A (start GCS first)
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p ground --release -- --duration-s 90
+  cargo run -p ground --release -- --duration-s 300
 
 You should see GCS dashboard and it listens on TCP port 8888.
 
@@ -47,9 +53,9 @@ You should see GCS dashboard and it listens on TCP port 8888.
 1.2 Terminal B (start first satellite session)
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
-Let it run to completion and stop.
+Start within a few seconds of GCS listening. Let it run to completion and stop.
 
 
 1.3 Terminal C (start second satellite session for reconnect proof)
@@ -57,9 +63,10 @@ Let it run to completion and stop.
 Start this after Terminal B ends (or a few seconds later):
 
   cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
-This proves GCS reconnect behavior after disconnect.
+This proves GCS reconnect behavior after disconnect and keeps total satellite
+time close to the 5-minute GCS run.
 
 
 1.4 End run
@@ -305,13 +312,13 @@ Run from project root:
 ------------------------------------------------------------
 
 Terminal A:
-  cargo run -p ground --release -- --duration-s 90
+  cargo run -p ground --release -- --duration-s 300
 
 Terminal B:
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
 Terminal C (after B):
-  cargo run -p satellite --release -- --duration-s 25
+  cargo run -p satellite --release -- --duration-s 140
 
 After run:
   rg "Satellite connected from|telemetry_rx stopped|session tasks cleaned up|=== GCS SIMULATION COMPLETE ===" .\ground.log
