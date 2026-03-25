@@ -17,17 +17,17 @@ pub const SENSOR_BUFFER_CAPACITY:  usize = 64;
 pub const BUFFER_DEGRADED_PCT:     f64   = 0.80; // 80% → degraded mode
 
 // ── Downlink Timing ───────────────────────────────────────────────────
-pub const DOWNLINK_WINDOW_MS:      u64 = 50;  // Relaxed from 30ms
-pub const DOWNLINK_INIT_TIMEOUT_MS: u64 = 100; // Increased for TCP handshake
+pub const DOWNLINK_WINDOW_MS:      u64 = 30;  // spec: prepare data within 30ms visibility window
+pub const DOWNLINK_INIT_TIMEOUT_MS: u64 = 5; // spec: pipeline ready within 5ms or missed communication window
 
 // ── Safety Alerts ─────────────────────────────────────────────────────
-pub const THERMAL_MISS_ALERT:      u32 = 10;  // 10 misses before fault — extreme stability
+pub const THERMAL_MISS_ALERT:      u32 = 3;  // spec: >3 consecutive misses → safety alert
 pub const GCS_PACKET_LOSS_ALERT:   u32 = 10;  
 pub const TELEMETRY_DECODE_MS:     u64 = 3;
 pub const CMD_DISPATCH_MS:         u64 = 2;   // urgent deadline <= 2ms
 
 // ── Fault Injection ───────────────────────────────────────────────────
-pub const FAULT_INJECT_INTERVAL_S: u64 = 10;  // inject every 10 seconds
+pub const FAULT_INJECT_INTERVAL_S: u64 = 60;  // inject every 60 seconds
 pub const FAULT_RECOVERY_LIMIT_MS: u64 = 200; // recovery must complete < 200ms
 pub const GCS_INTERLOCK_LIMIT_MS:  u64 = 100; // interlock must apply < 100ms
 

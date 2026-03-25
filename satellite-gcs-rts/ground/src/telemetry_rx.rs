@@ -21,6 +21,7 @@ pub async fn run_telemetry_rx(
     mut cancel:       tokio::sync::watch::Receiver<bool>,
     heartbeat:    Arc<AtomicU64>,
     ui_metrics:   Arc<Mutex<crate::ui::GcsMetricsSnapshot>>,
+    gcs_busy_sensor_handler_us: Arc<AtomicU64>,
 ) {
     let mut codec = LengthDelimitedCodec::builder();
     codec.max_frame_length(1024);
@@ -149,10 +150,12 @@ pub async fn run_telemetry_rx(
             continue;
         }
 
+        let proc_start = Instant::now();
         let decode_start = Instant::now();
         let packet: TelemetryPacket = match bincode::deserialize(payload) {
             Ok(p) => p,
             Err(e) => {
+                gcs_busy_sensor_handler_us.fetch_add(proc_start.elapsed().as_micros() as u64, Ordering::Relaxed);
                 tracing::error!("Failed to deserialize TelemetryPacket: {}", e);
                 continue;
             }
@@ -167,6 +170,7 @@ pub async fn run_telemetry_rx(
 
 
         if packet.is_corrupted {
+            gcs_busy_sensor_handler_us.fetch_add(proc_start.elapsed().as_micros() as u64, Ordering::Relaxed);
             tracing::warn!(sensor=?packet.sensor_id, seq=packet.seq_no,
                            "CORRUPTED PACKET received — discarding");
             crate::ui::push_log(&ui_metrics, 1,
@@ -282,6 +286,7 @@ pub async fn run_telemetry_rx(
             m.telemetry_backlog_current = pending_rerequests.len() as u64;
             m.telemetry_backlog_max = m.telemetry_backlog_max.max(m.telemetry_backlog_current);
         }
+        gcs_busy_sensor_handler_us.fetch_add(proc_start.elapsed().as_micros() as u64, Ordering::Relaxed);
         last_any_recv_us = recv_us;
         last_seq.insert(packet.sensor_id, packet.seq_no);
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);

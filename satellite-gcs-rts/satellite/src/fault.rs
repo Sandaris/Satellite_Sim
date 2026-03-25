@@ -34,7 +34,13 @@ pub async fn run_fault_injector(
     let mut seconds_since_last_inject = 0u64;
 
     loop {
-        tokio::time::sleep(Duration::from_secs(1)).await;
+        tokio::select! {
+            _ = cancel.changed() => {
+                tracing::info!("fault_injector: cancelled");
+                break;
+            }
+            _ = tokio::time::sleep(Duration::from_secs(1)) => {}
+        }
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
         seconds_since_last_inject += 1;
 

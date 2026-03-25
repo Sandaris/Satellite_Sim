@@ -79,10 +79,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", args.port)).await?;
     tracing::info!("GCS listening for satellite connection on port {}...", args.port);
 
+    let gcs_busy_telemetry_us = Arc::new(AtomicU64::new(0));
+    let gcs_busy_uplink_us = Arc::new(AtomicU64::new(0));
+    tracing::info!(
+        "system_load_pct = uplink_tx dispatch + telemetry_rx SensorData path busy time / 1s wall (capped 100%%); not OS CPU — see gcs_final_report.txt"
+    );
+
     // Global tasks (stay alive across reconnections)
     let mut global_handles = vec![];
     global_handles.push(tokio::spawn(perf_monitor::run_perf_monitor(
-        metrics_snapshot.clone(), sim_start.clone(), cancel_rx.clone()
+        metrics_snapshot.clone(),
+        sim_start.clone(),
+        cancel_rx.clone(),
+        gcs_busy_telemetry_us.clone(),
+        gcs_busy_uplink_us.clone(),
     )));
 
     global_handles.push(tokio::spawn(watchdog::run_watchdog(
@@ -102,6 +112,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let session_start = sim_start.clone();
     let session_state = state.clone();
     let session_cmd_queue = cmd_queue.clone();
+    let session_gcs_busy_telemetry = gcs_busy_telemetry_us.clone();
+    let session_gcs_busy_uplink = gcs_busy_uplink_us.clone();
 
     let session_task = tokio::spawn(async move {
         loop {
@@ -136,11 +148,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let cmd_tel = session_cmd_queue.clone();
                     let hb_tel_metric = hb_telemetry.clone();
                     let cancel_tel = session_cancel_rx.clone();
+                    let tel_busy = session_gcs_busy_telemetry.clone();
 
                     session_handles.push(tokio::spawn(async move {
                         telemetry_rx::run_telemetry_rx(
-                            reader, state_tel, s_fault_tx, cmd_tel, start_tel.clone(), cancel_tel, hb_tel_metric, metrics_tel.clone()
-                        ).await;
+                            reader,
+                            state_tel,
+                            s_fault_tx,
+                            cmd_tel,
+                            start_tel.clone(),
+                            cancel_tel,
+                            hb_tel_metric,
+                            metrics_tel.clone(),
+                            tel_busy,
+                        )
+                        .await;
                         tracing::warn!("telemetry_rx stopped, signaling session end.");
                         token_tel.cancel();
                         if let Ok(mut m) = metrics_tel.try_lock() {
@@ -157,11 +179,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let hb_up_metric = hb_uplink.clone();
                     let metrics_up = session_metrics.clone();
                     let cancel_up = session_cancel_rx.clone();
+                    let upl_busy = session_gcs_busy_uplink.clone();
                     session_handles.push(tokio::spawn(async move {
                         tokio::select! {
                             _ = token_up.cancelled() => {}
                             _ = uplink_tx::run_uplink_tx(
-                                writer, cmd_up, state_up, start_up, cancel_up, hb_up_metric, metrics_up
+                                writer,
+                                cmd_up,
+                                state_up,
+                                start_up,
+                                cancel_up,
+                                hb_up_metric,
+                                metrics_up,
+                                upl_busy,
                             ) => {}
                         }
                     }));
@@ -299,7 +329,10 @@ pipeline_command_to_response_last_us={}\n\
 fault_received_count={}\n\
 interlock_max_us={}\n\
 critical_alerts={}\n\
-system_load_pct={:.3}\n",
+system_load_pct={:.3}\n\
+#\n\
+# system_load_pct: (µs in uplink_tx serialize+send + telemetry_rx per SensorData packet) summed,\n\
+# each second divided by that second's wall µs, ×100, capped at 100. Not OS CPU, fault_mgr, or UI.\n",
         sim_start.elapsed().as_micros() as u64,
         final_metrics.total_pkts_received,
         final_metrics.total_pkts_lost,

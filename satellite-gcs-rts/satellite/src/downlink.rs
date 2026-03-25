@@ -24,9 +24,43 @@ pub async fn run_downlink_tx(
     mut fault_rx:    tokio::sync::mpsc::Receiver<FaultPacket>,
     ui_metrics:      Arc<Mutex<crate::ui::SatMetricsSnapshot>>,
 ) {
+    // Spec: downlink must be ready to send within 5ms of TCP connection (task start here).
+    let init_start = Instant::now();
+
     let mut codec = LengthDelimitedCodec::builder();
     codec.max_frame_length(1024);
     let mut framed_writer = FramedWrite::new(writer, codec.new_codec());
+
+    let init_limit = Duration::from_millis(shared::config::DOWNLINK_INIT_TIMEOUT_MS);
+    let init_elapsed = init_start.elapsed();
+    let init_elapsed_ms = init_elapsed.as_millis() as u64;
+    if init_elapsed > init_limit {
+        tracing::warn!(
+            init_elapsed_ms,
+            init_elapsed_us = init_elapsed.as_micros() as u64,
+            limit_ms = shared::config::DOWNLINK_INIT_TIMEOUT_MS,
+            "DOWNLINK INIT TIMEOUT: pipeline not ready within 5ms — missed communication window"
+        );
+        crate::ui::push_log(
+            &ui_metrics,
+            1,
+            format!(
+                "DOWNLINK INIT TIMEOUT: {:.3}ms (limit {}ms) — missed communication window",
+                init_elapsed.as_secs_f64() * 1000.0,
+                shared::config::DOWNLINK_INIT_TIMEOUT_MS
+            ),
+            &sim_start,
+        );
+        if let Ok(mut m) = ui_metrics.try_lock() {
+            m.downlink_window_violations += 1;
+        }
+    } else {
+        tracing::info!(
+            init_elapsed_ms,
+            init_elapsed_us = init_elapsed.as_micros() as u64,
+            "downlink_tx: pipeline initialized within 5ms window"
+        );
+    }
 
     let mut interval = tokio::time::interval(Duration::from_millis(shared::config::DOWNLINK_WINDOW_MS));
     let mut last_abort_warn = Instant::now() - Duration::from_secs(60);

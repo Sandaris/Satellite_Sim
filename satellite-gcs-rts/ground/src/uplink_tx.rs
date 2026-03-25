@@ -49,6 +49,7 @@ pub async fn run_uplink_tx(
     mut cancel:    tokio::sync::watch::Receiver<bool>,
     heartbeat: Arc<AtomicU64>,
     ui_metrics: Arc<Mutex<crate::ui::GcsMetricsSnapshot>>,
+    gcs_busy_uplink_us: Arc<AtomicU64>,
 ) {
     let mut codec = LengthDelimitedCodec::builder();
     codec.max_frame_length(1024);
@@ -60,8 +61,6 @@ pub async fn run_uplink_tx(
     let mut next_tick_us = sim_start.elapsed().as_micros() as u64 + 5_000;
     let mut last_dispatch_end_us: Option<u64> = None;
     let mut jitter_hist = Histogram::<u64>::new(3).unwrap();
-    let mut busy_acc_us: u64 = 0;
-    let mut load_window_start_us = sim_start.elapsed().as_micros() as u64;
 
     loop {
         tokio::select! {
@@ -112,7 +111,7 @@ pub async fn run_uplink_tx(
         let dispatch_us = dispatch_start.elapsed().as_micros() as u64;
         let queue_latency_us = send_time_us.saturating_sub(enqueue_ts);
         let elapsed_us = sim_start.elapsed().as_micros() as u64;
-        busy_acc_us = busy_acc_us.saturating_add(dispatch_us);
+        gcs_busy_uplink_us.fetch_add(dispatch_us, AtomicOrdering::Relaxed);
 
         match send_result {
             Ok(Ok(_)) => {
@@ -154,12 +153,6 @@ pub async fn run_uplink_tx(
                 m.cmd_emergency_count = cq.iter().filter(|c| c.packet.priority == 1).count();
                 m.cmd_urgent_count = cq.iter().filter(|c| c.packet.priority == 2).count();
                 m.cmd_routine_count = cq.iter().filter(|c| c.packet.priority == 3).count();
-            }
-            let load_window_us = elapsed_us.saturating_sub(load_window_start_us).max(1);
-            m.system_load_pct = (busy_acc_us as f64 / load_window_us as f64) * 100.0;
-            if load_window_us >= 1_000_000 {
-                busy_acc_us = 0;
-                load_window_start_us = elapsed_us;
             }
         }
         last_dispatch_end_us = Some(elapsed_us);

@@ -137,6 +137,8 @@ pub struct GcsMetricsSnapshot {
     pub task_drift_fault_last_us: i64,
     pub pipeline_packet_to_uplink_last_us: u64,
     pub pipeline_command_to_response_last_us: u64,
+    /// Fraction of wall time (1s samples) spent in uplink command serialize/send + telemetry
+    /// SensorData handling only. Capped at 100%. Not OS CPU usage or other tasks (fault_mgr, etc.).
     pub system_load_pct: f64,
 
     // Live log
