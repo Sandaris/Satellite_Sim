@@ -125,7 +125,7 @@ pub struct GcsMetricsSnapshot {
     pub total_pkts_lost:        u64,
     pub consecutive_gaps:       u32,
     pub re_request_count:       u64,  // number of RequestTelemetry commands sent
-    pub contact_status:         String,  // "ESTABLISHED", "DEGRADED", "LOST"
+    pub contact_status:         String,  // "WAITING", "ESTABLISHED", "DEGRADED", "LOST"
     pub reception_rate_pct:     f64,
     pub telemetry_backlog_current: u64,
     pub telemetry_backlog_max:  u64,
@@ -162,7 +162,7 @@ impl Default for GcsMetricsSnapshot {
             fault_received_count: 0, fault_last_type: "None".to_string(), fault_last_time_s: 0,
             interlock_last_us: 0, interlock_max_us: 0, critical_alerts: 0, interlock_active: false,
             total_pkts_received: 0, total_pkts_lost: 0, consecutive_gaps: 0, re_request_count: 0,
-            contact_status: "ESTABLISHED".to_string(), reception_rate_pct: 100.0,
+            contact_status: "WAITING".to_string(), reception_rate_pct: 0.0,
             telemetry_backlog_current: 0, telemetry_backlog_max: 0, delayed_packet_events: 0,
             task_drift_uplink_last_us: 0, task_drift_telemetry_last_us: 0, task_drift_fault_last_us: 0,
             pipeline_packet_to_uplink_last_us: 0, pipeline_command_to_response_last_us: 0, system_load_pct: 0.0,
@@ -373,7 +373,12 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     frame.render_widget(gauge, e_full[0]);
 
     let mut status_line = Line::from("");
-    if metrics.contact_status == "ESTABLISHED" {
+    if metrics.contact_status == "WAITING" {
+        status_line = Line::from(Span::styled(
+            "◌ WAITING FOR SATELLITE CONNECTION",
+            Style::default().fg(Color::DarkGray),
+        ));
+    } else if metrics.contact_status == "ESTABLISHED" {
         status_line = Line::from(Span::styled("✅ SATELLITE CONTACT ESTABLISHED", Style::default().fg(Color::Green)));
     } else if metrics.contact_status == "DEGRADED" {
         status_line = Line::from(Span::styled(format!("⚠ CONTACT DEGRADED — {} gaps detected", metrics.consecutive_gaps), Style::default().fg(Color::Yellow)));

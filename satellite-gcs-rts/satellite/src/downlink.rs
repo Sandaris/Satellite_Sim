@@ -79,8 +79,11 @@ pub async fn run_downlink_tx(
 
             let (reading, from_retransmit) = {
                 let mut rq = retransmit_q.lock().await;
-                if let Some(pkt) = rq.pop_front() {
+                if let Some(mut pkt) = rq.pop_front() {
                     let now_us = sim_start.elapsed().as_micros() as u64;
+                    // Retransmits must not keep the original sample timestamp or GCS will treat
+                    // latency as (recv - old_sample_time), inflating p99/max. Stamp this send.
+                    pkt.timestamp_us = now_us;
                     (
                         SensorReading {
                             packet: pkt,
