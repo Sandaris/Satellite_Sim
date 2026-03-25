@@ -63,7 +63,10 @@ pub async fn run_fault_injector(
         // changed and recovery completed in 0ms (a lie).
         {
             let mut s = state.lock().await;
-            if *s == SystemState::Nominal {
+            if matches!(
+                *s,
+                SystemState::Nominal | SystemState::Degraded | SystemState::SafeMode
+            ) {
                 *s = SystemState::Fault;
                 tracing::info!(fault=?fault_type, elapsed_us, "satellite state → Fault (fault injection)");
             }

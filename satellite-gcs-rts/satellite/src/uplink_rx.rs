@@ -118,15 +118,30 @@ async fn handle_command(
         (CommandType::EmergencyStop, _) => {
             *s = SystemState::MissionAbort;
         }
-        (CommandType::SafeMode, _) => {
-            *s = SystemState::Fault;
+        (CommandType::SafeMode, SystemState::Fault)
+        | (CommandType::SafeMode, SystemState::MissionAbort) => {
+            tracing::info!(
+                cmd=?cmd.cmd_type,
+                state=?*s,
+                "SafeMode ignored — autonomous fault or abort; awaiting ResetSensor / recovery"
+            );
         }
-        (CommandType::ResetSensor, SystemState::Fault) => {
+        (CommandType::SafeMode, _) => {
+            *s = SystemState::SafeMode;
+        }
+        (CommandType::ResetSensor, SystemState::Fault)
+        | (CommandType::ResetSensor, SystemState::SafeMode) => {
             *s = SystemState::Nominal;
         }
-        (_, SystemState::Fault) | (_, SystemState::MissionAbort) => {
-            tracing::warn!(cmd=?cmd.cmd_type, reason="interlock_active", 
-                           "INTERLOCK: command blocked — system in Fault state");
+        (_, SystemState::Fault)
+        | (_, SystemState::SafeMode)
+        | (_, SystemState::MissionAbort) => {
+            tracing::warn!(
+                cmd=?cmd.cmd_type,
+                state=?*s,
+                reason = "interlock_active",
+                "INTERLOCK: command blocked — system in Fault, SafeMode, or MissionAbort"
+            );
             return;
         }
         _ => {}

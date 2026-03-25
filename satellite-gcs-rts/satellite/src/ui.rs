@@ -91,7 +91,7 @@ pub struct SatMetricsSnapshot {
     pub thermal_consecutive_miss: u32,
 
     // System state
-    pub system_state:           String,   // "NOMINAL", "DEGRADED", "FAULT", "MISSION_ABORT"
+    pub system_state:           String,   // "NOMINAL", "DEGRADED", "SAFEMODE", "FAULT", "MISSION_ABORT"
 
     // Scheduler
     pub thermal_ctrl_drift_us:  i64,
@@ -228,6 +228,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     let state_color = match metrics.system_state.as_str() {
         "NOMINAL" => Color::Green,
         "DEGRADED" => Color::Yellow,
+        "SAFEMODE" => Color::Cyan,
         "FAULT" => Color::Red,
         "MISSION_ABORT" | _ => Color::Red,
     };
