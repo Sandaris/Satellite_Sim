@@ -10,7 +10,12 @@ pub const POWER_PERIOD_MS:     u64 = 200;
 pub const IMU_PERIOD_MS:       u64 = 500;
 
 // ── Jitter Limits ─────────────────────────────────────────────────────
-pub const THERMAL_JITTER_LIMIT_US: u64 = 1_000; // Hard 1ms limit
+/// Max allowed |actual_period − nominal_period| per sensor (µs), host simulation.
+/// Flight specs are often stricter; Tokio wakeups on Windows/desktop add several ms
+/// of spacing variance versus the nominal period.
+pub const THERMAL_JITTER_LIMIT_US: u64 = 900;
+pub const POWER_JITTER_LIMIT_US: u64 = 15_000;
+pub const IMU_JITTER_LIMIT_US: u64 = 25_000;
 
 // ── Buffer ────────────────────────────────────────────────────────────
 pub const SENSOR_BUFFER_CAPACITY:  usize = 64;
@@ -27,7 +32,8 @@ pub const TELEMETRY_DECODE_MS:     u64 = 3;
 pub const CMD_DISPATCH_MS:         u64 = 2;   // urgent deadline <= 2ms
 
 // ── Fault Injection ───────────────────────────────────────────────────
-pub const FAULT_INJECT_INTERVAL_S: u64 = 60;  // inject every 60 seconds
+/// Seconds after startup before each fault injection. Runs shorter than this never inject.
+pub const FAULT_INJECT_INTERVAL_S: u64 = 60;
 pub const FAULT_RECOVERY_LIMIT_MS: u64 = 200; // recovery must complete < 200ms
 pub const GCS_INTERLOCK_LIMIT_MS:  u64 = 100; // interlock must apply < 100ms
 

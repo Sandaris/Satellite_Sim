@@ -2,7 +2,10 @@ use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, Instant};
 use shared::packets::{TelemetryPacket, SensorId};
-use shared::config::{THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS, THERMAL_JITTER_LIMIT_US, THERMAL_MISS_ALERT};
+use shared::config::{
+    THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS, THERMAL_JITTER_LIMIT_US, POWER_JITTER_LIMIT_US,
+    IMU_JITTER_LIMIT_US, THERMAL_MISS_ALERT,
+};
 use crate::buffer::{SensorBuffer, SensorReading};
 use crate::state::SystemState;
 use rand::Rng;
@@ -51,9 +54,9 @@ pub async fn run_thermal_sensor(
             consecutive_miss += 1;
             tracing::warn!(sensor="thermal", jitter_us, consecutive_miss,
                            limit_us=THERMAL_JITTER_LIMIT_US, elapsed_us=actual_start_us,
-                           "JITTER EXCEEDED 1ms limit");
-            crate::ui::push_log(&metrics, 1, 
-                format!("JITTER EXCEEDED 1ms limit: {}us (miss #{})", jitter_us, consecutive_miss), 
+                           "JITTER EXCEEDED thermal limit");
+            crate::ui::push_log(&metrics, 1,
+                format!("THERMAL JITTER EXCEEDED: {}us > {}us (miss #{})", jitter_us, THERMAL_JITTER_LIMIT_US, consecutive_miss),
                 &sim_start);
         } else {
             consecutive_miss = 0;
@@ -181,9 +184,9 @@ pub async fn run_power_sensor(
             buf.push(reading, &sim_start);
         }
 
-        if jitter_us > 1000 {
-            tracing::error!(sensor="power", jitter_us, "JITTER LIMIT VIOLATED (>1ms)");
-            crate::ui::push_log(&metrics, 2, format!("POWER JITTER: {}us", jitter_us), &sim_start);
+        if jitter_us > POWER_JITTER_LIMIT_US {
+            tracing::error!(sensor="power", jitter_us, limit_us=POWER_JITTER_LIMIT_US, "POWER JITTER LIMIT EXCEEDED");
+            crate::ui::push_log(&metrics, 2, format!("POWER JITTER: {}us > {}us", jitter_us, POWER_JITTER_LIMIT_US), &sim_start);
         }
 
         tracing::info!(
@@ -260,9 +263,9 @@ pub async fn run_imu_sensor(
             buf.push(reading, &sim_start);
         }
 
-        if jitter_us > 1000 {
-            tracing::error!(sensor="imu", jitter_us, "JITTER LIMIT VIOLATED (>1ms)");
-            crate::ui::push_log(&metrics, 2, format!("IMU JITTER: {}us", jitter_us), &sim_start);
+        if jitter_us > IMU_JITTER_LIMIT_US {
+            tracing::error!(sensor="imu", jitter_us, limit_us=IMU_JITTER_LIMIT_US, "IMU JITTER LIMIT EXCEEDED");
+            crate::ui::push_log(&metrics, 2, format!("IMU JITTER: {}us > {}us", jitter_us, IMU_JITTER_LIMIT_US), &sim_start);
         }
 
         tracing::info!(

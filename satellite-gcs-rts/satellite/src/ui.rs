@@ -11,6 +11,7 @@ use ratatui::{
     backend::CrosstermBackend,
 };
 use tracing_subscriber::Layer;
+use shared::config::{THERMAL_JITTER_LIMIT_US, POWER_JITTER_LIMIT_US, IMU_JITTER_LIMIT_US};
 
 pub struct TuiLogger {
     metrics: Arc<Mutex<SatMetricsSnapshot>>,
@@ -263,7 +264,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     let make_jitter_row = |name: &str, period: &str, last: u64, p50: u64, p99: u64, max: u64, limit: Option<u64>| {
         let mut row_style = Style::default();
         if let Some(l) = limit {
-            if name == "Thermal" && last > l {
+            if last > l {
                 row_style = row_style.fg(Color::Red);
             }
         }
@@ -290,9 +291,9 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
     };
 
     let sensor_rows = vec![
-        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, Some(10000)),
-        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   Some(20000)),
-        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     None),
+        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, Some(THERMAL_JITTER_LIMIT_US)),
+        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   Some(POWER_JITTER_LIMIT_US)),
+        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     Some(IMU_JITTER_LIMIT_US)),
     ];
     let panel_a = Table::new(sensor_rows, [Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(9), Constraint::Min(7)])
         .header(sensor_header)
