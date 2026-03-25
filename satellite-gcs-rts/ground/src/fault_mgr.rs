@@ -20,11 +20,17 @@ pub async fn run_fault_mgr(
     let mut interlock_latencies: Vec<u64> = Vec::new();
 
     let mut interval = tokio::time::interval(Duration::from_secs(1));
+    let mut next_tick_us = sim_start.elapsed().as_micros() as u64 + 1_000_000;
 
     loop {
         tokio::select! {
             _ = cancel.changed() => break,
             _ = interval.tick() => {
+                let now_us = sim_start.elapsed().as_micros() as u64;
+                if let Ok(mut m) = ui_metrics.try_lock() {
+                    m.task_drift_fault_last_us = now_us as i64 - next_tick_us as i64;
+                }
+                next_tick_us = now_us + 1_000_000;
                 heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
             }
             fault = fault_rx.recv() => {

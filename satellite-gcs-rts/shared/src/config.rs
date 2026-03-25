@@ -23,8 +23,8 @@ pub const DOWNLINK_INIT_TIMEOUT_MS: u64 = 100; // Increased for TCP handshake
 // ── Safety Alerts ─────────────────────────────────────────────────────
 pub const THERMAL_MISS_ALERT:      u32 = 10;  // 10 misses before fault — extreme stability
 pub const GCS_PACKET_LOSS_ALERT:   u32 = 10;  
-pub const TELEMETRY_DECODE_MS:     u64 = 10;  // Relaxed
-pub const CMD_DISPATCH_MS:         u64 = 10;  // Relaxed
+pub const TELEMETRY_DECODE_MS:     u64 = 3;
+pub const CMD_DISPATCH_MS:         u64 = 2;   // urgent deadline <= 2ms
 
 // ── Fault Injection ───────────────────────────────────────────────────
 pub const FAULT_INJECT_INTERVAL_S: u64 = 10;  // inject every 10 seconds

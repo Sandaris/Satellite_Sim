@@ -265,8 +265,74 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         total_faults_received = final_metrics.fault_received_count,
         interlock_max_us = final_metrics.interlock_max_us,
         critical_alerts_count = final_metrics.critical_alerts,
+        uplink_jitter_p99_us = final_metrics.uplink_jitter_p99_us,
+        telemetry_backlog_max = final_metrics.telemetry_backlog_max,
+        system_load_pct = final_metrics.system_load_pct,
         "=== GCS SIMULATION COMPLETE ==="
     );
+
+    let report = format!(
+        "GCS FINAL REPORT\n\
+time_end_us={}\n\
+total_pkts_received={}\n\
+total_pkts_lost={}\n\
+reception_rate_pct={:.3}\n\
+decode_deadline_misses={}\n\
+latency_p50_us={}\n\
+latency_p99_us={}\n\
+latency_max_us={}\n\
+re_request_count={}\n\
+delayed_packet_events={}\n\
+telemetry_backlog_max={}\n\
+cmd_total_sent={}\n\
+cmd_deadline_misses={}\n\
+cmd_rejected_count={}\n\
+cmd_rejection_last_reason={}\n\
+uplink_jitter_p50_us={}\n\
+uplink_jitter_p99_us={}\n\
+uplink_jitter_max_us={}\n\
+task_drift_uplink_last_us={}\n\
+task_drift_telemetry_last_us={}\n\
+task_drift_fault_last_us={}\n\
+pipeline_packet_to_uplink_last_us={}\n\
+pipeline_command_to_response_last_us={}\n\
+fault_received_count={}\n\
+interlock_max_us={}\n\
+critical_alerts={}\n\
+system_load_pct={:.3}\n",
+        sim_start.elapsed().as_micros() as u64,
+        final_metrics.total_pkts_received,
+        final_metrics.total_pkts_lost,
+        final_metrics.reception_rate_pct,
+        final_metrics.decode_deadline_misses,
+        final_metrics.latency_p50_us,
+        final_metrics.latency_p99_us,
+        final_metrics.latency_max_us,
+        final_metrics.re_request_count,
+        final_metrics.delayed_packet_events,
+        final_metrics.telemetry_backlog_max,
+        final_metrics.cmd_total_sent,
+        final_metrics.cmd_deadline_misses,
+        final_metrics.cmd_rejected_count,
+        final_metrics.cmd_rejection_last_reason,
+        final_metrics.uplink_jitter_p50_us,
+        final_metrics.uplink_jitter_p99_us,
+        final_metrics.uplink_jitter_max_us,
+        final_metrics.task_drift_uplink_last_us,
+        final_metrics.task_drift_telemetry_last_us,
+        final_metrics.task_drift_fault_last_us,
+        final_metrics.pipeline_packet_to_uplink_last_us,
+        final_metrics.pipeline_command_to_response_last_us,
+        final_metrics.fault_received_count,
+        final_metrics.interlock_max_us,
+        final_metrics.critical_alerts,
+        final_metrics.system_load_pct,
+    );
+    if let Err(e) = std::fs::write("gcs_final_report.txt", report) {
+        tracing::error!("Failed to write gcs_final_report.txt: {}", e);
+    } else {
+        tracing::info!("Wrote gcs_final_report.txt");
+    }
 
     Ok(())
 }

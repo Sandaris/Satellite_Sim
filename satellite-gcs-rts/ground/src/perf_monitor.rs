@@ -26,9 +26,14 @@ pub async fn run_perf_monitor(
                     pkts_lost=m.total_pkts_lost,
                     latency_p50_us=m.latency_p50_us,
                     latency_p99_us=m.latency_p99_us,
-                    decode_deadline_misses=m.cmd_deadline_misses, // or similar
+                    decode_deadline_misses=m.decode_deadline_misses,
                     fault_received_count=m.fault_received_count,
                     cmd_deadline_misses=m.cmd_deadline_misses,
+                    uplink_jitter_p99_us=m.uplink_jitter_p99_us,
+                    telemetry_backlog_max=m.telemetry_backlog_max,
+                    task_drift_uplink_last_us=m.task_drift_uplink_last_us,
+                    task_drift_telemetry_last_us=m.task_drift_telemetry_last_us,
+                    system_load_pct=m.system_load_pct,
                     "=== PERFORMANCE REPORT ==="
                 );
                 report_num += 1;

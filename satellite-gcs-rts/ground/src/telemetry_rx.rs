@@ -3,7 +3,7 @@ use std::sync::{Arc, atomic::{AtomicU64, Ordering}};
 use tokio::sync::Mutex;
 use tokio::time::Instant;
 use shared::packets::{TelemetryPacket, FaultPacket, SensorId, CommandPacket, CommandType, PacketType};
-use shared::config::{GCS_PACKET_LOSS_ALERT, THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS};
+use shared::config::{GCS_PACKET_LOSS_ALERT, THERMAL_PERIOD_MS, POWER_PERIOD_MS, IMU_PERIOD_MS, TELEMETRY_DECODE_MS};
 use hdrhistogram::Histogram;
 use crate::state::GcsSystemState;
 use crate::uplink_tx::PrioritizedCommand;
@@ -36,21 +36,77 @@ pub async fn run_telemetry_rx(
     let mut last_recv_us: HashMap<SensorId, u64> = HashMap::new();
     let mut last_any_recv_us = sim_start.elapsed().as_micros() as u64;
     let mut consecutive_gap = 0u32;  // tracks consecutive sensors with missing packets
+    let mut task_next_us = sim_start.elapsed().as_micros() as u64 + 200_000;
+    let mut delayed_fail_streak = 0u32;
+    let mut pending_rerequests: HashMap<(SensorId, u32), u64> = HashMap::new();
+    let mut last_delayed_seq_requested: HashMap<SensorId, u32> = HashMap::new();
 
     loop {
         let now_us = sim_start.elapsed().as_micros() as u64;
-        let loss_of_contact = now_us.saturating_sub(last_any_recv_us) > (GCS_PACKET_LOSS_ALERT as u64 * 1_000_000);
+        let task_drift_us = now_us as i64 - task_next_us as i64;
+        task_next_us = now_us + 200_000;
+        if let Ok(mut m) = ui_metrics.try_lock() {
+            m.task_drift_telemetry_last_us = task_drift_us;
+        }
 
         let frame = tokio::select! {
             _ = cancel.changed() => break,
             f = framed_reader.next() => f,
-            _ = tokio::time::sleep(std::time::Duration::from_secs(1)) => {
-                 // Check loss of contact every second even if no packets arrive
-                 if sim_start.elapsed().as_micros() as u64 - last_any_recv_us > (GCS_PACKET_LOSS_ALERT as u64 * 1_000_000) {
-                      if let Ok(mut m) = ui_metrics.try_lock() { m.contact_status = "LOST".to_string(); }
-                      if let Ok(mut s) = state.try_lock() { *s = GcsSystemState::LossOfContact; }
-                 }
-                 continue;
+            _ = tokio::time::sleep(std::time::Duration::from_millis(200)) => {
+                // Periodic loss-of-contact and delayed-packet handling.
+                let now_check_us = sim_start.elapsed().as_micros() as u64;
+                if now_check_us.saturating_sub(last_any_recv_us) > (GCS_PACKET_LOSS_ALERT as u64 * 1_000_000) {
+                    if let Ok(mut m) = ui_metrics.try_lock() { m.contact_status = "LOST".to_string(); }
+                    if let Ok(mut s) = state.try_lock() { *s = GcsSystemState::LossOfContact; }
+                }
+
+                // Trigger re-request when packet is delayed beyond 1.5x expected period.
+                for sensor in [SensorId::Thermal, SensorId::Power, SensorId::Imu] {
+                    let expected_us = match sensor {
+                        SensorId::Thermal => THERMAL_PERIOD_MS * 1000,
+                        SensorId::Power => POWER_PERIOD_MS * 1000,
+                        SensorId::Imu => IMU_PERIOD_MS * 1000,
+                    } as u64;
+                    let last = *last_recv_us.get(&sensor).unwrap_or(&last_any_recv_us);
+                    if now_check_us.saturating_sub(last) > (expected_us * 3 / 2) {
+                        let expected_seq = last_seq.get(&sensor).copied().unwrap_or(0).saturating_add(1);
+                        let already_requested = last_delayed_seq_requested.get(&sensor).copied().unwrap_or(u32::MAX) == expected_seq;
+                        if !already_requested {
+                            delayed_fail_streak += 1;
+                            if let Ok(mut m) = ui_metrics.try_lock() {
+                                m.delayed_packet_events += 1;
+                                m.re_request_count += 1;
+                            }
+                            tracing::warn!(
+                                sensor=?sensor,
+                                expected_seq,
+                                expected_period_us=expected_us,
+                                since_last_us=now_check_us.saturating_sub(last),
+                                "DELAYED PACKET DETECTED — enqueuing RequestTelemetry"
+                            );
+                            enqueue_re_request(&cmd_queue, now_check_us, &sim_start, sensor, expected_seq, 1).await;
+                            pending_rerequests.insert((sensor, expected_seq), now_check_us);
+                            last_delayed_seq_requested.insert(sensor, expected_seq);
+                        }
+                    }
+                }
+
+                if delayed_fail_streak >= 3 {
+                    if let Ok(mut m) = ui_metrics.try_lock() {
+                        m.contact_status = "LOST".to_string();
+                        m.consecutive_gaps = delayed_fail_streak;
+                    }
+                    if let Ok(mut s) = state.try_lock() {
+                        *s = GcsSystemState::LossOfContact;
+                    }
+                    tracing::error!(fails=delayed_fail_streak, "SATELLITE LOSS OF CONTACT: 3+ delayed packets in sequence");
+                }
+
+                if let Ok(mut m) = ui_metrics.try_lock() {
+                    m.telemetry_backlog_current = pending_rerequests.len() as u64;
+                    m.telemetry_backlog_max = m.telemetry_backlog_max.max(m.telemetry_backlog_current);
+                }
+                continue;
             }
         };
 
@@ -102,8 +158,11 @@ pub async fn run_telemetry_rx(
             }
         };
         let decode_duration_us = decode_start.elapsed().as_micros() as u64;
-        if decode_duration_us > 3000 {
+        if decode_duration_us > TELEMETRY_DECODE_MS * 1000 {
             tracing::error!(sensor=?packet.sensor_id, decode_duration_us, "DECODE DEADLINE MISSED (>3ms)");
+            if let Ok(mut m) = ui_metrics.try_lock() {
+                m.decode_deadline_misses += 1;
+            }
         }
 
 
@@ -143,6 +202,7 @@ pub async fn run_telemetry_rx(
 
         if let Ok(mut m) = ui_metrics.try_lock() {
             m.decode_latency_last_us = latency_us;
+            m.pipeline_packet_to_uplink_last_us = latency_us;
             m.total_pkts_received += 1;
             match packet.sensor_id {
                 SensorId::Thermal => { m.thermal_recv_count += 1; m.thermal_drift_last_us = drift_us; m.thermal_last_recv_elapsed_ms = recv_us / 1000; }
@@ -168,9 +228,15 @@ pub async fn run_telemetry_rx(
                     // Enqueue a re-request uplink command to the satellite
                     enqueue_re_request(&cmd_queue, recv_us, &sim_start,
                                        packet.sensor_id, prev_seq + 1, gap).await;
+                    pending_rerequests.insert((packet.sensor_id, prev_seq + 1), recv_us);
                 } else {
                     consecutive_gap = 0;
                 }
+            }
+
+            if pending_rerequests.remove(&(packet.sensor_id, packet.seq_no)).is_some() {
+                let now = sim_start.elapsed().as_micros() as u64;
+                m.pipeline_command_to_response_last_us = now.saturating_sub(packet.timestamp_us);
             }
             if let Some(h) = lat_hist.get(&packet.sensor_id) {
                 m.latency_p50_us = h.value_at_percentile(50.0);
@@ -207,11 +273,14 @@ pub async fn run_telemetry_rx(
                     m.contact_status = "DEGRADED".to_string();
                 } else {
                     m.contact_status = "ESTABLISHED".to_string();
+                    delayed_fail_streak = 0;
                 }
             }
             if m.total_pkts_received + m.total_pkts_lost > 0 {
                 m.reception_rate_pct = m.total_pkts_received as f64 / (m.total_pkts_received + m.total_pkts_lost) as f64 * 100.0;
             }
+            m.telemetry_backlog_current = pending_rerequests.len() as u64;
+            m.telemetry_backlog_max = m.telemetry_backlog_max.max(m.telemetry_backlog_current);
         }
         last_any_recv_us = recv_us;
         last_seq.insert(packet.sensor_id, packet.seq_no);

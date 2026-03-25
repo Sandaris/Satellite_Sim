@@ -103,6 +103,12 @@ pub struct GcsMetricsSnapshot {
     pub cmd_total_sent:         u64,
     pub cmd_deadline_misses:    u64,
     pub cmd_rejected_count:     u64,
+    pub cmd_rejection_last_reason: String,
+    pub uplink_jitter_last_us:  u64,
+    pub uplink_jitter_p50_us:   u64,
+    pub uplink_jitter_p99_us:   u64,
+    pub uplink_jitter_max_us:   u64,
+    pub uplink_dispatch_drift_last_us: i64,
 
     // Fault management
     pub gcs_state:              String,
@@ -121,6 +127,17 @@ pub struct GcsMetricsSnapshot {
     pub re_request_count:       u64,  // number of RequestTelemetry commands sent
     pub contact_status:         String,  // "ESTABLISHED", "DEGRADED", "LOST"
     pub reception_rate_pct:     f64,
+    pub telemetry_backlog_current: u64,
+    pub telemetry_backlog_max:  u64,
+    pub delayed_packet_events:  u64,
+
+    // Shared perf requirements
+    pub task_drift_uplink_last_us: i64,
+    pub task_drift_telemetry_last_us: i64,
+    pub task_drift_fault_last_us: i64,
+    pub pipeline_packet_to_uplink_last_us: u64,
+    pub pipeline_command_to_response_last_us: u64,
+    pub system_load_pct: f64,
 
     // Live log
     pub log_lines: std::collections::VecDeque<(String, u8)>,
@@ -139,11 +156,16 @@ impl Default for GcsMetricsSnapshot {
             cmd_queue_depth: 0, cmd_emergency_count: 0, cmd_urgent_count: 0, cmd_routine_count: 0,
             recent_commands: std::collections::VecDeque::with_capacity(5),
             cmd_total_sent: 0, cmd_deadline_misses: 0, cmd_rejected_count: 0,
+            cmd_rejection_last_reason: "none".to_string(),
+            uplink_jitter_last_us: 0, uplink_jitter_p50_us: 0, uplink_jitter_p99_us: 0, uplink_jitter_max_us: 0, uplink_dispatch_drift_last_us: 0,
             gcs_state: "NOMINAL".to_string(),
             fault_received_count: 0, fault_last_type: "None".to_string(), fault_last_time_s: 0,
             interlock_last_us: 0, interlock_max_us: 0, critical_alerts: 0, interlock_active: false,
             total_pkts_received: 0, total_pkts_lost: 0, consecutive_gaps: 0, re_request_count: 0,
             contact_status: "ESTABLISHED".to_string(), reception_rate_pct: 100.0,
+            telemetry_backlog_current: 0, telemetry_backlog_max: 0, delayed_packet_events: 0,
+            task_drift_uplink_last_us: 0, task_drift_telemetry_last_us: 0, task_drift_fault_last_us: 0,
+            pipeline_packet_to_uplink_last_us: 0, pipeline_command_to_response_last_us: 0, system_load_pct: 0.0,
             log_lines: std::collections::VecDeque::with_capacity(200),
         }
     }
@@ -299,6 +321,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     
     let mut b_lines = vec![
         Line::from(format!("Queue depth: {}  |  Emergency: {}  Urgent: {}  Routine: {}", metrics.cmd_queue_depth, metrics.cmd_emergency_count, metrics.cmd_urgent_count, metrics.cmd_routine_count)),
+        Line::from(format!("Uplink jitter(us): p50={} p99={} max={}  |  Dispatch drift={}us", metrics.uplink_jitter_p50_us, metrics.uplink_jitter_p99_us, metrics.uplink_jitter_max_us, metrics.uplink_dispatch_drift_last_us)),
     ];
     if metrics.interlock_active {
         b_lines.push(Line::from(Span::styled("⛔ INTERLOCK ACTIVE", Style::default().fg(Color::Red))));
@@ -335,8 +358,10 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
             Span::styled(if metrics.interlock_last_us < 100000 { "OK" } else { "ERR" }, Style::default().fg(if metrics.interlock_last_us < 100000 { Color::Green } else { Color::Red }))]),
         Line::from(format!("Max interlock:      {}us", metrics.interlock_max_us)),
         Line::from(format!("Cmds rejected:      {} ", metrics.cmd_rejected_count)),
+        Line::from(format!("Last reject reason: {}", metrics.cmd_rejection_last_reason)),
         Line::from(format!("Critical alerts:    {}", metrics.critical_alerts)),
         Line::from(format!("Re-requests sent:   {}", metrics.re_request_count)),
+        Line::from(format!("Delayed events:     {}", metrics.delayed_packet_events)),
     ]).block(Block::default().title(" FAULT MANAGEMENT ").borders(Borders::ALL));
     frame.render_widget(d_para, cd_layout[1]);
 
@@ -356,7 +381,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         status_line = Line::from(Span::styled("🔴 LOSS OF CONTACT", Style::default().fg(Color::Red).add_modifier(Modifier::BOLD | Modifier::SLOW_BLINK)));
     }
     
-    let stats_str = format!("Total pkts received: {}  |  Total pkts lost: {}  |  Consecutive gaps: {}", metrics.total_pkts_received, metrics.total_pkts_lost, metrics.consecutive_gaps);
+    let stats_str = format!("Total pkts received: {}  |  Total pkts lost: {}  |  Consecutive gaps: {}  |  Backlog: {} (max {})", metrics.total_pkts_received, metrics.total_pkts_lost, metrics.consecutive_gaps, metrics.telemetry_backlog_current, metrics.telemetry_backlog_max);
     frame.render_widget(Paragraph::new(vec![status_line, Line::from(stats_str)]), e_full[1]);
 
     // Panel F: LOG
