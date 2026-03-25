@@ -78,12 +78,22 @@ pub async fn run_uplink_tx(
         let gcs_state = { state.lock().await.clone() };
         if matches!(gcs_state, GcsSystemState::InterlockActive | GcsSystemState::LossOfContact) {
             if cmd.packet.priority > 1 {
-                tracing::warn!(cmd=?cmd.packet.cmd_type, reason="interlock_active", elapsed_us=sim_start.elapsed().as_micros() as u64,
+                let reason = match gcs_state {
+                    GcsSystemState::LossOfContact => "loss_of_contact_non_emergency_blocked",
+                    GcsSystemState::InterlockActive => "interlock_active_non_emergency_blocked",
+                    _ => "safety_interlock",
+                };
+                tracing::warn!(cmd=?cmd.packet.cmd_type, reason, elapsed_us=sim_start.elapsed().as_micros() as u64,
                                "COMMAND REJECTED");
-                crate::ui::push_log(&ui_metrics, 1, format!("COMMAND REJECTED {:?} (interlock)", cmd.packet.cmd_type), &sim_start);
+                crate::ui::push_log(
+                    &ui_metrics,
+                    1,
+                    format!("COMMAND REJECTED {:?} ({})", cmd.packet.cmd_type, reason),
+                    &sim_start,
+                );
                 if let Ok(mut m) = ui_metrics.try_lock() {
                     m.cmd_rejected_count += 1;
-                    m.cmd_rejection_last_reason = "interlock_active".to_string();
+                    m.cmd_rejection_last_reason = reason.to_string();
                 }
                 continue;
             }

@@ -103,11 +103,12 @@ pub async fn run_fault_mgr(
 
                 total_faults += 1;
                 if let Ok(mut m) = ui_metrics.try_lock() {
-                    m.fault_received_count = total_faults;
+                    // Accumulate across satellite reconnect sessions (each session has its own fault_mgr task).
+                    m.fault_received_count += 1;
                     m.fault_last_type = format!("{:?}", fault.fault_type);
                     m.fault_last_time_s = detect_us / 1_000_000;
                     m.interlock_last_us = interlock_latency;
-                    m.interlock_max_us = *interlock_latencies.iter().max().unwrap_or(&0);
+                    m.interlock_max_us = m.interlock_max_us.max(interlock_latency);
                     if let Ok(s) = state.try_lock() { m.interlock_active = *s == GcsSystemState::InterlockActive; }
                 }
             }

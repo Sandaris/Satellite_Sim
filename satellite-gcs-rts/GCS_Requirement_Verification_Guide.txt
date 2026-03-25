@@ -1,0 +1,292 @@
+================================================================================
+GCS & SHARED SYSTEM — REQUIREMENT VERIFICATION GUIDE
+================================================================================
+Audience: You (or an evaluator) proving each stated requirement against logs,
+           metrics, source code, and gcs_final_report.txt.
+
+Project root (Windows):
+  C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts
+
+Primary artifacts after a full run:
+  - ground.log         (GCS / “ground” process; authoritative for most GCS proof)
+  - satellite.log      (satellite + RMS scheduler + sensors + faults)
+  - gcs_final_report.txt (rolls up key counters at GCS shutdown)
+
+Recommended demo duration: GCS --duration-s 300 with two satellite sessions (~140 s
+each), per Satellite_Presentation_Runbook.txt / GCS_Presentation_Runbook.txt.
+Fault injection is every 60 s on the satellite clock, so runs shorter than ~65 s
+on the satellite process may show no ground-side fault lines.
+
+PowerShell build + clean logs + example timing (adjust as needed):
+  cd "C:\Users\User\Documents\APU\RTS\Assignment\Satellite_Sim\satellite-gcs-rts"
+  cargo build --release
+  Remove-Item .\ground.log, .\satellite.log, .\gcs_final_report.txt -ErrorAction SilentlyContinue
+
+  # Terminal A — start first
+  cargo run -p ground --release -- --duration-s 300
+
+  # Terminal B — within a few seconds
+  cargo run -p satellite --release -- --duration-s 140
+
+  # Terminal C — after B exits
+  cargo run -p satellite --release -- --duration-s 140
+
+Use ripgrep (rg) if installed; otherwise use Select-String in PowerShell, e.g.:
+  Select-String -Path .\ground.log -Pattern "telemetry_rx"
+
+================================================================================
+1. GROUND CONTROL STATION — TELEMETRY RECEPTION AND DECODING
+================================================================================
+
+[A] Receive telemetry via IPC or sockets; decode within 3 ms
+    Proof:
+      - Transport: TCP length-delimited frames from satellite (see ground main:
+        TcpListener on SIM_TCP_PORT, telemetry_rx uses FramedRead).
+      - Decode budget: shared::config::TELEMETRY_DECODE_MS = 3 (milliseconds).
+      - Log: ground.log lines tagged "telemetry_rx" include decode_us=… (µs).
+      - Violation log: "DECODE DEADLINE MISSED (>3ms)" increments
+        decode_deadline_misses in gcs_final_report.txt.
+
+    Quick search:
+      rg "telemetry_rx|DECODE DEADLINE" .\ground.log
+      type .\gcs_final_report.txt | findstr decode
+
+    Code: ground\src\telemetry_rx.rs (deserialize + decode duration check)
+          shared\src\config.rs (TELEMETRY_DECODE_MS)
+
+[B] Log packet reception latency and reception drift
+    Proof:
+      - Same "telemetry_rx" INFO lines: latency_us (GCS recv − packet timestamp),
+        drift_us (actual inter-arrival − nominal period for that sensor).
+
+    Quick search:
+      rg "telemetry_rx sensor=" .\ground.log
+
+[C] Trigger re-requests on missing/delayed packets
+    Proof:
+      - Sequence gap: "PACKET LOSS DETECTED — enqueuing RequestTelemetry" and
+        uplink "RequestTelemetry" / telemetry_rx RequestTelemetry enqueue log.
+      - Delayed (no frame but overdue vs 1.5× expected period):
+        "DELAYED PACKET DETECTED — enqueuing RequestTelemetry".
+
+    Quick search:
+      rg "PACKET LOSS|DELAYED PACKET|RequestTelemetry" .\ground.log
+
+    Rollup: gcs_final_report.txt → re_request_count, delayed_packet_events
+
+[D] Simulate "loss of contact" if ≥3 packets fail in sequence
+    Proof:
+      - Gaps: "SATELLITE LOSS OF CONTACT: 3+ gaps detected" (sequence losses).
+      - Delay streak: "SATELLITE LOSS OF CONTACT: 3+ delayed packets in sequence".
+      - State moves to LossOfContact; contact_status becomes LOST in UI metrics.
+
+    Quick search:
+      rg "LOSS OF CONTACT" .\ground.log
+
+================================================================================
+2. GROUND CONTROL STATION — COMMAND UPLINK SCHEDULER
+================================================================================
+
+[A] Maintain a real-time command schedule
+    Proof:
+      - BinaryHeap priority queue (priority + timestamp) in ground main and
+        uplink_tx; periodic 5 ms dispatcher loop.
+
+    Code: ground\src\main.rs (cmd_queue), ground\src\uplink_tx.rs
+
+[B] Enforce deadlines for urgent commands (≤2 ms dispatch)
+    Proof:
+      - uplink_tx: tokio::time::timeout with deadline_ms = 2 when
+        cmd.packet.priority <= 2 (urgent / emergency), else CMD_DISPATCH_MS (also 2).
+      - Success path logs dispatch_us; failure: "DISPATCH DEADLINE MISSED".
+
+    Quick search:
+      rg "DISPATCH DEADLINE|uplink_tx: sent" .\ground.log
+
+    Rollup: gcs_final_report.txt → cmd_deadline_misses
+
+[C] Validate commands against system state (safety interlocks)
+    Proof:
+      - While GcsSystemState is InterlockActive or LossOfContact, commands with
+        priority > 1 are not sent; logged as COMMAND REJECTED with a reason string.
+
+    Quick search:
+      rg "COMMAND REJECTED" .\ground.log
+
+    Rollup: cmd_rejected_count, cmd_rejection_last_reason
+
+    Note: Heartbeats are priority 3 every 5 s; interlock clear is ~50 ms after a
+    fault. That narrow window often yields zero COMMAND REJECTED lines in a clean
+    run. To almost always capture rejections: leave GCS running but stop the
+    satellite for ≥10 s (packet-loss timer + LossOfContact) while GCS keeps
+    enqueueing heartbeats — then rg "COMMAND REJECTED|loss_of_contact" .\ground.log
+    Rejection reasons are explicit in logs and in cmd_rejection_last_reason:
+      - interlock_active_non_emergency_blocked
+      - loss_of_contact_non_emergency_blocked
+
+[D] Log command deadline adherence and rejection reasons
+    Proof:
+      - Adherence: each "uplink_tx: sent" includes dispatch_us; misses logged.
+      - Rejections: "COMMAND REJECTED" with reason= field (tracing) and TUI/file
+        log lines including the reason suffix in parentheses.
+
+================================================================================
+3. GROUND CONTROL STATION — FAULT MANAGEMENT AND INTERLOCKS
+================================================================================
+
+[A] Simulate reception of fault messages from satellite
+    Proof:
+      - Satellite sends FaultPacket on TCP with PacketType::FaultNotify prefix;
+        telemetry_rx routes to fault_mgr.
+      - ground.log: "fault_mgr: fault received"
+
+    Quick search:
+      rg "fault received|FaultNotify" .\ground.log .\satellite.log
+
+[B] Block unsafe commands until resolved
+    Proof:
+      - Same interlock branch in uplink_tx.rs for InterlockActive / LossOfContact.
+      - Emergency/SafeMode uses priority 1 and is still allowed through.
+
+[C] Track interlock latency (detection → command block)
+    Proof:
+      - fault_mgr logs: "interlock APPLIED" with interlock_latency_us=… (µs between
+        detection timestamp and state set to InterlockActive).
+
+    Quick search:
+      rg "interlock APPLIED" .\ground.log
+
+    Rollup: gcs_final_report.txt → interlock_max_us (max over all faults in run)
+
+[D] Document / explain command rejections
+    Proof:
+      - Tracing + UI file log with reason strings (see section 2C).
+      - Final report fields cmd_rejected_count, cmd_rejection_last_reason.
+
+[E] If fault response time >100 ms, trigger critical ground alert
+    Proof:
+      - shared::config::GCS_INTERLOCK_LIMIT_MS = 100
+      - If interlock_latency > limit: "CRITICAL GROUND ALERT: interlock exceeded 100ms"
+        and critical_alerts incremented.
+
+    Quick search:
+      rg "CRITICAL GROUND ALERT|critical_alerts" .\ground.log
+    Rollup: critical_alerts in gcs_final_report.txt
+
+    Note: Normal runs show interlock on the order of tens of µs; this path is
+    for regression / synthetic delay testing.
+
+================================================================================
+4. GROUND CONTROL STATION — SYSTEM PERFORMANCE MONITORING
+================================================================================
+
+[A] Benchmark uplink jitter, telemetry backlog, task execution drift
+    Proof:
+      - Every ~30 s: "=== PERFORMANCE REPORT ===" with uplink_jitter_p99_us,
+        telemetry_backlog_max, task_drift_uplink_last_us, task_drift_telemetry_last_us.
+      - Final report: uplink_jitter_* , telemetry_backlog_max, task_drift_* .
+
+    Quick search:
+      rg "PERFORMANCE REPORT" .\ground.log
+
+[B] Record missed deadlines, system load, fault recovery metrics
+    Proof:
+      - Missed decode: decode_deadline_misses (report + PERFORMANCE REPORT).
+      - Missed dispatch: cmd_deadline_misses.
+      - system_load_pct: documented in report comment (GCS busy time on telemetry
+        sensor path + uplink dispatch vs 1 s wall).
+      - Fault count: fault_received_count; satellite recovery: satellite.log
+        "FAULT RECOVERED" / "RECOVERY EXCEEDED 200ms".
+
+[C] All real-time actions logged with timestamps
+    Proof:
+      - ground.log uses tracing ISO timestamps on every line (telemetry_rx,
+        uplink_tx, fault_mgr, perf monitor).
+
+================================================================================
+5. SHARED SYSTEM REQUIREMENTS (SATELLITE SIDE + CROSS-CUTTING)
+================================================================================
+
+[A] Scheduling drift (scheduled vs actual task start)
+    Proof:
+      - satellite.log "Task dispatched … drift_us=…" from RMS scheduler.
+
+    Quick search:
+      rg "Task dispatched" .\satellite.log
+
+    Code: satellite\src\scheduler.rs
+
+[B] Latency in pipelines
+    Proof:
+      - Sensor → buffer: sensor_read lines include latency_us (sensor internal).
+      - Downlink: downlink_tx "queue_latency_us", "elapsed_us".
+      - GCS: telemetry_rx latency_us; gcs_final_report pipeline_* fields
+        (packet_to_uplink measured on GCS from last telemetry; command_to_response
+        when a re-requested seq arrives).
+
+    Quick search:
+      rg "sensor_read|downlink_tx:|pipeline_" .\satellite.log
+      type .\gcs_final_report.txt | findstr pipeline
+
+[C] Jitter (periodic task timing variation)
+    Proof:
+      - satellite.log sensor_read lines: jitter_us vs nominal period.
+      - GCS uplink: uplink_jitter_* in report and PERFORMANCE REPORT.
+
+    Quick search:
+      rg "jitter_us" .\satellite.log
+
+[D] Simulated faults and recovery time
+    Proof:
+      - satellite.log: "FAULT INJECTED", "fault_pkt sent to GCS",
+        "FAULT RECOVERED … recovery_ms=…" or recovery timeout / MISSION ABORT.
+      - ground.log: fault_mgr receive / interlock / SafeMode + ResetSensor uplink.
+
+    Quick search:
+      rg "FAULT INJECTED|FAULT RECOVERED|RECOVERY EXCEEDED" .\satellite.log
+
+[E] Safety interlocks and rejected operations
+    Proof:
+      - GCS: COMMAND REJECTED (see 2C).
+      - Satellite may refuse / abort in state machine (see satellite uplink_rx,
+        state) — search satellite.log for rejects if implemented.
+
+[F] Performance metrics and final report
+    Proof:
+      - gcs_final_report.txt at end of GCS run aggregates the listed counters.
+      - ground.log "=== GCS SIMULATION COMPLETE ===" repeats several totals.
+
+================================================================================
+6. KNOWN LIMITATIONS / HOW TO READ THE FINAL REPORT
+================================================================================
+
+- Latency histogram percentiles (latency_p50_us, etc.) in gcs_final_report.txt are
+  maintained inside each satellite *session* on the GCS. After a reconnect, a new
+  receiver rebuilds histograms; end-of-run values can look “saturated” (very large
+  placeholder-style numbers) if the last session had too few samples. Prefer
+  steady-state "PERFORMANCE REPORT" lines or the per-packet telemetry_rx latency_us
+  stream for definitive latency proof.
+
+- fault_received_count / interruptions now *accumulate* across reconnects in code
+  (ground\src\fault_mgr.rs) so gcs_final_report reflects all sessions.
+
+- If the second satellite session hits "RECOVERY EXCEEDED 200ms — MISSION ABORT",
+  later faults on that process may not be sent to the GCS; that is visible in
+  satellite.log and does not invalidate GCS behavior for the first session.
+
+================================================================================
+7. ONE-PAGE CHECKLIST (tick when evidence collected)
+================================================================================
+
+[ ] TCP telemetry_rx with decode_us ≤ 3000 µs on typical lines; decode_deadline_misses
+[ ] latency_us + drift_us on telemetry_rx lines
+[ ] PACKET LOSS or DELAYED PACKET → RequestTelemetry; re_request_count / delayed_packet_events
+[ ] LOSS OF CONTACT when 3+ gap or 3+ delayed streak (if scenario exercised)
+[ ] uplink_tx priority queue + DISPATCH DEADLINE lines (ideally zero misses)
+[ ] COMMAND REJECTED with reason (use LossOfContact window if needed)
+[ ] fault received + interlock APPLIED + interlock latency + SafeMode/ResetSensor sends
+[ ] CRITICAL GROUND ALERT path (if synthetic >100ms interlock tested)
+[ ] PERFORMANCE REPORT + gcs_final_report metrics
+[ ] satellite Task dispatched drift_us + sensor jitter + FAULT RECOVERED timing
+
+End of guide.
