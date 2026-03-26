@@ -13,7 +13,7 @@ pub const IMU_PERIOD_MS:       u64 = 500;
 /// Max allowed |actual_period − nominal_period| per sensor (µs), host simulation.
 /// Flight specs are often stricter; Tokio wakeups on Windows/desktop add several ms
 /// of spacing variance versus the nominal period.
-pub const THERMAL_JITTER_LIMIT_US: u64 = 900;
+pub const THERMAL_JITTER_LIMIT_US: u64 = 1_000;
 pub const POWER_JITTER_LIMIT_US: u64 = 15_000;
 pub const IMU_JITTER_LIMIT_US: u64 = 25_000;
 

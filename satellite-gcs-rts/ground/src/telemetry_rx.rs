@@ -35,6 +35,7 @@ pub async fn run_telemetry_rx(
     }
 
     let mut last_recv_us: HashMap<SensorId, u64> = HashMap::new();
+    let mut last_src_ts_us: HashMap<SensorId, u64> = HashMap::new();
     let mut last_any_recv_us = sim_start.elapsed().as_micros() as u64;
     let mut consecutive_gap = 0u32;  // tracks consecutive sensors with missing packets
     let mut task_next_us = sim_start.elapsed().as_micros() as u64 + 200_000;
@@ -186,13 +187,15 @@ pub async fn run_telemetry_rx(
         }
 
         let mut drift_us = 0i64;
-        if let Some(last_us) = last_recv_us.get(&packet.sensor_id) {
+        if let Some(last_us) = last_src_ts_us.get(&packet.sensor_id) {
             let expected_period_us = match packet.sensor_id {
                 SensorId::Thermal => THERMAL_PERIOD_MS * 1000,
                 SensorId::Power   => POWER_PERIOD_MS   * 1000,
                 SensorId::Imu     => IMU_PERIOD_MS     * 1000,
             } as u64;
-            let actual_interval = recv_us.saturating_sub(*last_us);
+            // Drift is computed from satellite packet timestamps (source clock) so the
+            // value reflects sensor timing behavior, not TCP/buffering variation at GCS.
+            let actual_interval = packet.timestamp_us.saturating_sub(*last_us);
             drift_us = actual_interval as i64 - expected_period_us as i64;
         }
         
@@ -289,6 +292,7 @@ pub async fn run_telemetry_rx(
         gcs_busy_sensor_handler_us.fetch_add(proc_start.elapsed().as_micros() as u64, Ordering::Relaxed);
         last_any_recv_us = recv_us;
         last_seq.insert(packet.sensor_id, packet.seq_no);
+        last_src_ts_us.insert(packet.sensor_id, packet.timestamp_us);
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
     }
 }

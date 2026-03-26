@@ -20,6 +20,9 @@ pub async fn run_thermal_sensor(
     corrupt_flag: Arc<std::sync::atomic::AtomicBool>,
 ) {
     let period = Duration::from_millis(THERMAL_PERIOD_MS);
+    // Critical sensor path: tighter wake-up by sleeping until near deadline,
+    // then spinning briefly to reduce scheduler wake-up variance.
+    let spin_guard = Duration::from_micros(300);
     let task_start = Instant::now();
     let startup_offset_us = task_start.duration_since(*sim_start).as_micros() as u64;
     let mut next_deadline = task_start + period;
@@ -30,9 +33,19 @@ pub async fn run_thermal_sensor(
     let period_us = THERMAL_PERIOD_MS * 1000;
 
     loop {
-        tokio::select! {
-            _ = cancel.changed() => { tracing::info!("thermal_sensor: cancelled"); break; }
-            _ = tokio::time::sleep_until(next_deadline) => {}
+        let now = Instant::now();
+        if now + spin_guard < next_deadline {
+            tokio::select! {
+                _ = cancel.changed() => { tracing::info!("thermal_sensor: cancelled"); break; }
+                _ = tokio::time::sleep_until(next_deadline - spin_guard) => {}
+            }
+        }
+        while Instant::now() < next_deadline {
+            std::hint::spin_loop();
+        }
+        if *cancel.borrow() {
+            tracing::info!("thermal_sensor: cancelled");
+            break;
         }
 
         let actual_start_us   = sim_start.elapsed().as_micros() as u64;

@@ -287,7 +287,7 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
 
         Row::new(vec![
             Cell::from(name.to_string()), Cell::from(format!("{}ms", exp)), Cell::from(last_str),
-            Cell::from(drift.to_string()).style(d_style), Cell::from(recv.to_string()), Cell::from(lost.to_string()),
+            Cell::from(format!("{:+}", drift)).style(d_style), Cell::from(recv.to_string()), Cell::from(lost.to_string()),
             Cell::from(format!("{:.1}%", loss_pct)).style(l_style)
         ])
     };
@@ -301,7 +301,13 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
         .block(Block::default().title(" TELEMETRY RECEPTION ").borders(Borders::ALL));
     let panel_a_full = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(5), Constraint::Length(2)]).split(ab_layout[0]);
     frame.render_widget(panel_a, panel_a_full[0]);
-    frame.render_widget(Paragraph::new(format!("Last decode latency: {}us   Decode deadline misses: {}", metrics.decode_latency_last_us, metrics.decode_deadline_misses)), panel_a_full[1]);
+    frame.render_widget(
+        Paragraph::new(format!(
+            "Last decode latency: {}us   Decode misses: {}   Drift sign: +late / -early",
+            metrics.decode_latency_last_us, metrics.decode_deadline_misses
+        )),
+        panel_a_full[1],
+    );
 
     // Panel B: Uplink
     let b_full = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(4), Constraint::Length(3)]).split(ab_layout[1]);
