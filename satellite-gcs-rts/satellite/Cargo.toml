@@ -22,7 +22,7 @@ bytes         = "1"
 clap          = { version = "4", features = ["derive"] }
 
 [target.'cfg(windows)'.dependencies]
-windows-sys = { version = "0.52", features = ["Win32_Media"] }
+windows-sys = { version = "0.52", features = ["Win32_Foundation", "Win32_Media", "Win32_System_Threading"] }
 crossbeam-channel = "0.5"
 ratatui       = "0.26"
 crossterm     = "0.27"
