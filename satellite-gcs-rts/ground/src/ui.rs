@@ -70,14 +70,17 @@ pub struct GcsMetricsSnapshot {
     pub thermal_recv_count:     u64,
     pub thermal_lost_count:     u64,
     pub thermal_drift_last_us:  i64,
+    pub thermal_jitter_last_us: u64,
     
     pub power_recv_count:       u64,
     pub power_lost_count:       u64,
     pub power_drift_last_us:    i64,
+    pub power_jitter_last_us:   u64,
     
     pub imu_recv_count:         u64,
     pub imu_lost_count:         u64,
     pub imu_drift_last_us:      i64,
+    pub imu_jitter_last_us:     u64,
     
     pub decode_latency_last_us: u64,
     pub decode_deadline_misses: u64,
@@ -148,9 +151,9 @@ pub struct GcsMetricsSnapshot {
 impl Default for GcsMetricsSnapshot {
     fn default() -> Self {
         Self {
-            thermal_recv_count: 0, thermal_lost_count: 0, thermal_drift_last_us: 0,
-            power_recv_count: 0, power_lost_count: 0, power_drift_last_us: 0,
-            imu_recv_count: 0, imu_lost_count: 0, imu_drift_last_us: 0,
+            thermal_recv_count: 0, thermal_lost_count: 0, thermal_drift_last_us: 0, thermal_jitter_last_us: 0,
+            power_recv_count: 0, power_lost_count: 0, power_drift_last_us: 0, power_jitter_last_us: 0,
+            imu_recv_count: 0, imu_lost_count: 0, imu_drift_last_us: 0, imu_jitter_last_us: 0,
             decode_latency_last_us: 0, decode_deadline_misses: 0,
             thermal_last_recv_elapsed_ms: 0, power_last_recv_elapsed_ms: 0, imu_last_recv_elapsed_ms: 0,
             latency_buckets: [0; 8],
@@ -265,8 +268,8 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
     let ab_layout = Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(50), Constraint::Percentage(50)]).split(main_layout[1]);
     
     // Panel A: Telemetry
-    let tel_header = Row::new(vec!["Sensor", "Expected", "Last Arr", "Drift(us)", "Recv", "Lost", "Loss%"]);
-    let make_tel_row = |name: &str, exp: u64, last_elapsed_ms: u64, drift: i64, recv: u64, lost: u64| {
+    let tel_header = Row::new(vec!["Sensor", "Expected", "Last Arr", "Drift(us)", "Jitter(us)", "Recv", "Lost", "Loss%"]);
+    let make_tel_row = |name: &str, exp: u64, last_elapsed_ms: u64, drift: i64, jitter: u64, recv: u64, lost: u64| {
         let loss_pct = if recv + lost == 0 { 0.0 } else { lost as f64 / (recv + lost) as f64 * 100.0 };
         let mut d_style = Style::default();
         if drift.abs() > (exp * 1000) as i64 { d_style = d_style.fg(Color::Red); }
@@ -287,18 +290,18 @@ fn render_dashboard(frame: &mut Frame, metrics: &GcsMetricsSnapshot, elapsed: Du
 
         Row::new(vec![
             Cell::from(name.to_string()), Cell::from(format!("{}ms", exp)), Cell::from(last_str),
-            Cell::from(format!("{:+}", drift)).style(d_style), Cell::from(recv.to_string()), Cell::from(lost.to_string()),
+            Cell::from(format!("{:+}", drift)).style(d_style), Cell::from(jitter.to_string()), Cell::from(recv.to_string()), Cell::from(lost.to_string()),
             Cell::from(format!("{:.1}%", loss_pct)).style(l_style)
         ])
     };
     let tel_rows = vec![
-        make_tel_row("Thermal", shared::config::THERMAL_PERIOD_MS, metrics.thermal_last_recv_elapsed_ms, metrics.thermal_drift_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
-        make_tel_row("Power",   shared::config::POWER_PERIOD_MS,   metrics.power_last_recv_elapsed_ms,   metrics.power_drift_last_us,   metrics.power_recv_count,   metrics.power_lost_count),
-        make_tel_row("IMU",     shared::config::IMU_PERIOD_MS,     metrics.imu_last_recv_elapsed_ms,     metrics.imu_drift_last_us,     metrics.imu_recv_count,     metrics.imu_lost_count),
+        make_tel_row("Thermal", shared::config::THERMAL_PERIOD_MS, metrics.thermal_last_recv_elapsed_ms, metrics.thermal_drift_last_us, metrics.thermal_jitter_last_us, metrics.thermal_recv_count, metrics.thermal_lost_count),
+        make_tel_row("Power",   shared::config::POWER_PERIOD_MS,   metrics.power_last_recv_elapsed_ms,   metrics.power_drift_last_us,   metrics.power_jitter_last_us, metrics.power_recv_count,   metrics.power_lost_count),
+        make_tel_row("IMU",     shared::config::IMU_PERIOD_MS,     metrics.imu_last_recv_elapsed_ms,     metrics.imu_drift_last_us,     metrics.imu_jitter_last_us, metrics.imu_recv_count,     metrics.imu_lost_count),
     ];
-    let panel_a = Table::new(tel_rows, [Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(15), Constraint::Percentage(10)])
+    let panel_a = Table::new(tel_rows, [Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(14), Constraint::Percentage(14), Constraint::Percentage(14), Constraint::Percentage(10), Constraint::Percentage(10), Constraint::Percentage(14)])
         .header(tel_header)
-        .block(Block::default().title(" TELEMETRY RECEPTION ").borders(Borders::ALL));
+        .block(Block::default().title(" TELEMETRY RECEPTION (ALL 3 SENSORS) ").borders(Borders::ALL));
     let panel_a_full = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(5), Constraint::Length(2)]).split(ab_layout[0]);
     frame.render_widget(panel_a, panel_a_full[0]);
     frame.render_widget(

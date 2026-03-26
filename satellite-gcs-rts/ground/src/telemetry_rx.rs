@@ -198,6 +198,7 @@ pub async fn run_telemetry_rx(
             let actual_interval = packet.timestamp_us.saturating_sub(*last_us);
             drift_us = actual_interval as i64 - expected_period_us as i64;
         }
+        let jitter_us = drift_us.unsigned_abs();
         
         tracing::info!(
             sensor=?packet.sensor_id, latency_us, drift_us, decode_us=decode_duration_us,
@@ -212,9 +213,9 @@ pub async fn run_telemetry_rx(
             m.pipeline_packet_to_uplink_last_us = latency_us;
             m.total_pkts_received += 1;
             match packet.sensor_id {
-                SensorId::Thermal => { m.thermal_recv_count += 1; m.thermal_drift_last_us = drift_us; m.thermal_last_recv_elapsed_ms = recv_us / 1000; }
-                SensorId::Power   => { m.power_recv_count   += 1; m.power_drift_last_us   = drift_us; m.power_last_recv_elapsed_ms   = recv_us / 1000; }
-                SensorId::Imu     => { m.imu_recv_count     += 1; m.imu_drift_last_us     = drift_us; m.imu_last_recv_elapsed_ms     = recv_us / 1000; }
+                SensorId::Thermal => { m.thermal_recv_count += 1; m.thermal_drift_last_us = drift_us; m.thermal_jitter_last_us = jitter_us; m.thermal_last_recv_elapsed_ms = recv_us / 1000; }
+                SensorId::Power   => { m.power_recv_count   += 1; m.power_drift_last_us   = drift_us; m.power_jitter_last_us = jitter_us; m.power_last_recv_elapsed_ms   = recv_us / 1000; }
+                SensorId::Imu     => { m.imu_recv_count     += 1; m.imu_drift_last_us     = drift_us; m.imu_jitter_last_us = jitter_us; m.imu_last_recv_elapsed_ms     = recv_us / 1000; }
             }
             if let Some(&prev_seq) = last_seq.get(&packet.sensor_id) {
                 let gap = packet.seq_no.saturating_sub(prev_seq + 1);

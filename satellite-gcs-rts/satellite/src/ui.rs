@@ -258,10 +258,10 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
         .split(main_layout[1]);
 
     // Panel A: Sensor Jitter
-    let sensor_header = Row::new(vec!["Sensor", "Period", "Last(us)", "p50(us)", "p99(us)", "Max(us)", "Limit(us)", "Status"])
+    let sensor_header = Row::new(vec!["Sensor", "Prio", "Period", "Last", "p99", "Max", "Limit", "Status"])
         .style(Style::default().add_modifier(Modifier::BOLD));
     
-    let make_jitter_row = |name: &str, period: &str, last: u64, p50: u64, p99: u64, max: u64, limit: Option<u64>| {
+    let make_jitter_row = |name: &str, priority: &str, period: &str, last: u64, p99: u64, max: u64, limit: Option<u64>| {
         let mut row_style = Style::default();
         if let Some(l) = limit {
             if last > l {
@@ -283,21 +283,21 @@ fn render_dashboard(frame: &mut Frame, metrics: &SatMetricsSnapshot, elapsed: Du
         };
 
         Row::new(vec![
-            Cell::from(name.to_string()), Cell::from(period.to_string()),
-            Cell::from(last.to_string()), Cell::from(p50.to_string()), Cell::from(p99.to_string()),
+            Cell::from(name.to_string()), Cell::from(priority.to_string()), Cell::from(period.to_string()),
+            Cell::from(last.to_string()), Cell::from(p99.to_string()),
             Cell::from(max.to_string()), Cell::from(limit_str),
             Cell::from(status)
         ]).style(row_style)
     };
 
     let sensor_rows = vec![
-        make_jitter_row("Thermal", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p50_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, Some(THERMAL_JITTER_LIMIT_US)),
-        make_jitter_row("Power",   "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p50_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   Some(POWER_JITTER_LIMIT_US)),
-        make_jitter_row("IMU",     "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p50_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     Some(IMU_JITTER_LIMIT_US)),
+        make_jitter_row("Thermal", "H1", "100ms", metrics.thermal_jitter_last_us, metrics.thermal_jitter_p99_us, metrics.thermal_jitter_max_us, Some(THERMAL_JITTER_LIMIT_US)),
+        make_jitter_row("Power",   "N2", "200ms", metrics.power_jitter_last_us,   metrics.power_jitter_p99_us,   metrics.power_jitter_max_us,   Some(POWER_JITTER_LIMIT_US)),
+        make_jitter_row("IMU",     "L3", "500ms", metrics.imu_jitter_last_us,     metrics.imu_jitter_p99_us,     metrics.imu_jitter_max_us,     Some(IMU_JITTER_LIMIT_US)),
     ];
-    let panel_a = Table::new(sensor_rows, [Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(8), Constraint::Min(9), Constraint::Min(7)])
+    let panel_a = Table::new(sensor_rows, [Constraint::Percentage(15), Constraint::Percentage(10), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(12), Constraint::Percentage(15)])
         .header(sensor_header)
-        .block(Block::default().title(" SENSOR JITTER ").borders(Borders::ALL));
+        .block(Block::default().title(" SENSOR JITTER (ALL 3 SENSORS) ").borders(Borders::ALL));
     frame.render_widget(panel_a, top_panels[0]);
 
     // Panel B: Buffer Status
