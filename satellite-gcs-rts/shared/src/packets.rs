@@ -23,7 +23,8 @@ pub enum SensorId {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct TelemetryPacket {
     pub seq_no:          u32,    // monotonically incrementing, per-sensor
-    pub timestamp_us:    u64,    // Instant at sender, microseconds since sim start
+    pub timestamp_us:    u64,    // transmit wall-clock timestamp (UNIX epoch, microseconds)
+    pub sample_timestamp_us: u64, // sensor sample timestamp, microseconds since sim start
     pub packet_type:     PacketType,
     pub sensor_id:       SensorId,
     pub priority:        u8,     // 1=highest, 3=lowest
@@ -40,7 +41,7 @@ impl TelemetryPacket {
             SensorId::Power   => 2,
             SensorId::Imu     => 3,
         };
-        Self { seq_no, timestamp_us: ts_us, packet_type: PacketType::SensorData,
+        Self { seq_no, timestamp_us: 0, sample_timestamp_us: ts_us, packet_type: PacketType::SensorData,
                sensor_id, priority, value, is_corrupted: false, payload: [0u8; 64] }
     }
 }

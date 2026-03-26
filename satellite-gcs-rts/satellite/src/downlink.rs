@@ -11,6 +11,20 @@ use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
 use futures::SinkExt;
 use tokio::net::tcp::OwnedWriteHalf;
 use bytes::Bytes;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+fn wall_clock_us() -> u64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_micros() as u64)
+        .unwrap_or(0)
+}
+
+fn exercise_gcs_edges() -> bool {
+    std::env::var("SAT_SIM_EXERCISE_GCS_EDGE_CASES")
+        .map(|v| v == "1" || v.eq_ignore_ascii_case("true"))
+        .unwrap_or(false)
+}
 
 pub async fn run_downlink_tx(
     buffer:          Arc<Mutex<SensorBuffer>>,
@@ -66,6 +80,8 @@ pub async fn run_downlink_tx(
     let mut last_abort_warn = Instant::now() - Duration::from_secs(60);
     let mut tx_log_seq: u32 = 0;
     let mut hist = hdrhistogram::Histogram::<u64>::new(3).unwrap();
+    let exercise_mode = exercise_gcs_edges();
+    let mut blackout_done = false;
 
     loop {
         tokio::select! {
@@ -75,6 +91,32 @@ pub async fn run_downlink_tx(
 
         let elapsed_us = sim_start.elapsed().as_micros() as u64;
         let window_start = Instant::now();
+
+        if exercise_mode && !blackout_done && sim_start.elapsed().as_secs() >= 90 {
+            blackout_done = true;
+            tracing::warn!(
+                elapsed_us,
+                blackout_s=12,
+                "EXERCISE: telemetry blackout start to trigger GCS loss of contact"
+            );
+            crate::ui::push_log(
+                &ui_metrics,
+                1,
+                "EXERCISE: telemetry blackout start".to_string(),
+                &sim_start,
+            );
+            tokio::time::sleep(Duration::from_secs(12)).await;
+            tracing::warn!(
+                elapsed_us=sim_start.elapsed().as_micros() as u64,
+                "EXERCISE: telemetry blackout end"
+            );
+            crate::ui::push_log(
+                &ui_metrics,
+                1,
+                "EXERCISE: telemetry blackout end".to_string(),
+                &sim_start,
+            );
+        }
 
         // Forward fault packets preferentially (Always allowed)
         while let Ok(fault) = fault_rx.try_recv() {
@@ -114,14 +156,11 @@ pub async fn run_downlink_tx(
             let (reading, from_retransmit) = {
                 let mut rq = retransmit_q.lock().await;
                 if let Some(mut pkt) = rq.pop_front() {
-                    let now_us = sim_start.elapsed().as_micros() as u64;
-                    // Retransmits must not keep the original sample timestamp or GCS will treat
-                    // latency as (recv - old_sample_time), inflating p99/max. Stamp this send.
-                    pkt.timestamp_us = now_us;
+                    pkt.timestamp_us = wall_clock_us();
                     (
                         SensorReading {
                             packet: pkt,
-                            buffer_insert_us: now_us,
+                            buffer_insert_us: sim_start.elapsed().as_micros() as u64,
                         },
                         true,
                     )
@@ -135,7 +174,8 @@ pub async fn run_downlink_tx(
 
             if degraded && reading.packet.priority > 1 { continue; }
 
-            let pkt = reading.packet;
+            let mut pkt = reading.packet;
+            pkt.timestamp_us = wall_clock_us();
 
             let bytes = match bincode::serialize(&pkt) {
                 Ok(b)  => b,

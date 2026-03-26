@@ -118,7 +118,7 @@ pub async fn run_thermal_sensor(
 
                 let insert_us = sim_start.elapsed().as_micros() as u64;
                 let reading = SensorReading { packet: sample.packet, buffer_insert_us: insert_us };
-                let latency_us = insert_us.saturating_sub(reading.packet.timestamp_us);
+                let latency_us = insert_us.saturating_sub(reading.packet.sample_timestamp_us);
                 {
                     let mut buf = buffer.lock().await;
                     let fill_pct = buf.fill_pct();
@@ -210,8 +210,8 @@ pub async fn run_power_sensor(
         }
 
         let insert_us = sim_start.elapsed().as_micros() as u64;
+        let latency_us = insert_us - packet.sample_timestamp_us;
         let reading = SensorReading { packet, buffer_insert_us: insert_us };
-        let latency_us = insert_us - ts_us;
 
         {
             let mut buf = buffer.lock().await;
@@ -289,8 +289,8 @@ pub async fn run_imu_sensor(
         }
 
         let insert_us = sim_start.elapsed().as_micros() as u64;
+        let latency_us = insert_us - packet.sample_timestamp_us;
         let reading = SensorReading { packet, buffer_insert_us: insert_us };
-        let latency_us = insert_us - ts_us;
 
         {
             let mut buf = buffer.lock().await;

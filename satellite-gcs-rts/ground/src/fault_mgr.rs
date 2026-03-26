@@ -7,6 +7,12 @@ use shared::config::GCS_INTERLOCK_LIMIT_MS;
 use crate::state::GcsSystemState;
 use crate::uplink_tx::PrioritizedCommand;
 
+fn exercise_gcs_edges() -> bool {
+    std::env::var("SAT_SIM_EXERCISE_GCS_EDGE_CASES")
+        .map(|v| v == "1" || v.eq_ignore_ascii_case("true"))
+        .unwrap_or(false)
+}
+
 pub async fn run_fault_mgr(
     mut fault_rx:  tokio::sync::mpsc::Receiver<FaultPacket>,
     state:     Arc<Mutex<GcsSystemState>>,
@@ -18,6 +24,8 @@ pub async fn run_fault_mgr(
 ) {
     let mut total_faults = 0u64;
     let mut interlock_latencies: Vec<u64> = Vec::new();
+    let exercise_mode = exercise_gcs_edges();
+    let mut critical_alert_injected = false;
 
     let mut interval = tokio::time::interval(Duration::from_secs(1));
     let mut next_tick_us = sim_start.elapsed().as_micros() as u64 + 1_000_000;
@@ -40,6 +48,18 @@ pub async fn run_fault_mgr(
                 tracing::warn!(fault=?fault.fault_type, severity=fault.severity, elapsed_us=detect_us,
                                "fault_mgr: fault received");
                 crate::ui::push_log(&ui_metrics, 1, format!("fault received: {:?}", fault.fault_type), &sim_start);
+
+                let mut clear_delay_ms = 50u64;
+                if exercise_mode && !critical_alert_injected {
+                    critical_alert_injected = true;
+                    clear_delay_ms = 20;
+                    tracing::warn!(
+                        injected_delay_ms=105,
+                        elapsed_us=sim_start.elapsed().as_micros() as u64,
+                        "fault_mgr: injecting interlock delay for exercise"
+                    );
+                    tokio::time::sleep(Duration::from_millis(105)).await;
+                }
 
                 {
                     let mut s = state.lock().await;
@@ -78,7 +98,7 @@ pub async fn run_fault_mgr(
                 let sim_start_clone = sim_start.clone();
                 let cmd_queue_clone = cmd_queue.clone();
                 tokio::spawn(async move {
-                    tokio::time::sleep(Duration::from_millis(50)).await;
+                    tokio::time::sleep(Duration::from_millis(clear_delay_ms)).await;
                     { 
                         let mut s = state_clone.lock().await;
                         if *s == GcsSystemState::InterlockActive || *s == GcsSystemState::CriticalAlert {

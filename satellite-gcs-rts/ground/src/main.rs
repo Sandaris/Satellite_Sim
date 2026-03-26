@@ -75,7 +75,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     tracing::info!("Starting Satellite Ground Control Simulation (TCP MODE)");
 
-    // TCP Server Setup
+    //  TCP listener : TCP Server Setup for GCS - Satellite connection
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", args.port)).await?;
     tracing::info!("GCS listening for satellite connection on port {}...", args.port);
 
@@ -303,36 +303,46 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let report = format!(
         "GCS FINAL REPORT\n\
-time_end_us={}\n\
-total_pkts_received={}\n\
-total_pkts_lost={}\n\
-reception_rate_pct={:.3}\n\
-decode_deadline_misses={}\n\
-latency_p50_us={}\n\
-latency_p99_us={}\n\
-latency_max_us={}\n\
-re_request_count={}\n\
-delayed_packet_events={}\n\
-telemetry_backlog_max={}\n\
-cmd_total_sent={}\n\
-cmd_deadline_misses={}\n\
-cmd_rejected_count={}\n\
-cmd_rejection_last_reason={}\n\
-uplink_jitter_p50_us={}\n\
-uplink_jitter_p99_us={}\n\
-uplink_jitter_max_us={}\n\
-task_drift_uplink_last_us={}\n\
-task_drift_telemetry_last_us={}\n\
-task_drift_fault_last_us={}\n\
-pipeline_packet_to_uplink_last_us={}\n\
-pipeline_command_to_response_last_us={}\n\
-fault_received_count={}\n\
-interlock_max_us={}\n\
-critical_alerts={}\n\
-system_load_pct={:.3}\n\
-#\n\
-# system_load_pct: (µs in uplink_tx serialize+send + telemetry_rx per SensorData packet) summed,\n\
-# each second divided by that second's wall µs, ×100, capped at 100. Not OS CPU, fault_mgr, or UI.\n",
+\n\
+=== RUN SUMMARY ===\n\
+time_end_us={}  # simulation elapsed time at shutdown (microseconds)\n\
+\n\
+=== TELEMETRY RECEPTION ===\n\
+total_pkts_received={}  # valid telemetry packets received\n\
+total_pkts_lost={}  # inferred missing or corrupted packets\n\
+reception_rate_pct={:.3}  # received / (received + lost) * 100\n\
+decode_deadline_misses={}  # count of telemetry decode times > 3ms\n\
+latency_p50_us={}  # telemetry one-way latency median\n\
+latency_p99_us={}  # telemetry one-way latency p99\n\
+latency_max_us={}  # telemetry one-way latency max\n\
+re_request_count={}  # RequestTelemetry commands triggered by GCS\n\
+delayed_packet_events={}  # delayed packet detections\n\
+telemetry_backlog_max={}  # max pending re-request backlog size\n\
+\n\
+=== COMMAND UPLINK ===\n\
+cmd_total_sent={}  # commands sent by GCS uplink task\n\
+cmd_deadline_misses={}  # dispatch operations exceeding deadline\n\
+cmd_rejected_count={}  # commands blocked by safety/interlock logic\n\
+cmd_rejection_last_reason={}  # reason string for latest rejection\n\
+uplink_jitter_p50_us={}  # uplink loop scheduling jitter median\n\
+uplink_jitter_p99_us={}  # uplink loop scheduling jitter p99\n\
+uplink_jitter_max_us={}  # uplink loop scheduling jitter max\n\
+\n\
+=== TASK / PIPELINE TIMING ===\n\
+task_drift_uplink_last_us={}  # last uplink loop drift from expected tick\n\
+task_drift_telemetry_last_us={}  # last telemetry loop drift from expected tick\n\
+task_drift_fault_last_us={}  # last fault manager loop drift from expected tick\n\
+pipeline_packet_to_uplink_last_us={}  # last telemetry packet latency seen at GCS\n\
+pipeline_command_to_response_last_us={}  # last request->response roundtrip proxy\n\
+\n\
+=== FAULT & SAFETY ===\n\
+fault_received_count={}  # fault notifications received from satellite\n\
+interlock_max_us={}  # max measured interlock apply latency\n\
+critical_alerts={}  # count of interlock >100ms critical alerts\n\
+\n\
+=== PERFORMANCE ===\n\
+system_load_pct={:.3}  # GCS busy time share (uplink serialize+send + telemetry handler)\n\
+# Not OS CPU usage; excludes fault_mgr/UI and other process work.\n",
         sim_start.elapsed().as_micros() as u64,
         final_metrics.total_pkts_received,
         final_metrics.total_pkts_lost,

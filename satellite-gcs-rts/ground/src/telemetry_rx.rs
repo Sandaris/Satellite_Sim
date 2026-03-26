@@ -11,6 +11,20 @@ use crate::uplink_tx::PrioritizedCommand;
 use tokio_util::codec::{FramedRead, LengthDelimitedCodec};
 use futures::StreamExt;
 use tokio::net::tcp::OwnedReadHalf;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+fn wall_clock_us() -> u64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_micros() as u64)
+        .unwrap_or(0)
+}
+
+fn exercise_gcs_edges() -> bool {
+    std::env::var("SAT_SIM_EXERCISE_GCS_EDGE_CASES")
+        .map(|v| v == "1" || v.eq_ignore_ascii_case("true"))
+        .unwrap_or(false)
+}
 
 pub async fn run_telemetry_rx(
     reader:       OwnedReadHalf,
@@ -42,6 +56,10 @@ pub async fn run_telemetry_rx(
     let mut delayed_fail_streak = 0u32;
     let mut pending_rerequests: HashMap<(SensorId, u32), u64> = HashMap::new();
     let mut last_delayed_seq_requested: HashMap<SensorId, u32> = HashMap::new();
+    let exercise_mode = exercise_gcs_edges();
+    let mut loss_of_contact_exercised = false;
+    let mut timeout_loss_logged = false;
+    let mut streak_loss_logged = false;
 
     loop {
         let now_us = sim_start.elapsed().as_micros() as u64;
@@ -58,8 +76,37 @@ pub async fn run_telemetry_rx(
                 // Periodic loss-of-contact and delayed-packet handling.
                 let now_check_us = sim_start.elapsed().as_micros() as u64;
                 if now_check_us.saturating_sub(last_any_recv_us) > (GCS_PACKET_LOSS_ALERT as u64 * 1_000_000) {
+                    let mut transitioned = false;
                     if let Ok(mut m) = ui_metrics.try_lock() { m.contact_status = "LOST".to_string(); }
-                    if let Ok(mut s) = state.try_lock() { *s = GcsSystemState::LossOfContact; }
+                    if let Ok(mut s) = state.try_lock() {
+                        transitioned = *s != GcsSystemState::LossOfContact;
+                        *s = GcsSystemState::LossOfContact;
+                    }
+                    if transitioned || !timeout_loss_logged {
+                        timeout_loss_logged = true;
+                        tracing::error!(
+                            since_last_us=now_check_us.saturating_sub(last_any_recv_us),
+                            limit_us=(GCS_PACKET_LOSS_ALERT as u64 * 1_000_000),
+                            "SATELLITE LOSS OF CONTACT: receive timeout exceeded"
+                        );
+                        if exercise_mode && !loss_of_contact_exercised {
+                            loss_of_contact_exercised = true;
+                            let enqueue_ts = sim_start.elapsed().as_micros() as u64;
+                            let pkt = CommandPacket {
+                                seq_no: 0,
+                                timestamp_us: enqueue_ts,
+                                cmd_type: CommandType::AdjustAntenna,
+                                priority: 3,
+                                payload: [0u8; 32],
+                            };
+                            let cmd = PrioritizedCommand { packet: pkt, enqueue_us: enqueue_ts };
+                            cmd_queue.lock().await.push(cmd);
+                            tracing::warn!(
+                                elapsed_us=enqueue_ts,
+                                "telemetry_rx: exercise command enqueued to prove loss-of-contact rejection"
+                            );
+                        }
+                    }
                 }
 
                 // Trigger re-request when packet is delayed beyond 1.5x expected period.
@@ -70,7 +117,7 @@ pub async fn run_telemetry_rx(
                         SensorId::Imu => IMU_PERIOD_MS * 1000,
                     } as u64;
                     let last = *last_recv_us.get(&sensor).unwrap_or(&last_any_recv_us);
-                    if now_check_us.saturating_sub(last) > (expected_us * 3 / 2) {
+                    if now_check_us.saturating_sub(last) > (expected_us * 3 / 2) { // The delayed-packet check happens after the loss-of-contact check, so we use a slightly more lenient threshold to avoid redundant re-requests when contact is already considered lost.
                         let expected_seq = last_seq.get(&sensor).copied().unwrap_or(0).saturating_add(1);
                         let already_requested = last_delayed_seq_requested.get(&sensor).copied().unwrap_or(u32::MAX) == expected_seq;
                         if !already_requested {
@@ -94,14 +141,19 @@ pub async fn run_telemetry_rx(
                 }
 
                 if delayed_fail_streak >= 3 {
+                    let mut transitioned = false;
                     if let Ok(mut m) = ui_metrics.try_lock() {
                         m.contact_status = "LOST".to_string();
                         m.consecutive_gaps = delayed_fail_streak;
                     }
                     if let Ok(mut s) = state.try_lock() {
+                        transitioned = *s != GcsSystemState::LossOfContact;
                         *s = GcsSystemState::LossOfContact;
                     }
-                    tracing::error!(fails=delayed_fail_streak, "SATELLITE LOSS OF CONTACT: 3+ delayed packets in sequence");
+                    if transitioned || !streak_loss_logged {
+                        streak_loss_logged = true;
+                        tracing::error!(fails=delayed_fail_streak, "SATELLITE LOSS OF CONTACT: 3+ delayed packets in sequence");
+                    }
                 }
 
                 if let Ok(mut m) = ui_metrics.try_lock() {
@@ -128,7 +180,7 @@ pub async fn run_telemetry_rx(
             }
         };
 
-        let recv_us = sim_start.elapsed().as_micros() as u64; 
+        let recv_us = sim_start.elapsed().as_micros() as u64; // Timestamp when this frame was received at GCS
 
         if bytes.is_empty() { continue; }
         let packet_type = bytes[0];
@@ -181,7 +233,8 @@ pub async fn run_telemetry_rx(
             continue;
         }
 
-        let latency_us = recv_us.saturating_sub(packet.timestamp_us);
+        let recv_wall_us = wall_clock_us();
+        let latency_us = recv_wall_us.saturating_sub(packet.timestamp_us);
         if let Some(hist) = lat_hist.get_mut(&packet.sensor_id) {
             hist.record(latency_us).ok();
         }
@@ -195,7 +248,7 @@ pub async fn run_telemetry_rx(
             } as u64;
             // Drift is computed from satellite packet timestamps (source clock) so the
             // value reflects sensor timing behavior, not TCP/buffering variation at GCS.
-            let actual_interval = packet.timestamp_us.saturating_sub(*last_us);
+            let actual_interval = packet.sample_timestamp_us.saturating_sub(*last_us);
             drift_us = actual_interval as i64 - expected_period_us as i64;
         }
         let jitter_us = drift_us.unsigned_abs();
@@ -242,9 +295,9 @@ pub async fn run_telemetry_rx(
                 }
             }
 
-            if pending_rerequests.remove(&(packet.sensor_id, packet.seq_no)).is_some() {
+            if let Some(request_us) = pending_rerequests.remove(&(packet.sensor_id, packet.seq_no)) {
                 let now = sim_start.elapsed().as_micros() as u64;
-                m.pipeline_command_to_response_last_us = now.saturating_sub(packet.timestamp_us);
+                m.pipeline_command_to_response_last_us = now.saturating_sub(request_us);
             }
             if let Some(h) = lat_hist.get(&packet.sensor_id) {
                 m.latency_p50_us = h.value_at_percentile(50.0);
@@ -282,6 +335,8 @@ pub async fn run_telemetry_rx(
                 } else {
                     m.contact_status = "ESTABLISHED".to_string();
                     delayed_fail_streak = 0;
+                    timeout_loss_logged = false;
+                    streak_loss_logged = false;
                 }
             }
             if m.total_pkts_received + m.total_pkts_lost > 0 {
@@ -293,7 +348,7 @@ pub async fn run_telemetry_rx(
         gcs_busy_sensor_handler_us.fetch_add(proc_start.elapsed().as_micros() as u64, Ordering::Relaxed);
         last_any_recv_us = recv_us;
         last_seq.insert(packet.sensor_id, packet.seq_no);
-        last_src_ts_us.insert(packet.sensor_id, packet.timestamp_us);
+        last_src_ts_us.insert(packet.sensor_id, packet.sample_timestamp_us);
         heartbeat.store(sim_start.elapsed().as_secs(), Ordering::Relaxed);
     }
 }

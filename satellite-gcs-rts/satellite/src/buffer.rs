@@ -13,7 +13,7 @@ impl Ord for SensorReading {
         // Lower priority number (e.g. 1) = Higher priority in System
         // BinaryHeap is a MAX-heap, so we want the "highest" item to be the one with the lowest priority number.
         other.packet.priority.cmp(&self.packet.priority)
-            .then_with(|| other.packet.timestamp_us.cmp(&self.packet.timestamp_us))
+            .then_with(|| other.packet.sample_timestamp_us.cmp(&self.packet.sample_timestamp_us))
     }
 }
 
@@ -26,7 +26,7 @@ impl PartialOrd for SensorReading {
 impl PartialEq for SensorReading {
     fn eq(&self, other: &Self) -> bool {
         self.packet.priority == other.packet.priority &&
-        self.packet.timestamp_us == other.packet.timestamp_us &&
+        self.packet.sample_timestamp_us == other.packet.sample_timestamp_us &&
         self.packet.seq_no == other.packet.seq_no &&
         self.packet.sensor_id == other.packet.sensor_id &&
         self.buffer_insert_us == other.buffer_insert_us
